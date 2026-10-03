@@ -1,0 +1,17 @@
+# On Hostinger the whole project lives in public_html, so every request is sent
+# into public/. Local development (artisan serve, Vite) never reads this file.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# A refusal for files that must never be served even if rewriting were off.
+<FilesMatch "^(\.env.*|artisan|composer\.(json|lock)|.*\.sqlite)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>

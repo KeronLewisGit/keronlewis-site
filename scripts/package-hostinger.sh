@@ -43,23 +43,8 @@ mkdir -p storage/logs storage/framework/{views,sessions,cache/data} bootstrap/ca
 echo "Installing production dependencies…"
 composer install --no-dev --optimize-autoloader --no-interaction --quiet
 
-# Hostinger's rule, plus a refusal for files that must never be served even if rewriting were off.
-cat > .htaccess <<'HTACCESS'
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteRule ^(.*)$ public/$1 [L]
-</IfModule>
-
-<FilesMatch "^(\.env.*|artisan|composer\.(json|lock)|.*\.sqlite)$">
-  <IfModule mod_authz_core.c>
-    Require all denied
-  </IfModule>
-  <IfModule !mod_authz_core.c>
-    Order allow,deny
-    Deny from all
-  </IfModule>
-</FilesMatch>
-HTACCESS
+# The root .htaccess that sends every request into public/ is tracked in the repo and was copied above.
+[[ -f .htaccess ]] || { echo "missing root .htaccess" >&2; exit 1; }
 
 if [[ "$MODE" == "install" ]]; then
     HOST="$(echo "$APP_URL" | sed -E 's#^https?://##; s#/.*$##')"
