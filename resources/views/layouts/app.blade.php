@@ -26,6 +26,11 @@
         $commands[] = ['group' => 'Elsewhere', 'label' => $link['label'], 'hint' => $link['handle'], 'href' => $link['url'], 'external' => true];
     }
     foreach (config('portfolio.projects') as $project) {
+        if (isset($project['case_study'])) {
+            $commands[] = ['group' => 'Case studies', 'label' => $project['case_study']['title'], 'hint' => $project['name'], 'href' => route('work.show', $project['slug'])];
+        }
+    }
+    foreach (config('portfolio.projects') as $project) {
         $commands[] = ['group' => 'Sites I built', 'label' => $project['name'], 'hint' => parse_url($project['url'], PHP_URL_HOST), 'href' => $project['url'], 'external' => true];
     }
 @endphp

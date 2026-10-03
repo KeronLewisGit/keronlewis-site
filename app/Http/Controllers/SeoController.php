@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\Portfolio;
 use Illuminate\Support\Carbon;
 
 class SeoController extends Controller
 {
-    public function sitemap()
+    public function sitemap(Portfolio $portfolio)
     {
         $lastmod = Carbon::createFromTimestamp(filemtime(config_path('portfolio.php')))->toDateString();
+        $urls = [route('home'), route('resume'), ...$portfolio->caseStudies()->pluck('case_url'), route('privacy')];
 
         return response()
-            ->view('seo.sitemap', ['urls' => [route('home'), route('resume'), route('privacy')], 'lastmod' => $lastmod])
+            ->view('seo.sitemap', ['urls' => $urls, 'lastmod' => $lastmod])
             ->header('Content-Type', 'application/xml');
     }
 

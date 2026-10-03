@@ -1,3 +1,6 @@
+@php
+    $unreadMessages = auth()->check() ? \App\Models\ContactMessage::unread()->count() : 0;
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,6 +29,9 @@
             @auth
                 <nav class="admin-links" aria-label="Admin">
                     <a href="{{ route('admin.analytics') }}" @if (request()->routeIs('admin.analytics')) aria-current="page" @endif>Analytics</a>
+                    <a href="{{ route('admin.messages') }}" @if (request()->routeIs('admin.messages*')) aria-current="page" @endif>
+                        Messages @if ($unreadMessages)<span class="count" aria-label="{{ $unreadMessages }} unread">{{ $unreadMessages }}</span>@endif
+                    </a>
                     <a href="{{ route('admin.connection') }}" @if (request()->routeIs('admin.connection')) aria-current="page" @endif>Connection</a>
                 </nav>
             @endauth

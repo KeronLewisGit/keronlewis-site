@@ -94,7 +94,15 @@
                                     <li>{{ $tag }}</li>
                                 @endforeach
                             </ul>
-                            <a class="visit" href="{{ $project['url'] }}" target="_blank" rel="noopener">Visit site <x-icon name="arrow-up-right" /></a>
+                            @if ($project['testimonial'] ?? null)
+                                <x-testimonial :testimonial="$project['testimonial']" />
+                            @endif
+                            <div class="card-links">
+                                @if ($project['case_url'])
+                                    <a class="visit" href="{{ $project['case_url'] }}">Read the case study <x-icon name="arrow-right" /></a>
+                                @endif
+                                <a class="visit" href="{{ $project['url'] }}" target="_blank" rel="noopener">Visit site <x-icon name="arrow-up-right" /></a>
+                            </div>
                         </div>
                     </article>
                 @endforeach
@@ -333,6 +341,7 @@
                 <p data-viewer-summary></p>
                 <ul class="tags" data-viewer-tags></ul>
                 <a class="btn btn-primary" data-viewer-url target="_blank" rel="noopener">Visit the live site <x-icon name="arrow-up-right" /></a>
+                <a class="visit viewer-case" data-viewer-case hidden>Read the case study <x-icon name="arrow-right" /></a>
                 <div class="viewer-nav">
                     <button class="tool-btn" type="button" data-viewer-prev aria-label="Previous project"><x-icon name="chevron-left" /></button>
                     <span class="mono" data-viewer-count></span>
@@ -342,5 +351,5 @@
             </div>
         </div>
     </dialog>
-    <script type="application/json" id="projects-data">@json($projects->values())</script>
+    <script type="application/json" id="projects-data">@json($projects->map(fn ($project) => Arr::except($project, ['case_study', 'testimonial']))->values())</script>
 @endsection

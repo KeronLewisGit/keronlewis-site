@@ -918,6 +918,41 @@ html:not(.js) .hero {
     gap: 9px;
 }
 
+.card-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 20px;
+    margin-top: auto;
+}
+
+/* A client's words about a project; shown on its card and its case study. */
+.quote {
+    margin: 18px 0 0;
+    padding-left: 14px;
+    border-left: 2px solid var(--coral);
+}
+
+.quote p {
+    color: var(--ink);
+    font-size: .95rem;
+    margin: 0;
+}
+
+.quote figcaption {
+    margin-top: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+}
+
+.quote figcaption span {
+    font-weight: 400;
+    color: var(--muted);
+}
+
+.quote figcaption span::before {
+    content: ' · ';
+}
+
 /* ---------- project preview dialog ---------- */
 dialog {
     color: var(--ink);
@@ -999,6 +1034,10 @@ dialog::backdrop {
 
 .viewer-info .tags {
     margin-bottom: 24px;
+}
+
+.visit.viewer-case {
+    margin-top: 0;
 }
 
 .viewer-nav {
@@ -1825,6 +1864,66 @@ button.chip {
     font-family: var(--font-mono);
     font-size: .76rem;
     color: var(--muted);
+}
+
+/* ---------- case study ----------
+   Built on the privacy page's ruled rows, with the project's screenshot
+   in a browser frame that scrolls. */
+.case-shot {
+    margin: 36px 0 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    overflow: hidden;
+    background: #0e0e0d;
+}
+
+.case-shot-view {
+    max-height: min(560px, 70vh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.case-shot-view img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.case .policy-body .tags {
+    padding-left: 0;
+    max-width: none;
+}
+
+.case .policy-body .tags li {
+    margin-bottom: 0;
+}
+
+.case .policy-body .tags li::before {
+    content: none;
+}
+
+.case .quote {
+    margin-top: 0;
+}
+
+.case .quote p {
+    font-size: 1.1rem;
+}
+
+.case-more {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 32px;
+    margin-top: 32px;
+}
+
+/* .sec-link is hidden on phones in section headers; here it is the only way onward. */
+.case-more .sec-link {
+    display: inline-flex;
+}
+
+.case-more .sec-link:first-child {
+    margin-right: auto;
 }
 
 /* ---------- 404 ---------- */
