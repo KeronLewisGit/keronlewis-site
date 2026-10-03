@@ -54,14 +54,18 @@ function initViewer(grid) {
     let visible = projects;
     let index = 0;
 
+    // The screenshot and heading are added here rather than in the page's HTML, so the
+    // closed dialog doesn't leave an image with no source or an empty heading in the document.
+    const img = part('shot').insertAdjacentElement('afterbegin', document.createElement('img'));
+    const name = part('cat').insertAdjacentElement('afterend', document.createElement('h3'));
+
     function show(next) {
         index = (next + visible.length) % visible.length;
         const project = visible[index];
-        const img = part('img');
         const empty = part('empty');
 
         part('cat').textContent = project.category;
-        part('name').textContent = project.name;
+        name.textContent = project.name;
         part('summary').textContent = project.summary;
         part('tags').replaceChildren(
             ...project.stack.map((tag) => Object.assign(document.createElement('li'), { textContent: tag })),

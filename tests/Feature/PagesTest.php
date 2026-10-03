@@ -114,6 +114,32 @@ class PagesTest extends TestCase
         $this->get('/robots.txt')->assertOk()->assertSee('Sitemap: '.route('sitemap'));
     }
 
+    public function test_public_pages_have_alt_text_and_a_clean_heading_outline(): void
+    {
+        $paths = ['/', '/resume', '/privacy', ...app(Portfolio::class)->caseStudies()->map(fn (array $project) => "/work/{$project['slug']}")];
+
+        foreach ($paths as $path) {
+            $document = new \DOMDocument;
+            @$document->loadHTML('<?xml encoding="UTF-8">'.$this->get($path)->assertOk()->getContent());
+            $xpath = new \DOMXPath($document);
+
+            foreach ($xpath->query('//img') as $image) {
+                $this->assertNotSame('', trim($image->getAttribute('alt')), "{$path} has an image without alt text.");
+            }
+
+            $previous = 0;
+            $levels = [];
+            foreach ($xpath->query('//h1|//h2|//h3|//h4|//h5|//h6') as $heading) {
+                $level = (int) substr($heading->nodeName, 1);
+                $this->assertNotSame('', trim($heading->textContent), "{$path} has an empty <{$heading->nodeName}>.");
+                $this->assertLessThanOrEqual($previous + 1, $level, "{$path} skips a heading level before \"".trim($heading->textContent).'".');
+                $previous = $level;
+                $levels[] = $level;
+            }
+            $this->assertSame(1, count(array_keys($levels, 1)), "{$path} should have exactly one <h1>.");
+        }
+    }
+
     public function test_unknown_pages_get_the_styled_404(): void
     {
         $this->get('/nope')->assertNotFound()->assertSee("That page isn't here.", false);
