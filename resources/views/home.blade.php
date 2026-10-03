@@ -331,13 +331,11 @@
     <dialog class="viewer" data-viewer aria-label="Project preview">
         <div class="viewer-box">
             <div class="viewer-shot" data-viewer-shot tabindex="0">
-                <img alt="" data-viewer-img>
                 <span class="shot-empty" data-viewer-empty hidden></span>
             </div>
             <div class="viewer-info">
                 <button class="tool-btn viewer-close" type="button" data-viewer-close aria-label="Close preview"><x-icon name="x" /></button>
                 <span class="cat" data-viewer-cat></span>
-                <h3 data-viewer-name></h3>
                 <p data-viewer-summary></p>
                 <ul class="tags" data-viewer-tags></ul>
                 <a class="btn btn-primary" data-viewer-url target="_blank" rel="noopener">Visit the live site <x-icon name="arrow-up-right" /></a>
