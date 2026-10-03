@@ -2,12 +2,26 @@
 # into public/. Local development (artisan serve, Vite) never reads this file.
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # One address for the site: www.example.com is sent to example.com, so search
+  # engines don't see two copies.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
   RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
 
-# Tell browsers to use HTTPS for every visit for the next year, subdomains included.
 <IfModule mod_headers.c>
+  # Tell browsers to use HTTPS for every visit for the next year, subdomains included.
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  # Don't let browsers guess a file's type from its contents.
+  Header always set X-Content-Type-Options "nosniff"
+  # Other sites can't show these pages inside a frame.
+  Header always set X-Frame-Options "SAMEORIGIN"
+  # Sites linked from here are told the visitor came from this domain, but not which page.
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  # The site never asks for the camera, microphone or location.
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
 </IfModule>
 
 # A refusal for files that must never be served even if rewriting were off.
