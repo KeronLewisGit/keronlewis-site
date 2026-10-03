@@ -77,3 +77,13 @@ First install:
 6. To send contact-form email, edit `.env` in File Manager: set `MAIL_MAILER=smtp` and fill in the mailbox lines.
 
 After an update zip, run `php artisan migrate --force` over SSH if the release added migrations.
+
+### Backups
+
+`php artisan portfolio:backup` saves a dated copy of the SQLite database (messages, the admin login and the Analytics connection) and keeps the newest 14. By default the copies go to `storage/app/backups`; on the server, pass `--to=` a folder outside `public_html` so they survive a redeploy, and run it daily from a cron job:
+
+```sh
+/usr/bin/php ~/domains/keronlewis.dev/public_html/artisan portfolio:backup --to=$HOME/backups/keronlewis-site
+```
+
+To restore, copy a backup over `database/database.sqlite`.
