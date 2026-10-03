@@ -1,0 +1,133 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Support\Portfolio;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class PagesTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_home_page_shows_profile_projects_and_experience(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertOk()
+            ->assertSee('Keron Lewis')
+            ->assertSee('Selected work')
+            ->assertSee('Work I take on')
+            ->assertSee('<title>Keron Lewis | Full-Stack Web Developer in Trinidad &amp; Tobago</title>', false)
+            ->assertSee('"@type": "ProfilePage"', false)
+            ->assertSee('"@type": "Occupation"', false);
+
+        foreach (config('portfolio.projects') as $project) {
+            $response->assertSee($project['name']);
+        }
+        foreach (app(Portfolio::class)->experience() as $role) {
+            $response->assertSee($role['org']);
+        }
+    }
+
+    public function test_resume_page_lists_every_role_with_its_bullets(): void
+    {
+        $response = $this->get('/resume');
+
+        $response->assertOk()->assertSee('Timeline')->assertSee('Jan 2024 – Present · Part-time');
+
+        foreach (app(Portfolio::class)->experience() as $role) {
+            $response->assertSee($role['role'])->assertSee($role['bullets'][0]);
+        }
+    }
+
+    public function test_a_scheduled_role_end_takes_effect_on_its_date(): void
+    {
+        $this->travelTo('2026-11-15 12:00:00');
+        $this->get('/resume')
+            ->assertSee('Apr 2025 – Present · Full-time')
+            ->assertSee('Design and deliver internal web applications');
+        $this->assertNull(app(Portfolio::class)->experience()->firstWhere('id', 'label-house')['end']);
+
+        $this->travelTo('2026-11-16 12:00:00');
+        $this->get('/resume')
+            ->assertSee('Apr 2025 – Nov 2026 · Full-time')
+            ->assertSee('Designed and delivered internal web applications')
+            ->assertDontSee('Apr 2025 – Present');
+        $this->get('/')->assertDontSee('Full-time · Current');
+        $this->getJson('/resume.json')->assertJsonPath('work.0.endDate', '2026-11');
+
+        // The timeline bar stops at today rather than running past it.
+        $chart = app(Portfolio::class)->careerChart();
+        $bar = collect($chart['bars'])->firstWhere('id', 'label-house');
+        $this->assertFalse($bar['current']);
+        $this->assertLessThanOrEqual($chart['today'] + 0.01, $bar['left'] + $bar['width']);
+    }
+
+    public function test_titles_and_descriptions_fit_what_search_engines_display(): void
+    {
+        foreach (config('portfolio.profile.seo') as $key => $text) {
+            $limit = str_ends_with($key, '_title') ? 65 : 160;
+            $this->assertLessThanOrEqual($limit, mb_strlen($text), "{$key} is too long to show in full.");
+        }
+
+        $this->get('/resume')
+            ->assertSee('<title>Keron Lewis Résumé (CV) | Full-Stack PHP &amp; WordPress Developer</title>', false)
+            ->assertSee('<link rel="canonical" href="'.route('resume').'">', false);
+        $this->get('/resume?skill=PHP')->assertSee('<link rel="canonical" href="'.route('resume').'">', false);
+    }
+
+    public function test_resume_downloads_as_a_pdf(): void
+    {
+        $response = $this->get('/resume.pdf');
+
+        $response->assertOk()->assertHeader('Content-Type', 'application/pdf');
+        $this->assertStringStartsWith('%PDF', $response->getContent());
+    }
+
+    public function test_resume_json_follows_the_json_resume_shape(): void
+    {
+        $this->getJson('/resume.json')
+            ->assertOk()
+            ->assertJsonPath('basics.name', 'Keron Lewis')
+            ->assertJsonPath('basics.email', config('portfolio.profile.email'))
+            ->assertJsonCount(count(config('portfolio.experience')), 'work')
+            ->assertJsonMissingPath('work.1.endDate');
+    }
+
+    public function test_vcard_downloads_with_contact_details(): void
+    {
+        $response = $this->get('/keron-lewis.vcf');
+
+        $response->assertOk()->assertHeader('Content-Type', 'text/vcard; charset=utf-8');
+        $this->assertStringContainsString('FN:Keron Lewis', $response->getContent());
+        $this->assertStringContainsString('TEL;TYPE=CELL:+18682753268', $response->getContent());
+    }
+
+    public function test_sitemap_and_robots_use_the_configured_url(): void
+    {
+        $this->get('/sitemap.xml')
+            ->assertOk()
+            ->assertHeader('Content-Type', 'application/xml')
+            ->assertSee(route('resume'));
+
+        $this->get('/robots.txt')->assertOk()->assertSee('Sitemap: '.route('sitemap'));
+    }
+
+    public function test_unknown_pages_get_the_styled_404(): void
+    {
+        $this->get('/nope')->assertNotFound()->assertSee("That page isn't here.", false);
+    }
+
+    public function test_every_role_stack_entry_is_a_listed_skill(): void
+    {
+        $skills = collect(config('portfolio.skills'))->flatten();
+
+        foreach (config('portfolio.experience') as $role) {
+            $this->assertEmpty(
+                collect($role['stack'])->diff($skills)->all(),
+                "{$role['org']} lists stack items missing from the skills config.",
+            );
+        }
+    }
+}

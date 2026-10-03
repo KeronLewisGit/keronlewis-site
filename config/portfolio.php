@@ -1,0 +1,350 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Portfolio content
+|--------------------------------------------------------------------------
+|
+| Everything the site says about you lives in this file. The home page,
+| the web résumé, the PDF, the vCard and /resume.json all read from here,
+| so a change made once shows up everywhere.
+|
+*/
+
+return [
+
+    'profile' => [
+        'name' => 'Keron Lewis',
+        'title' => 'Full-Stack Web Developer',
+        'location' => 'Port of Spain, Trinidad & Tobago',
+        'city' => 'Port of Spain',
+        'country_code' => 'TT',
+        'timezone' => 'America/Port_of_Spain',
+        'email' => 'keronlewis@live.com',
+        'phone' => '+1 (868) 275-3268',
+        'phone_e164' => '+18682753268',
+        'availability' => 'Open to full-time roles and contracts',
+        'remote' => 'Open to remote',
+
+        /*
+        | What search engines show: the browser-tab title and the snippet under it.
+        | Keep titles under about 60 characters and descriptions under about 155.
+        */
+        'seo' => [
+            'home_title' => 'Keron Lewis | Full-Stack Web Developer in Trinidad & Tobago',
+            'home_description' => 'Full-stack web developer in Port of Spain, Trinidad and Tobago. PHP, MySQL, JavaScript, React, WordPress, WooCommerce. Open to remote roles and contracts.',
+            'resume_title' => 'Keron Lewis Résumé (CV) | Full-Stack PHP & WordPress Developer',
+            'resume_description' => 'Résumé of Keron Lewis, full-stack web developer in Trinidad and Tobago: PHP, MySQL, React, WordPress and API integration work since 2016. PDF download.',
+        ],
+
+        'tagline' => 'Websites, web apps, and the plumbing behind them.',
+        'tagline_mark' => 'plumbing',
+
+        'lead' => "I've been building for the web since 2016, mostly for businesses in Trinidad & Tobago and around the Caribbean. Day to day that means PHP and MySQL on the server, JavaScript and React in the browser, and a lot of REST APIs in between.",
+
+        'summary' => 'Full-stack web developer based in Port of Spain, building for the web since 2016. Most of my work is PHP and MySQL applications, WordPress and WooCommerce builds, and integrations between business systems over REST APIs and webhooks. I usually own a piece of work from requirements through to release, then document it and train the people who will use it. Currently studying for an MSc in Data Science at UWI.',
+
+        'about' => [
+            "I'm a developer in Port of Spain. I started out in 2016 building and maintaining client websites, and over the years the work moved further back into the stack: PHP applications, MySQL reporting, payment gateways, and getting one system to hand data to another without somebody retyping it.",
+            'A lot of what I build is unglamorous. A quote-request form that validates properly. A WooCommerce checkout that takes WiPay. A report that someone used to put together by hand in a spreadsheet every month. I like that kind of work, and I like being the person who sees it through from the first conversation to the release.',
+            "Most projects I hand over come with documentation and a walkthrough for the people who'll be using them.",
+            "I'm part-way through an MSc in Data Science at UWI St. Augustine, which is why more of my recent work involves reporting and cleaning up data.",
+        ],
+
+        'now' => [
+            ['label' => 'Working on', 'value' => 'PHP business applications at A.V. Knowles & Co.'],
+            ['label' => 'Studying', 'value' => 'MSc Data Science, UWI St. Augustine'],
+            ['label' => 'Studio', 'value' => 'Code Canvas Consultants'],
+        ],
+
+        'links' => [
+            'github' => ['label' => 'GitHub', 'handle' => 'github.com/KeronLewisGit', 'url' => 'https://github.com/KeronLewisGit'],
+            'linkedin' => ['label' => 'LinkedIn', 'handle' => 'linkedin.com/in/keronlewis', 'url' => 'https://www.linkedin.com/in/keronlewis'],
+            'studio' => ['label' => 'Code Canvas', 'handle' => 'codecanvastt.com', 'url' => 'https://codecanvastt.com'],
+        ],
+    ],
+
+    /*
+    | The kinds of work on offer, shown on the home page under "Work I take on".
+    */
+    'services' => [
+        [
+            'title' => 'Full-stack web development',
+            'text' => 'PHP and MySQL back ends, JavaScript and React front ends, and the REST APIs between them. As a full-time developer or on contract.',
+        ],
+        [
+            'title' => 'WordPress and WooCommerce sites',
+            'text' => 'Company websites, online stores and course platforms built on WordPress, Elementor and WooCommerce, including checkout through Caribbean payment gateways such as WiPay.',
+        ],
+        [
+            'title' => 'Integrations and automation',
+            'text' => 'Getting business systems to share data using REST APIs, webhooks, Make, Zapier and n8n. Internal forms, workflow automation and MySQL reporting.',
+        ],
+    ],
+
+    /*
+    | Where contact-form messages are emailed. Every message is also saved
+    | to the contact_messages table, so nothing is lost if mail is down.
+    */
+    'contact_to' => env('CONTACT_TO', 'keronlewis@live.com'),
+
+    'contact_topics' => [
+        'role' => 'A role or contract',
+        'project' => 'A site, store or integration',
+        'other' => 'Something else',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Selected work
+    |--------------------------------------------------------------------------
+    | Sites built for clients and for my own businesses.
+    | 'groups' drive the filter chips on the home page.
+    | Screenshots live in public/img/work/{slug}.webp and are refreshed with
+    | `php artisan portfolio:screenshots`.
+    */
+    'project_groups' => [
+        'tools' => 'Custom tools',
+        'hospitality' => 'Hospitality & events',
+        'community' => 'Community & care',
+        'manufacturing' => 'Manufacturing',
+    ],
+
+    'projects' => [
+        [
+            'slug' => 'code-canvas',
+            'name' => 'Code Canvas Consultants',
+            'category' => 'Studio',
+            'groups' => ['tools'],
+            'url' => 'https://codecanvastt.com/',
+            'summary' => "My own studio's site. It includes an SEO audit tool I built, with payment handled through WiPay.",
+            'stack' => ['WordPress', 'Elementor', 'Custom tool', 'WiPay'],
+        ],
+        [
+            'slug' => 'mixers-anonymous',
+            'name' => 'Mixers Anonymous TT',
+            'category' => 'Hospitality',
+            'groups' => ['tools', 'hospitality'],
+            'url' => 'https://mixersanontt.com/',
+            'summary' => 'A bar-service company I co-own. I built the site and wrote an alcohol calculator for it so clients can work out how much to buy for an event.',
+            'stack' => ['WordPress', 'Elementor', 'Custom JS'],
+        ],
+        [
+            'slug' => 'mixers-training',
+            'name' => 'Mixers Training Platform',
+            'category' => 'E-learning',
+            'groups' => ['hospitality'],
+            'url' => 'https://courses.mixersanontt.com/',
+            'summary' => 'The training side of Mixers Anonymous: mixology courses online, with enrolment, class scheduling, and certificates when students finish.',
+            'stack' => ['WordPress', 'LMS', 'Booking'],
+        ],
+        [
+            'slug' => 'rape-crisis-society',
+            'name' => 'Rape Crisis Society TT',
+            'category' => 'Nonprofit',
+            'groups' => ['community'],
+            'url' => 'https://rapecrisissocietytt.com/',
+            'summary' => 'Website for a national nonprofit that supports survivors of sexual violence, including a resources section.',
+            'stack' => ['WordPress', 'Elementor', 'Resources'],
+        ],
+        [
+            'slug' => 'chez-nous-de-rubies',
+            'name' => 'Chez Nous De Rubies',
+            'category' => 'Healthcare',
+            'groups' => ['community'],
+            'url' => 'https://cheznousderubies.com/',
+            'summary' => 'Brand site for a senior-care service.',
+            'stack' => ['WordPress', 'Elementor'],
+        ],
+        [
+            'slug' => 'chef-brigette',
+            'name' => 'Chef Brigette',
+            'category' => 'Personal brand',
+            'groups' => ['hospitality'],
+            'url' => 'https://chefbrigette.com/',
+            'summary' => 'Portfolio site for an award-winning Caribbean private chef, built around a photo gallery.',
+            'stack' => ['WordPress', 'Elementor', 'Gallery'],
+        ],
+        [
+            'slug' => 'for-the-culture',
+            'name' => 'For The Culture',
+            'category' => 'Events',
+            'groups' => ['hospitality'],
+            'url' => 'https://fortheculturexperience.com/',
+            'summary' => 'Site for a company that runs cultural events and festivals around the region.',
+            'stack' => ['WordPress', 'Slider Revolution'],
+        ],
+        [
+            'slug' => 'cruz-garments',
+            'name' => 'Cruz Garments Ltd.',
+            'category' => 'Manufacturing',
+            'groups' => ['manufacturing'],
+            'url' => 'https://cruzgarmentstt.com/',
+            'summary' => 'Product catalogue for an apparel manufacturer, organised by product line.',
+            'stack' => ['WordPress', 'Elementor', 'Catalogue'],
+        ],
+        [
+            'slug' => 'screen-stars',
+            'name' => 'Screen Stars Ltd.',
+            'category' => 'Manufacturing',
+            'groups' => ['manufacturing'],
+            'url' => 'https://screenstarsltd.com/',
+            'summary' => "Site for a screen-printing and embroidery shop that's been operating since 1989.",
+            'stack' => ['WordPress', 'Elementor'],
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Experience
+    |--------------------------------------------------------------------------
+    | 'type' is the employment type shown beside the dates (null to leave it out).
+    | 'ended' (optional) schedules a role's end: from the 'from' date onward its
+    | other values replace the ones above, so the site updates itself that day.
+    | 'start' / 'end' are YYYY-MM and position the bars on the résumé's career
+    | chart ('end' => null means current). 'period' is the text shown to
+    | readers. 'stack' names must match entries under 'skills' for the
+    | résumé's skill filter to pick them up.
+    */
+    'experience' => [
+        [
+            'id' => 'label-house',
+            'role' => 'Software Applications Specialist',
+            'org' => 'Label House Group Ltd.',
+            'org_note' => 'Caribbean packaging and label manufacturer, 20+ markets',
+            'period' => 'Apr 2025 – Present',
+            'type' => 'Full-time',
+            'start' => '2025-04',
+            'end' => null,
+            'summary' => 'I build the internal web forms and workflow automation the departments run on, using ClickUp, Make, REST APIs and webhooks. I scoped a two-way integration between ClickUp and the Radius ERP, built a multi-step quote-request application, and ran an order-to-invoice automation pilot that cut cycle time by about 35%.',
+            'bullets' => [
+                'Design and deliver internal web applications, workflows and integrations with WordPress and Gravity Forms, REST APIs, webhooks, ClickUp and Make, from requirements through rollout and documentation.',
+                'Scoped a two-way ClickUp–Radius ERP integration against the Radius XLink REST API. Compared Make, n8n, Zapier and custom scripts, and worked out the data flow and error handling before any build started.',
+                'Built a multi-step RFQ application with validation, prefill logic, notifications, reporting and reCAPTCHA.',
+                'Led an order-to-invoice automation pilot that reduced cycle time by about 35%.',
+                'Write the technical standards, SOPs and training material the team works from, and trace API, permission and data-flow failures in production back to root cause.',
+            ],
+            'stack' => ['REST APIs', 'Webhooks', 'Make', 'n8n', 'Zapier', 'WordPress', 'Gravity Forms', 'JavaScript', 'PHP'],
+            'ended' => [
+                'from' => '2026-11-16',
+                'period' => 'Apr 2025 – Nov 2026',
+                'end' => '2026-11',
+                'summary' => 'I built the internal web forms and workflow automation the departments ran on, using ClickUp, Make, REST APIs and webhooks. I scoped a two-way integration between ClickUp and the Radius ERP, built a multi-step quote-request application, and ran an order-to-invoice automation pilot that cut cycle time by about 35%.',
+                'bullets' => [
+                    'Designed and delivered internal web applications, workflows and integrations with WordPress and Gravity Forms, REST APIs, webhooks, ClickUp and Make, from requirements through rollout and documentation.',
+                    'Scoped a two-way ClickUp–Radius ERP integration against the Radius XLink REST API. Compared Make, n8n, Zapier and custom scripts, and worked out the data flow and error handling before any build started.',
+                    'Built a multi-step RFQ application with validation, prefill logic, notifications, reporting and reCAPTCHA.',
+                    'Led an order-to-invoice automation pilot that reduced cycle time by about 35%.',
+                    'Wrote the technical standards, SOPs and training material the team worked from, and traced API, permission and data-flow failures in production back to root cause.',
+                ],
+            ],
+        ],
+        [
+            'id' => 'code-canvas',
+            'role' => 'Founder & Full-Stack Web Developer',
+            'org' => 'Code Canvas Consultants Ltd.',
+            'org_note' => 'My own web studio',
+            'period' => 'Jan 2024 – Present',
+            'type' => 'Part-time',
+            'start' => '2024-01',
+            'end' => null,
+            'summary' => 'I handle each client project from the first conversation to launch and support: WordPress, Elementor and WooCommerce builds, custom PHP and JavaScript where the plugins run out, and the hosting, DNS and email problems that come with looking after client sites.',
+            'bullets' => [
+                'Run client projects from discovery to launch and ongoing support, across e-commerce, education, hospitality and professional services.',
+                "Configure and extend WordPress themes, plugins, forms and payment flows. Where configuration isn't enough I write PHP, JavaScript and CSS, or connect things with REST APIs, webhooks, Make and Zapier.",
+                'Troubleshoot hosting, DNS, Cloudflare, SSL, email delivery, plugin conflicts and payment issues directly with clients, and explain the options in plain language.',
+                'Built a Python and Playwright pipeline that extracted and structured 2,100+ knowledge-base articles across 33 sections.',
+                'Write documentation, training and handover material for every project.',
+            ],
+            'stack' => ['WordPress', 'Elementor', 'WooCommerce', 'PHP', 'JavaScript', 'CSS3', 'REST APIs', 'Webhooks', 'Make', 'Zapier', 'Python', 'Playwright', 'Cloudflare'],
+        ],
+        [
+            'id' => 'av-knowles',
+            'role' => 'Application Developer',
+            'org' => 'A.V. Knowles & Co.',
+            'org_note' => null,
+            'period' => 'May 2021 – Present',
+            'type' => 'Consultant, hourly',
+            'start' => '2021-05',
+            'end' => null,
+            'summary' => 'I develop and maintain business applications in PHP, Phalcon and MySQL on Linux, and write the heavier MySQL reports. Working closely with QA on testing and release checks helped bring deployment issues down by roughly 30%.',
+            'bullets' => [
+                'Develop, test and maintain production business applications in object-oriented PHP, Phalcon, MySQL and JavaScript on Linux.',
+                'Turn business and data requirements into back-end features, database logic and advanced MySQL reports.',
+                'Work with QA on structured testing, defect reproduction and release validation, contributing to a roughly 30% drop in deployment issues.',
+                'Keep source control in sync across Bitbucket and GitLab, document changes, and support releases and post-release fixes.',
+            ],
+            'stack' => ['PHP', 'Phalcon', 'MySQL', 'SQL', 'JavaScript', 'HTML5', 'CSS3', 'Linux', 'Git'],
+        ],
+        [
+            'id' => 'yello',
+            'role' => 'Web Developer',
+            'org' => 'Yello Media Group',
+            'org_note' => null,
+            'period' => 'Jun 2022 – May 2025',
+            'type' => null,
+            'start' => '2022-06',
+            'end' => '2025-05',
+            'summary' => 'Built and maintained client websites and web apps in WordPress, PHP, JavaScript and React as part of a remote team spread across the region. Connected WooCommerce stores to Caribbean payment gateways such as WiPay, and handled SEO and analytics updates.',
+            'bullets' => [
+                'Built and maintained responsive client websites and web apps with WordPress, PHP, JavaScript, React and Elementor, working asynchronously with a distributed regional team.',
+                'Integrated WooCommerce with Caribbean payment gateways, including WiPay.',
+                'Handled analytics and SEO updates, and fixed production issues across WordPress, JavaScript, CSS, plugins and payments.',
+                'Worked directly with clients and internal stakeholders on requirements, CMS administration and post-launch changes.',
+            ],
+            'stack' => ['WordPress', 'Elementor', 'WooCommerce', 'PHP', 'JavaScript', 'React', 'HTML5', 'CSS3'],
+        ],
+        [
+            'id' => 'devius',
+            'role' => 'Web Specialist',
+            'org' => 'Devius Ltd.',
+            'org_note' => null,
+            'period' => '2016 – 2022',
+            'type' => null,
+            // The source résumé gives years only; months here just place the chart bar.
+            'start' => '2016-01',
+            'end' => '2022-06',
+            'summary' => 'Built and maintained client websites and web content. This is where I learned production web work, client communication and how to hit a deadline.',
+            'bullets' => [
+                'Developed and maintained client websites and web content.',
+            ],
+            'stack' => ['HTML5', 'CSS3', 'JavaScript', 'WordPress'],
+        ],
+    ],
+
+    'highlights' => [
+        ['value' => '~35%', 'label' => 'shorter order-to-invoice cycle', 'context' => 'Automation pilot, Label House Group'],
+        ['value' => '~30%', 'label' => 'fewer deployment issues', 'context' => 'Working with QA, A.V. Knowles & Co.'],
+        ['value' => '2,100+', 'label' => 'knowledge-base articles extracted', 'context' => 'Python + Playwright pipeline, Code Canvas'],
+    ],
+
+    'skills' => [
+        'Languages' => ['JavaScript', 'PHP', 'Python', 'SQL', 'HTML5', 'CSS3'],
+        'Frameworks & platforms' => ['React', 'Phalcon', 'WordPress', 'Elementor', 'WooCommerce', 'Gravity Forms'],
+        'Data & APIs' => ['MySQL', 'REST APIs', 'Webhooks'],
+        'Automation & tooling' => ['Make', 'Zapier', 'n8n', 'Playwright', 'Git', 'Linux', 'Cloudflare'],
+    ],
+
+    'education' => [
+        [
+            'award' => 'MSc, Data Science',
+            'status' => 'In progress',
+            'school' => 'University of the West Indies, St. Augustine',
+            'period' => '2025 – Present',
+        ],
+        [
+            'award' => 'BSc (Hons), Information Systems Management',
+            'status' => 'Upper Second Class',
+            'school' => 'UWI / ROYTEC',
+            'period' => '2016',
+        ],
+    ],
+
+    'certifications' => [
+        ['name' => 'ITIL® 4 Foundation', 'issuer' => 'PeopleCert', 'year' => '2025'],
+        ['name' => 'Foundations of UX Design', 'issuer' => 'Google', 'year' => '2023'],
+        ['name' => 'Project Management Qualified (PMQ)', 'issuer' => 'MSI', 'year' => '2021'],
+        ['name' => 'AngularJS', 'issuer' => 'Coursera', 'year' => null],
+    ],
+
+];

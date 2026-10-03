@@ -1,0 +1,25 @@
+import { initTheme } from './modules/theme';
+import { initNav } from './modules/nav';
+import { initReveal } from './modules/reveal';
+import { initCopy } from './modules/copy';
+import { initPalette } from './modules/palette';
+import { initDots } from './modules/dots';
+import { initClock } from './modules/clock';
+import { initWork } from './modules/work';
+import { initContact } from './modules/contact';
+import { initResume } from './modules/resume';
+import { initTracking } from './modules/track';
+import { initConsent } from './modules/consent';
+
+initTheme();
+initNav();
+initReveal();
+initCopy();
+initPalette();
+initDots();
+initClock();
+initWork();
+initContact();
+initResume();
+initTracking();
+initConsent();
