@@ -44,7 +44,7 @@
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDescription }}">
     <meta name="author" content="{{ $profile['name'] }}">
-    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ url()->current() }}">
     @if ($siteVerification)
         <meta name="google-site-verification" content="{{ $siteVerification }}">
@@ -69,7 +69,7 @@
 
     @if (request()->routeIs('home', 'resume'))
         <script type="application/ld+json">
-            {!! json_encode(app(\App\Support\Portfolio::class)->schema($pageTitle), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+            {!! json_encode(app(\App\Support\Portfolio::class)->schema($pageTitle), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
         </script>
     @endif
 

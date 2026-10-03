@@ -5,6 +5,11 @@
   RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
 
+# Tell browsers to use HTTPS for every visit for the next year, subdomains included.
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
 # A refusal for files that must never be served even if rewriting were off.
 <FilesMatch "^(\.env.*|artisan|composer\.(json|lock)|.*\.sqlite)$">
   <IfModule mod_authz_core.c>

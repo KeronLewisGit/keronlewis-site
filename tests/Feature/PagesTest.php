@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\ContactMessage;
+use App\Models\User;
 use App\Support\Portfolio;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -19,8 +21,8 @@ class PagesTest extends TestCase
             ->assertSee('Selected work')
             ->assertSee('Work I take on')
             ->assertSee('<title>Keron Lewis | Full-Stack Web Developer in Trinidad &amp; Tobago</title>', false)
-            ->assertSee('"@type": "ProfilePage"', false)
-            ->assertSee('"@type": "Occupation"', false);
+            ->assertSee('"@type":"ProfilePage"', false)
+            ->assertSee('"@type":"Occupation"', false);
 
         foreach (config('portfolio.projects') as $project) {
             $response->assertSee($project['name']);
@@ -138,6 +140,25 @@ class PagesTest extends TestCase
             }
             $this->assertSame(1, count(array_keys($levels, 1)), "{$path} should have exactly one <h1>.");
         }
+    }
+
+    public function test_public_pages_are_sent_without_template_indentation(): void
+    {
+        $html = $this->withSession(['_old_input' => ['message' => "First line\n    indented line"]])->get('/')->assertOk()->getContent();
+
+        // What a visitor typed into the form comes back exactly as typed.
+        $this->assertStringContainsString("First line\n    indented line</textarea>", $html);
+
+        $outsideKeptBlocks = preg_replace('#<(textarea|script|style)\b.*?</\1>#is', '', $html);
+        $this->assertDoesNotMatchRegularExpression('/\n[ \t]/', $outsideKeptBlocks);
+    }
+
+    public function test_admin_pages_keep_a_message_exactly_as_typed(): void
+    {
+        $message = ContactMessage::factory()->create(['message' => "First line\n    indented line"]);
+
+        $this->actingAs(User::factory()->create())->get(route('admin.messages.show', $message))
+            ->assertSee("First line\n    indented line", false);
     }
 
     public function test_unknown_pages_get_the_styled_404(): void
