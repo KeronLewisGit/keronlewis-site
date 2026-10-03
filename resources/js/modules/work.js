@@ -54,12 +54,15 @@ function initViewer(grid) {
     let visible = projects;
     let index = 0;
 
-    // The screenshot and heading are added here rather than in the page's HTML, so the
-    // closed dialog doesn't leave an image with no source or an empty heading in the document.
-    const img = part('shot').insertAdjacentElement('afterbegin', document.createElement('img'));
-    const name = part('cat').insertAdjacentElement('afterend', document.createElement('h3'));
+    let img = null;
+    let name = null;
 
     function show(next) {
+        // The screenshot and heading are only created once a preview is opened, so the closed
+        // dialog never puts an image with no source or an empty heading in the document.
+        img ??= part('shot').insertAdjacentElement('afterbegin', document.createElement('img'));
+        name ??= part('cat').insertAdjacentElement('afterend', document.createElement('h3'));
+
         index = (next + visible.length) % visible.length;
         const project = visible[index];
         const empty = part('empty');
