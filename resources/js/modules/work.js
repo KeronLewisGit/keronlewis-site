@@ -67,6 +67,8 @@ function initViewer(grid) {
             ...project.stack.map((tag) => Object.assign(document.createElement('li'), { textContent: tag })),
         );
         part('url').href = project.url;
+        part('case').hidden = !project.case_url;
+        if (project.case_url) part('case').href = project.case_url;
         part('count').textContent = `${index + 1} / ${visible.length}`;
 
         img.hidden = !project.image;

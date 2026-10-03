@@ -102,6 +102,23 @@ return [
     | 'groups' drive the filter chips on the home page.
     | Screenshots live in public/img/work/{slug}.webp and are refreshed with
     | `php artisan portfolio:screenshots`.
+    |
+    | Two optional blocks on a project:
+    |
+    | 'case_study' gives it a page at /work/{slug}, linked from its card:
+    |     'title'    the page heading
+    |     'summary'  one or two sentences under the heading; also the search
+    |                snippet, so keep it under about 155 characters
+    |     'sections' each with a 'heading', then 'body' (paragraphs) and/or
+    |                'points' (a bulleted list)
+    |
+    | 'testimonial' shows a client's words on the card and the case study:
+    |     'testimonial' => [
+    |         'quote' => 'What they said, word for word.',
+    |         'name' => 'Their name',
+    |         'role' => 'Their job title, Company',   // optional
+    |     ],
+    | Only add one the client has actually given you and agreed to publish.
     */
     'project_groups' => [
         'tools' => 'Custom tools',
@@ -119,6 +136,33 @@ return [
             'url' => 'https://codecanvastt.com/',
             'summary' => "My own studio's site. It includes an SEO audit tool I built, with payment handled through WiPay.",
             'stack' => ['WordPress', 'Elementor', 'Custom tool', 'WiPay'],
+            'case_study' => [
+                'title' => 'A paid SEO audit, sold from the studio home page',
+                'summary' => "An SEO audit tool on my studio's site. Enter a web address, pay by card through WiPay, and a PDF report arrives by email.",
+                'sections' => [
+                    [
+                        'heading' => 'What it is',
+                        'body' => [
+                            'Code Canvas is my own web studio. Its home page carries an SEO audit tool that I built, so a visitor can check their own site and buy a full report without having to contact me first.',
+                        ],
+                    ],
+                    [
+                        'heading' => 'How it works',
+                        'points' => [
+                            'The visitor enters their website address and the tool analyses the site.',
+                            'The full audit is a paid report: more than 50 checks, including technical SEO, with recommendations for what to fix.',
+                            'Payment is by credit or debit card through WiPay, a Caribbean payment gateway.',
+                            'The report is produced as a PDF and emailed to the visitor straight away.',
+                        ],
+                    ],
+                    [
+                        'heading' => 'My part',
+                        'body' => [
+                            'I designed and built the site on WordPress and Elementor, then wrote the audit tool and its WiPay payment step as custom work on top.',
+                        ],
+                    ],
+                ],
+            ],
         ],
         [
             'slug' => 'mixers-anonymous',
@@ -128,6 +172,38 @@ return [
             'url' => 'https://mixersanontt.com/',
             'summary' => 'A bar-service company I co-own. I built the site and wrote an alcohol calculator for it so clients can work out how much to buy for an event.',
             'stack' => ['WordPress', 'Elementor', 'Custom JS'],
+            'case_study' => [
+                'title' => 'A drinks calculator for planning an event',
+                'summary' => 'Mixers Anonymous is a bar-service company I co-own. I built its site and a calculator that tells clients how much alcohol to buy for an event.',
+                'sections' => [
+                    [
+                        'heading' => 'What it is',
+                        'body' => [
+                            'Mixers Anonymous TT is a bar-service company I co-own. I built the site, and wrote an alcohol calculator for its home page so clients can work out how much to buy for an event.',
+                        ],
+                    ],
+                    [
+                        'heading' => 'What the client enters',
+                        'points' => [
+                            'How many guests are coming, and what share of them will drink.',
+                            'How many hours drinks will be served.',
+                            'How the drinkers split between beer, wine and mixed drinks. The three shares have to add up to 100%.',
+                        ],
+                    ],
+                    [
+                        'heading' => 'What they get back',
+                        'body' => [
+                            'The cases of beer, bottles of wine and bottles of liquor to buy, an average cost for each, and an estimated total in Trinidad and Tobago dollars.',
+                        ],
+                    ],
+                    [
+                        'heading' => 'My part',
+                        'body' => [
+                            'I built the site on WordPress and Elementor and wrote the calculator in JavaScript.',
+                        ],
+                    ],
+                ],
+            ],
         ],
         [
             'slug' => 'mixers-training',

@@ -22,6 +22,8 @@ Everything the site says lives in **`config/portfolio.php`**: profile, projects,
 - `profile.seo` holds the page titles and descriptions search engines show; `services` holds the "Work I take on" cards.
 - A role can carry an `ended` block with a `from` date; from that day its values replace the role's own (Label House is set to become "Apr 2025 – Nov 2026" on 16 November 2026). Remove the block to cancel it.
 - A role's `stack` entries must match names under `skills`; that is what links the skill chips to roles (a test checks this).
+- A project with a `case_study` block gets its own page at `/work/{slug}`, linked from its card, the quick search and the sitemap. The block's shape is described above `projects` in the config file.
+- A project with a `testimonial` block (`quote`, `name`, optional `role`) shows the client's words on its card and its case study. Only add quotes clients have really given you.
 - Project screenshots are `public/img/work/{slug}.webp`. Refresh them with `php artisan portfolio:screenshots [slug] --force` (needs Node and Google Chrome on the machine you run it on).
 
 ## Routes
@@ -29,17 +31,18 @@ Everything the site says lives in **`config/portfolio.php`**: profile, projects,
 | Path | What it is |
 | --- | --- |
 | `/` | Portfolio: work, experience, skills, about, contact form |
+| `/work/{slug}` | Case study for a project that has a `case_study` block |
 | `/resume` | Interactive résumé with a print stylesheet |
 | `/resume.pdf` | PDF download (dompdf, template in `resources/views/resume/pdf.blade.php`) |
 | `/resume.json` | Résumé in [JSON Resume](https://jsonresume.org) format |
 | `/keron-lewis.vcf` | Contact card |
 | `/sitemap.xml`, `/robots.txt` | Generated from `APP_URL` |
 | `/privacy` | Privacy page |
-| `/admin` | Private analytics dashboard (see below) |
+| `/admin` | Private analytics dashboard and message inbox (see below) |
 
 ## Contact form
 
-Messages are validated, saved to the `contact_messages` table, then emailed to `CONTACT_TO`. If mail fails the message is still saved. `php artisan portfolio:inbox` lists what has come in.
+Messages are validated, saved to the `contact_messages` table, then emailed to `CONTACT_TO`. If mail fails the message is still saved. Read, reply to and delete messages at `/admin/messages`; `php artisan portfolio:inbox` lists them in the terminal.
 
 Out of the box `MAIL_MAILER=log`, so emails only go to `storage/logs/laravel.log`. Set real SMTP details in `.env` before going live.
 

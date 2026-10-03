@@ -29,8 +29,17 @@ class Portfolio
                 'image' => $size ? asset($file).'?v='.filemtime($path) : null,
                 'image_width' => $size[0] ?? null,
                 'image_height' => $size[1] ?? null,
+                'case_url' => isset($project['case_study']) ? route('work.show', $project['slug']) : null,
             ];
         });
+    }
+
+    /**
+     * The projects that have a 'case_study' block, and so a page at /work/{slug}.
+     */
+    public function caseStudies(): Collection
+    {
+        return $this->projects()->whereNotNull('case_url')->values();
     }
 
     public function projectGroups(): array

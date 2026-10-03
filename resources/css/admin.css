@@ -38,6 +38,10 @@
     border-radius: 8px;
 }
 
+.admin-links a {
+    white-space: nowrap;
+}
+
 .admin-links a:hover {
     color: var(--ink);
 }
@@ -45,6 +49,25 @@
 .admin-links a[aria-current='page'] {
     color: var(--ink);
     background: color-mix(in srgb, var(--ink) 7%, transparent);
+}
+
+.admin-links .count {
+    display: inline-block;
+    min-width: 20px;
+    margin-left: 4px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--coral);
+    color: #fff;
+    font-size: .72rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+:root[data-theme='dark'] .admin-links .count {
+    color: #15140F;
 }
 
 .admin .tool-btn {
@@ -562,6 +585,168 @@
     font-size: .9rem;
 }
 
+/* ---------- messages ---------- */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.msg-list {
+    padding: 6px 0;
+}
+
+.msg-list li + li {
+    border-top: 1px solid var(--line);
+}
+
+.msg-row {
+    display: grid;
+    grid-template-columns: 200px 190px minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 16px;
+    padding: 13px 24px;
+    font-size: .92rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+}
+
+.msg-row:hover {
+    background: color-mix(in srgb, var(--ink) 5%, transparent);
+}
+
+.msg-from {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    color: var(--ink);
+}
+
+.msg-row.is-unread .msg-from,
+.msg-row.is-unread .msg-snippet {
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.msg-dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--coral);
+}
+
+.msg-topic,
+.msg-when {
+    font-size: .82rem;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.msg-snippet {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pager {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.pager-next {
+    margin-left: auto;
+}
+
+.back {
+    margin-bottom: 16px;
+    font-size: .9rem;
+}
+
+.back a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--ink-soft);
+    text-decoration: none;
+}
+
+.back a:hover {
+    color: var(--ink);
+}
+
+.msg {
+    max-width: 820px;
+    padding: 28px 30px;
+}
+
+.msg-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.msg-head h1 {
+    font-size: 1.7rem;
+}
+
+.msg-head .page-sub a {
+    color: var(--ink);
+    text-decoration-color: var(--coral);
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+}
+
+.msg-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 40px;
+    margin: 22px 0;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.msg-meta dt {
+    font-size: .78rem;
+    color: var(--muted);
+}
+
+.msg-meta dd {
+    margin: 2px 0 0;
+    font-size: .94rem;
+}
+
+.msg-text {
+    max-width: 70ch;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.msg-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+.btn.is-danger {
+    color: var(--delta-down);
+}
+
+.btn.is-danger:hover {
+    border-color: var(--delta-down);
+}
+
 @media (max-width: 1080px) {
     .tiles {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -582,19 +767,45 @@
         display: none;
     }
 
+    /* Three links don't fit beside the tools on a phone, so they take a row of their own. */
     .admin .nav-row {
+        flex-wrap: wrap;
         gap: 8px;
+        height: auto;
+        padding-top: 12px;
+        padding-bottom: 8px;
     }
 
     .admin-links {
+        order: 1;
+        width: 100%;
         margin-right: 0;
     }
 
     .admin-links a {
-        padding: 8px;
+        padding: 8px 10px;
     }
 
     .cards {
         grid-template-columns: 1fr;
+    }
+
+    .msg-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 4px 12px;
+        padding: 13px 18px;
+    }
+
+    .msg-topic {
+        display: none;
+    }
+
+    .msg-snippet {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+
+    .msg {
+        padding: 22px 20px;
     }
 }
