@@ -2,6 +2,7 @@
 
 @section('title', $page['seo_title'])
 @section('description', $page['summary'])
+@section('share', "service-{$service['slug']}")
 
 @push('head')
     <script type="application/ld+json">
@@ -18,6 +19,9 @@
                 <p class="lead">{{ $page['summary'] }}</p>
                 <div class="cta-row">
                     <a class="btn btn-primary" href="{{ route('home') }}#contact">Talk to me about a project <x-icon name="arrow-right" /></a>
+                    @if ($bookingOpen)
+                        <a class="btn btn-ghost" href="{{ route('booking.show') }}"><x-icon name="phone" /> Book a call</a>
+                    @endif
                     <a class="btn btn-ghost" href="{{ route('home') }}#work">See my work</a>
                 </div>
             </header>
@@ -39,6 +43,29 @@
                     </div>
                 </section>
             @endforeach
+
+            @if ($page['faq'] ?? null)
+                <section class="policy-row">
+                    <h2>Common questions</h2>
+                    <div class="policy-body faq">
+                        @foreach ($page['faq'] as $item)
+                            <h3>{{ $item['question'] }}</h3>
+                            <p>{{ $item['answer'] }}</p>
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+
+            @if ($testimonials->isNotEmpty())
+                <section class="policy-row">
+                    <h2>What clients say</h2>
+                    <div class="policy-body">
+                        @foreach ($testimonials as $testimonial)
+                            <x-testimonial :testimonial="$testimonial" />
+                        @endforeach
+                    </div>
+                </section>
+            @endif
 
             @if ($projects->isNotEmpty())
                 <section class="policy-row">

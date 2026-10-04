@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\Testimonial;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -12,6 +13,8 @@ use Illuminate\Support\Str;
  */
 class Portfolio
 {
+    private ?Collection $testimonials = null;
+
     public function profile(): array
     {
         return config('portfolio.profile');
@@ -37,8 +40,29 @@ class Portfolio
                 'thumb' => $thumbSize ? asset($thumbFile).'?v='.filemtime($thumbPath) : null,
                 'thumb_width' => $thumbSize[0] ?? null,
                 'case_url' => isset($project['case_study']) ? route('work.show', $project['slug']) : null,
+                // One written into the config wins; otherwise the newest approved one about this project.
+                'testimonial' => $this->testimonials()->firstWhere('project_slug', $project['slug']),
             ];
         });
+    }
+
+    /**
+     * Testimonials clients sent through a private link and the admin approved, newest first.
+     */
+    public function testimonials(): Collection
+    {
+        return $this->testimonials ??= Testimonial::approved()->latest('approved_at')->latest('id')->get()
+            ->map(fn (Testimonial $testimonial) => $testimonial->only(['id', 'quote', 'name', 'role', 'project_slug']));
+    }
+
+    /**
+     * Approved testimonials that aren't already shown on a project's card.
+     */
+    public function otherTestimonials(): Collection
+    {
+        $onCards = $this->projects()->pluck('testimonial.id')->filter();
+
+        return $this->testimonials()->whereNotIn('id', $onCards)->values();
     }
 
     /**
@@ -244,6 +268,7 @@ class Portfolio
                 ['@type' => 'Place', 'name' => 'Caribbean'],
             ],
             'founder' => ['@id' => url('/').'#person'],
+            'priceRange' => $profile['price_range'],
             'sameAs' => collect($profile['links'])->pluck('url')->all(),
         ];
     }
@@ -254,9 +279,16 @@ class Portfolio
      */
     public function serviceSchema(array $service): array
     {
+        $faq = collect($service['page']['faq'] ?? [])->map(fn (array $item) => [
+            '@type' => 'Question',
+            'name' => $item['question'],
+            'acceptedAnswer' => ['@type' => 'Answer', 'text' => $item['answer']],
+        ]);
+
         return [
             '@context' => 'https://schema.org',
             '@graph' => [
+                ...($faq->isEmpty() ? [] : [['@type' => 'FAQPage', 'mainEntity' => $faq->all()]]),
                 [
                     '@type' => 'Service',
                     '@id' => $service['url'].'#service',

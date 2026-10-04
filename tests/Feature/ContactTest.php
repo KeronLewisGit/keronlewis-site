@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ContactAutoReply;
 use App\Mail\ContactMessageReceived;
 use App\Models\ContactMessage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,6 +31,37 @@ class ContactTest extends TestCase
 
         Mail::assertSent(ContactMessageReceived::class, fn ($mail) => $mail->hasTo(config('portfolio.contact_to'))
             && $mail->hasReplyTo('ada@example.com'));
+    }
+
+    public function test_the_sender_gets_an_acknowledgement_that_repeats_nothing_they_typed(): void
+    {
+        Mail::fake();
+
+        $this->postJson('/contact', $this->valid)->assertOk();
+
+        Mail::assertSent(ContactAutoReply::class, function (ContactAutoReply $mail) {
+            $mail->assertSeeInHtml('has reached me')
+                ->assertDontSeeInHtml('We have a full-stack role you might like.')
+                ->assertDontSeeInHtml('Ada Lovelace');
+
+            return $mail->hasTo('ada@example.com') && $mail->hasReplyTo(config('portfolio.contact_to'));
+        });
+    }
+
+    public function test_budget_and_timeline_are_kept_only_for_a_project_enquiry(): void
+    {
+        Mail::fake();
+        $extras = ['budget' => '1500-5000', 'timeline' => 'month'];
+
+        $this->postJson('/contact', ['topic' => 'project'] + $extras + $this->valid)->assertOk();
+        $this->postJson('/contact', ['email' => 'grace@example.com'] + $extras + $this->valid)->assertOk();
+        $this->postJson('/contact', ['topic' => 'project', 'budget' => 'a-million'] + $this->valid)->assertJsonValidationErrors('budget');
+
+        $project = ContactMessage::firstWhere('topic', 'project');
+        $this->assertSame(['Budget' => 'TT$1,500 to TT$5,000', 'Timeline' => 'Within a month'], $project->extras());
+        $this->assertSame([], ContactMessage::firstWhere('email', 'grace@example.com')->extras());
+
+        Mail::assertSent(ContactMessageReceived::class, fn ($mail) => $mail->contactMessage->is($project) && $mail->assertSeeInHtml('TT$1,500 to TT$5,000'));
     }
 
     public function test_the_message_is_kept_even_when_mail_fails(): void

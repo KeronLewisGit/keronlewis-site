@@ -27,8 +27,22 @@
             <section class="policy-row">
                 <h2>The contact form</h2>
                 <div class="policy-body">
-                    <p>If you send a message, the site stores your name, email address, the topic you picked and the message itself, and emails a copy to me. I use it only to reply to you.</p>
+                    <p>If you send a message, the site stores your name, email address, the topic you picked, the message itself and, for a project enquiry, the budget and timeline you chose. It emails a copy to me and a short acknowledgement to you. I use it only to reply to you.</p>
                     <p>Tell me if you'd like a message deleted and I'll remove it.</p>
+                </div>
+            </section>
+
+            <section class="policy-row">
+                <h2>Booking a call</h2>
+                <div class="policy-body">
+                    <p>If you book a call, the site stores your name, email address, phone number, the time you picked and anything you wrote about the call. I use them to make the call, and a confirmation is emailed to you.</p>
+                </div>
+            </section>
+
+            <section class="policy-row">
+                <h2>Testimonials</h2>
+                <div class="policy-body">
+                    <p>Clients I invite can send a testimonial through a private link. The site stores the name, role and words they submit, and shows them publicly only after I approve them. Ask me and I'll take yours down or delete it.</p>
                 </div>
             </section>
 
@@ -80,7 +94,7 @@
                 </div>
             </section>
 
-            <p class="policy-date">Last updated 3 October 2026.</p>
+            <p class="policy-date">Last updated 4 October 2026.</p>
         </div>
     </article>
 @endsection

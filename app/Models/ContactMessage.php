@@ -12,7 +12,7 @@ class ContactMessage extends Model
     /** @use HasFactory<ContactMessageFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'topic', 'message', 'emailed_at', 'read_at'];
+    protected $fillable = ['name', 'email', 'topic', 'message', 'budget', 'timeline', 'emailed_at', 'read_at'];
 
     protected function casts(): array
     {
@@ -22,6 +22,19 @@ class ContactMessage extends Model
     public function scopeUnread(Builder $query): void
     {
         $query->whereNull('read_at');
+    }
+
+    /**
+     * A project enquiry's budget and timeline, labelled for display.
+     *
+     * @return array<string, string>
+     */
+    public function extras(): array
+    {
+        return array_filter([
+            'Budget' => config("portfolio.contact_budgets.{$this->budget}"),
+            'Timeline' => config("portfolio.contact_timelines.{$this->timeline}"),
+        ]);
     }
 
     public function topicLabel(): string

@@ -932,6 +932,10 @@ html:not(.js) .hero {
     border-left: 2px solid var(--coral);
 }
 
+.quote blockquote {
+    margin: 0;
+}
+
 .quote p {
     color: var(--ink);
     font-size: .95rem;
@@ -951,6 +955,22 @@ html:not(.js) .hero {
 
 .quote figcaption span::before {
     content: ' · ';
+}
+
+/* Testimonials that aren't tied to one project's card. */
+.quotes {
+    margin-top: 44px;
+}
+
+.quotes h3 {
+    font-size: 1.28rem;
+    margin-bottom: 4px;
+}
+
+.quotes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 40px;
 }
 
 /* ---------- project preview dialog ---------- */
@@ -1465,6 +1485,7 @@ button.chip {
 
 .field input[type='text'],
 .field input[type='email'],
+.field select,
 .field textarea {
     width: 100%;
     font: inherit;
@@ -1482,7 +1503,12 @@ button.chip {
     min-height: 130px;
 }
 
+.field select option {
+    color: #1B1A17;
+}
+
 .field input:focus,
+.field select:focus,
 .field textarea:focus {
     outline: none;
     border-color: #EE6044;
@@ -1882,6 +1908,181 @@ button.chip {
     color: var(--muted);
 }
 
+/* ---------- forms on a light page (testimonial link, booking) ---------- */
+.plain-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    max-width: 680px;
+    margin-top: 32px;
+}
+
+.plain-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+}
+
+.plain-field {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.plain-field > label,
+.plain-field > legend {
+    display: block;
+    font-size: .9rem;
+    font-weight: 600;
+    margin-bottom: 7px;
+    padding: 0;
+}
+
+.plain-field > label span {
+    font-weight: 400;
+    color: var(--muted);
+}
+
+.plain-field input[type='text'],
+.plain-field input[type='email'],
+.plain-field input[type='tel'],
+.plain-field textarea {
+    width: 100%;
+    font: inherit;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+
+.plain-field textarea {
+    resize: vertical;
+}
+
+.plain-field input:focus,
+.plain-field textarea:focus {
+    outline: 2px solid var(--coral);
+    outline-offset: 1px;
+    border-color: transparent;
+}
+
+.plain-hint {
+    font-size: .86rem;
+    color: var(--muted);
+    margin-top: 7px;
+}
+
+.plain-hint a {
+    color: var(--ink);
+    text-decoration-color: var(--coral);
+    text-underline-offset: 3px;
+}
+
+.plain-error {
+    font-size: .88rem;
+    color: var(--coral-deep);
+    margin-top: 7px;
+}
+
+.plain-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.plain-field > .plain-check span {
+    color: var(--ink-soft);
+}
+
+.plain-check input {
+    margin-top: .35em;
+    accent-color: var(--coral);
+}
+
+/* ---------- booking page ---------- */
+.book-form {
+    max-width: 760px;
+}
+
+.slot-day {
+    border-top: 1px solid var(--line);
+}
+
+.slot-day:last-of-type {
+    border-bottom: 1px solid var(--line);
+}
+
+.slot-day summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 13px 2px;
+    font-size: .95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.slot-day summary span {
+    font-weight: 400;
+    color: var(--muted);
+}
+
+.slot-day[open] summary span {
+    visibility: hidden;
+}
+
+.slot-day .slot-row {
+    padding-bottom: 16px;
+}
+
+.slot-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.slot input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.slot span {
+    display: inline-block;
+    min-width: 92px;
+    text-align: center;
+    font-size: .9rem;
+    font-variant-numeric: tabular-nums;
+    padding: 9px 12px;
+    background: var(--paper);
+    border: 1px solid var(--line-strong);
+    border-radius: 9px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s, color .2s;
+}
+
+.slot span:hover {
+    border-color: var(--ink);
+}
+
+.slot input:checked + span {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--canvas);
+}
+
+.slot input:focus-visible + span {
+    outline: 2px solid var(--coral);
+    outline-offset: 3px;
+}
+
 /* ---------- case study ----------
    Built on the privacy page's ruled rows, with the project's screenshot
    in a browser frame that scrolls. */
@@ -1924,6 +2125,24 @@ button.chip {
 
 .case .quote p {
     font-size: 1.1rem;
+}
+
+.policy-body .quote + .quote {
+    margin-top: 22px;
+}
+
+.faq h3 {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.4;
+    color: var(--ink);
+    margin-bottom: 4px;
+}
+
+.faq p + h3 {
+    margin-top: 18px;
 }
 
 .case-more {
@@ -2097,6 +2316,11 @@ button.chip {
         grid-template-columns: 1fr;
         gap: 10px;
         padding: 24px 0;
+    }
+
+    .plain-row,
+    .quotes-grid {
+        grid-template-columns: 1fr;
     }
 
     .xp-now {

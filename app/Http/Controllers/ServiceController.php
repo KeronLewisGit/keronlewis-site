@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\BookingCalendar;
 use App\Support\Portfolio;
 use Illuminate\View\View;
 
 class ServiceController extends Controller
 {
-    public function __invoke(Portfolio $portfolio, string $slug): View
+    public function __invoke(Portfolio $portfolio, BookingCalendar $calendar, string $slug): View
     {
         $services = $portfolio->services();
         $service = $services->firstWhere('slug', $slug);
@@ -25,6 +26,8 @@ class ServiceController extends Controller
                 ->filter()
                 ->values(),
             'others' => $services->where('slug', '!==', $slug)->values(),
+            'testimonials' => $portfolio->testimonials()->take(3),
+            'bookingOpen' => $calendar->isEnabled(),
             'schema' => $portfolio->serviceSchema($service),
         ]);
     }
