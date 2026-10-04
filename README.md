@@ -33,19 +33,35 @@ Everything the site says lives in **`config/portfolio.php`**: profile, projects,
 | `/` | Portfolio: work, experience, skills, about, contact form |
 | `/services/{slug}` | One page per service, written for search (title, summary, sections, related work) |
 | `/work/{slug}` | Case study for a project that has a `case_study` block |
+| `/book` | Book a call. The hours, call length and days off are set at `/admin/bookings` |
+| `/testimonial/{token}` | Private page where an invited client writes a testimonial |
 | `/resume` | Interactive résumé with a print stylesheet |
 | `/resume.pdf` | PDF download (dompdf, template in `resources/views/resume/pdf.blade.php`) |
 | `/resume.json` | Résumé in [JSON Resume](https://jsonresume.org) format |
 | `/keron-lewis.vcf` | Contact card |
 | `/sitemap.xml`, `/robots.txt` | Generated from `APP_URL` |
 | `/privacy` | Privacy page |
-| `/admin` | Private analytics dashboard and message inbox (see below) |
+| `/admin` | Private area: analytics, messages, testimonials and bookings (see below) |
 
 ## Contact form
 
 Messages are validated, saved to the `contact_messages` table, then emailed to `CONTACT_TO`. If mail fails the message is still saved. Read, reply to and delete messages at `/admin/messages`; `php artisan portfolio:inbox` lists them in the terminal.
 
 Out of the box `MAIL_MAILER=log`, so emails only go to `storage/logs/laravel.log`. Set real SMTP details in `.env` before going live.
+
+A sender gets a short automatic reply saying the message arrived. When the topic is a project, the form also asks for a budget range and a timeline; the choices are `contact_budgets` and `contact_timelines` in `config/portfolio.php`.
+
+## Testimonials
+
+At `/admin/testimonials`, create a private link for a client and send it to them. What they write waits there until you approve it. An approved testimonial tied to a project shows on that project's card and case study; the rest show under "What clients say" on the home page, and the newest three show on each service page.
+
+## Booking a call
+
+`/book` offers the times you set at `/admin/bookings`: which days, from when to when, how long a call lasts, how much notice you need and any days off. It stays closed until you switch it on there. A booking emails you and the person who booked; cancelling one from the admin emails them too.
+
+## Share images
+
+`php artisan portfolio:share-images` redraws the image shown when a page is shared (`public/og-cover.png`, plus one per service and case study in `public/img/share`). Run it after changing a service title or a case-study title; it needs Node and Google Chrome, like the screenshots command.
 
 ## Admin and Google Analytics
 
@@ -58,6 +74,16 @@ Out of the box `MAIL_MAILER=log`, so emails only go to `storage/logs/laravel.log
 Once a Measurement ID is saved, visitors are asked whether to allow analytics. Google's script is loaded only after they agree (never for you while signed in), a browser Global Privacy Control or Do Not Track signal counts as a no, and "Cookie settings" in the footer lets them change their mind. The dashboard therefore counts only visitors who agreed. `/privacy` explains all of this and adjusts itself to whether analytics is on. The service-account key is stored encrypted in the `settings` table using `APP_KEY`, so changing `APP_KEY` means reconnecting. Reports are cached for ten minutes; **Refresh** fetches them again.
 
 ## Deploying to Hostinger
+
+The site on the server is a git clone, so the usual way to publish is one command:
+
+```sh
+scripts/deploy.sh "what changed"
+```
+
+It builds the assets, runs the tests, commits and pushes, then over SSH pulls the change, installs dependencies, runs migrations and clears the caches. Copy `.deploy.env.example` to `.deploy.env` and fill in the server's SSH address first.
+
+The zip packaging below is the older way and still works for a first install.
 
 `scripts/package-hostinger.sh` builds a zip laid out the way Hostinger's Laravel guide describes: the whole project inside `public_html`, with a root `.htaccess` that sends every request into `public/`.
 
@@ -88,3 +114,11 @@ After an update zip, run `php artisan migrate --force` over SSH if the release a
 ```
 
 To restore, copy a backup over `database/database.sqlite`.
+
+### Daily reminder
+
+`php artisan portfolio:digest` emails you when messages have sat unread for a day, testimonials are waiting for approval, or calls are booked for the next 24 hours. It sends nothing when there is nothing waiting. Run it from a second daily cron job:
+
+```sh
+/usr/bin/php ~/domains/keronlewis.dev/public_html/artisan portfolio:digest
+```

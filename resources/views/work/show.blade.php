@@ -2,6 +2,7 @@
 
 @section('title', "{$project['name']} case study | {$profile['name']}")
 @section('description', $study['summary'])
+@section('share', "work-{$project['slug']}")
 
 @section('content')
     <article class="section policy case">

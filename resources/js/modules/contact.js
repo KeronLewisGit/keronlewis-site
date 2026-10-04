@@ -16,6 +16,18 @@ export function initContact() {
     };
     message.addEventListener('input', updateCounter);
 
+    // Some topics have extra questions; show a row only while its topic is picked.
+    const topicFields = form.querySelectorAll('[data-topic-fields]');
+    const updateTopicFields = () => {
+        topicFields.forEach((row) => {
+            row.hidden = row.dataset.topicFields !== form.elements.topic.value;
+        });
+    };
+    form.addEventListener('change', (event) => {
+        if (event.target.name === 'topic') updateTopicFields();
+    });
+    updateTopicFields();
+
     function setStatus(text, kind) {
         status.textContent = text;
         status.hidden = !text;
@@ -60,10 +72,11 @@ export function initContact() {
                 track('contact_message', { topic: form.elements.topic.value });
                 form.reset();
                 updateCounter();
+                updateTopicFields();
                 setStatus(body.message, 'ok');
             } else if (response.status === 422) {
                 showErrors(body.errors);
-                form.querySelector('.has-error input, .has-error textarea')?.focus();
+                form.querySelector('.has-error input, .has-error select, .has-error textarea')?.focus();
             } else if (response.status === 429) {
                 setStatus("That's a few messages in a short time. Please try again in a few minutes, or email me directly.", 'bad');
             } else if (response.status === 419) {

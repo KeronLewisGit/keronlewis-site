@@ -1,5 +1,6 @@
 @php
     $unreadMessages = auth()->check() ? \App\Models\ContactMessage::unread()->count() : 0;
+    $pendingTestimonials = auth()->check() ? \App\Models\Testimonial::pending()->count() : 0;
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -32,6 +33,10 @@
                     <a href="{{ route('admin.messages') }}" @if (request()->routeIs('admin.messages*')) aria-current="page" @endif>
                         Messages @if ($unreadMessages)<span class="count" aria-label="{{ $unreadMessages }} unread">{{ $unreadMessages }}</span>@endif
                     </a>
+                    <a href="{{ route('admin.testimonials') }}" @if (request()->routeIs('admin.testimonials')) aria-current="page" @endif>
+                        Testimonials @if ($pendingTestimonials)<span class="count" aria-label="{{ $pendingTestimonials }} waiting for approval">{{ $pendingTestimonials }}</span>@endif
+                    </a>
+                    <a href="{{ route('admin.bookings') }}" @if (request()->routeIs('admin.bookings')) aria-current="page" @endif>Bookings</a>
                     <a href="{{ route('admin.connection') }}" @if (request()->routeIs('admin.connection')) aria-current="page" @endif>Connection</a>
                 </nav>
             @endauth

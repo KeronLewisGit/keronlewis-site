@@ -124,7 +124,7 @@ class PagesTest extends TestCase
     public function test_public_pages_have_alt_text_and_a_clean_heading_outline(): void
     {
         $paths = [
-            '/', '/resume', '/privacy',
+            '/', '/resume', '/privacy', '/book',
             ...app(Portfolio::class)->caseStudies()->map(fn (array $project) => "/work/{$project['slug']}"),
             ...app(Portfolio::class)->services()->map(fn (array $service) => "/services/{$service['slug']}"),
         ];
@@ -181,6 +181,13 @@ class PagesTest extends TestCase
             $response->assertSee('<img src="'.e($project['thumb']).'"', false)
                 ->assertSee(e("{$project['thumb']} {$project['thumb_width']}w, {$project['image']} {$project['image_width']}w"), false);
         }
+    }
+
+    public function test_pages_with_their_own_share_image_use_it(): void
+    {
+        $this->get('/')->assertSee('<meta property="og:image" content="'.asset('og-cover.png').'">', false);
+        $this->get('/services/website-development')->assertSee('img/share/service-website-development.png?v=');
+        $this->get('/work/code-canvas')->assertSee('img/share/work-code-canvas.png?v=');
     }
 
     public function test_unknown_pages_get_the_styled_404(): void

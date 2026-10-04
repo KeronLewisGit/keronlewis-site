@@ -109,6 +109,17 @@
                     </article>
                 @endforeach
             </div>
+
+            @if ($testimonials->isNotEmpty())
+                <div class="quotes reveal">
+                    <h3>What clients say</h3>
+                    <div class="quotes-grid">
+                        @foreach ($testimonials as $testimonial)
+                            <x-testimonial :testimonial="$testimonial" />
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </div>
     </section>
 
@@ -204,6 +215,9 @@
 
             <p class="services-cta reveal">
                 <a class="btn btn-primary" href="#contact">Talk to me about a role or project <x-icon name="arrow-right" /></a>
+                @if ($bookingOpen)
+                    <a class="btn btn-ghost" href="{{ route('booking.show') }}"><x-icon name="phone" /> Book a call</a>
+                @endif
                 <a class="btn btn-ghost" href="{{ route('resume.pdf') }}"><x-icon name="download" /> Download my résumé</a>
             </p>
         </div>
@@ -267,6 +281,9 @@
                             <button class="mini-copy" type="button" data-copy="{{ $profile['email'] }}" data-copy-label="Email address copied" aria-label="Copy email address"><x-icon name="copy" /></button>
                         </li>
                         <li><a href="tel:{{ $profile['phone_e164'] }}"><x-icon name="phone" /> {{ $profile['phone'] }}</a></li>
+                        @if ($bookingOpen)
+                            <li><a href="{{ route('booking.show') }}"><x-icon name="clock" /> Book a call</a></li>
+                        @endif
                         <li><a href="{{ $profile['links']['github']['url'] }}" target="_blank" rel="noopener"><x-icon name="github" /> {{ $profile['links']['github']['handle'] }}</a></li>
                         <li><a href="{{ $profile['links']['linkedin']['url'] }}" target="_blank" rel="noopener"><x-icon name="linkedin" /> {{ $profile['links']['linkedin']['handle'] }}</a></li>
                         <li><a href="{{ $profile['links']['studio']['url'] }}" target="_blank" rel="noopener"><x-icon name="globe" /> {{ $profile['links']['studio']['handle'] }}</a></li>
@@ -308,6 +325,30 @@
                         </div>
                         <p class="field-error" data-error-for="topic">@error('topic'){{ $message }}@enderror</p>
                     </fieldset>
+
+                    {{-- Asked only for a project enquiry; contact.js shows this row when that topic is picked. --}}
+                    <div class="field-row" data-topic-fields="project">
+                        <div class="field">
+                            <label for="cf-budget">Budget <span class="counter">optional</span></label>
+                            <select id="cf-budget" name="budget">
+                                <option value="">Choose a range</option>
+                                @foreach ($budgets as $key => $label)
+                                    <option value="{{ $key }}" @selected(old('budget') === $key)>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                            <p class="field-error" data-error-for="budget">@error('budget'){{ $message }}@enderror</p>
+                        </div>
+                        <div class="field">
+                            <label for="cf-timeline">When do you need it? <span class="counter">optional</span></label>
+                            <select id="cf-timeline" name="timeline">
+                                <option value="">Choose a timeline</option>
+                                @foreach ($timelines as $key => $label)
+                                    <option value="{{ $key }}" @selected(old('timeline') === $key)>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                            <p class="field-error" data-error-for="timeline">@error('timeline'){{ $message }}@enderror</p>
+                        </div>
+                    </div>
 
                     <div class="field">
                         <label for="cf-message">Message <span class="counter" data-counter aria-hidden="true"></span></label>

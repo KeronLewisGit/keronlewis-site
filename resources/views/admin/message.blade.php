@@ -24,6 +24,12 @@
                 <dt>About</dt>
                 <dd>{{ $message->topicLabel() }}</dd>
             </div>
+            @foreach ($message->extras() as $label => $value)
+                <div>
+                    <dt>{{ $label }}</dt>
+                    <dd>{{ $value }}</dd>
+                </div>
+            @endforeach
             <div>
                 <dt>Received</dt>
                 <dd><time datetime="{{ $message->created_at->toIso8601String() }}">{{ $message->created_at->timezone($timezone)->format('j M Y, g:i A') }}</time></dd>

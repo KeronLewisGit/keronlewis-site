@@ -31,7 +31,7 @@ rsync -a \
     --exclude 'package.json' --exclude 'package-lock.json' --exclude 'vite.config.js' \
     --exclude 'resources/css' --exclude 'resources/js' \
     --exclude 'CLAUDE.md' --exclude 'AGENTS.md' --exclude 'README.md' --exclude '.npmrc' --exclude '.editorconfig' --exclude '.gitattributes' --exclude '.gitignore' \
-    --exclude '/.env' --exclude '.env.example' --exclude 'database/*.sqlite*' \
+    --exclude '/.env' --exclude '.env.example' --exclude '.deploy.env' --exclude '.deploy.env.example' --exclude 'database/*.sqlite*' \
     --exclude 'public/hot' --exclude 'bootstrap/cache/*.php' \
     --exclude 'storage/logs/*.log' --exclude 'storage/framework/views/*.php' \
     --exclude 'storage/framework/sessions/*' --exclude 'storage/framework/cache/data/*' \

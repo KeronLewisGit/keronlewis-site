@@ -7,6 +7,11 @@
     $pageTitle = html_entity_decode(trim($__env->yieldContent('title')), ENT_QUOTES) ?: $profile['seo']['home_title'];
     $pageDescription = html_entity_decode(trim($__env->yieldContent('description')), ENT_QUOTES) ?: $profile['seo']['home_description'];
     $siteVerification = \App\Models\Setting::cached('google_site_verification');
+    // A page can name its own share image (made by `php artisan portfolio:share-images`); the rest use the general one.
+    $shareFile = 'img/share/'.trim($__env->yieldContent('share')).'.png';
+    $shareImage = is_file(public_path($shareFile)) ? asset($shareFile).'?v='.filemtime(public_path($shareFile)) : asset('og-cover.png');
+
+    $bookingOpen = app(\App\Support\BookingCalendar::class)->isEnabled();
 
     $commands = [
         ['group' => 'Go to', 'label' => 'Selected work', 'href' => $home.'#work'],
@@ -22,6 +27,9 @@
         ['group' => 'Do', 'label' => 'Copy phone number', 'copy' => $profile['phone']],
         ['group' => 'Do', 'label' => 'Switch light / dark theme', 'action' => 'theme'],
     ];
+    if ($bookingOpen) {
+        array_splice($commands, 7, 0, [['group' => 'Go to', 'label' => 'Book a call', 'href' => route('booking.show')]]);
+    }
     foreach ($profile['links'] as $link) {
         $commands[] = ['group' => 'Elsewhere', 'label' => $link['label'], 'hint' => $link['handle'], 'href' => $link['url'], 'external' => true];
     }
@@ -48,7 +56,7 @@
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDescription }}">
     <meta name="author" content="{{ $profile['name'] }}">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="@yield('robots', 'index, follow')">
     <link rel="canonical" href="{{ url()->current() }}">
     {{-- The site is in English only, so each page names itself as the English and the default version. --}}
     <link rel="alternate" hreflang="en" href="{{ url()->current() }}">
@@ -68,14 +76,14 @@
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ asset('og-cover.png') }}">
+    <meta property="og:image" content="{{ $shareImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="{{ $profile['name'] }}, {{ $profile['title'] }}, {{ $profile['location'] }}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDescription }}">
-    <meta name="twitter:image" content="{{ asset('og-cover.png') }}">
+    <meta name="twitter:image" content="{{ $shareImage }}">
 
     @if (request()->routeIs('home', 'resume'))
         <script type="application/ld+json">
@@ -158,6 +166,9 @@
             <span>© {{ date('Y') }} {{ $profile['name'] }}. Designed and built by me, on Laravel.</span>
             <span class="footer-links">
                 <a href="{{ route('resume') }}">Résumé</a>
+                @if ($bookingOpen)
+                    <a href="{{ route('booking.show') }}">Book a call</a>
+                @endif
                 <a href="{{ route('privacy') }}">Privacy</a>
                 @if ($gaId)
                     <button type="button" data-consent-open>Cookie settings</button>

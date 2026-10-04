@@ -3,6 +3,9 @@
 
 **From:** {{ $contactMessage->name }} ({{ $contactMessage->email }})<br>
 **About:** {{ $contactMessage->topicLabel() }}<br>
+@foreach ($contactMessage->extras() as $label => $value)
+**{{ $label }}:** {{ $value }}<br>
+@endforeach
 **Sent:** {{ $contactMessage->created_at->timezone(config('portfolio.profile.timezone'))->format('j M Y, g:i a') }}
 
 <x-mail::panel>

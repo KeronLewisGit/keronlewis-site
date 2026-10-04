@@ -153,7 +153,11 @@
 
 .a-field input[type='text'],
 .a-field input[type='email'],
-.a-field input[type='password'] {
+.a-field input[type='password'],
+.a-field select,
+.a-field textarea,
+.b-day input[type='time'],
+.t-link input {
     width: 100%;
     font: inherit;
     color: var(--ink);
@@ -170,7 +174,15 @@
     color: var(--ink-soft);
 }
 
-.a-field input:focus {
+.a-field textarea {
+    resize: vertical;
+}
+
+.a-field input:focus,
+.a-field select:focus,
+.a-field textarea:focus,
+.b-day input:focus,
+.t-link input:focus {
     outline: 2px solid var(--coral);
     outline-offset: 1px;
     border-color: transparent;
@@ -747,6 +759,135 @@
     border-color: var(--delta-down);
 }
 
+/* ---------- testimonials and bookings ---------- */
+.t-intro {
+    margin: 6px 0 20px;
+}
+
+.t-section {
+    margin-top: 20px;
+}
+
+.t-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.t-item:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.t-item blockquote {
+    margin: 0 0 8px;
+    max-width: 75ch;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.t-who {
+    font-size: .92rem;
+    font-weight: 600;
+}
+
+.t-who span {
+    font-weight: 400;
+    color: var(--muted);
+}
+
+.t-who a {
+    color: inherit;
+}
+
+.t-link {
+    display: flex;
+    gap: 8px;
+    margin: 10px 0 8px;
+}
+
+.t-link input {
+    min-width: 0;
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: .8rem;
+}
+
+.t-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.link-danger {
+    font-size: .84rem;
+    color: var(--delta-down);
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.b-when {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.b-when span {
+    font-size: .9rem;
+    font-weight: 400;
+    color: var(--muted);
+}
+
+.b-past {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.b-hours {
+    margin-bottom: 22px;
+}
+
+.b-day {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: .92rem;
+    color: var(--ink-soft);
+}
+
+.b-day-on {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 150px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.b-day input[type='time'] {
+    width: auto;
+    padding: 7px 10px;
+    margin-left: 6px;
+}
+
+.b-day .a-error {
+    width: 100%;
+    margin-top: 0;
+}
+
+.b-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 20px;
+}
+
 @media (max-width: 1080px) {
     .tiles {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -780,6 +921,15 @@
         order: 1;
         width: 100%;
         margin-right: 0;
+        flex-wrap: wrap;
+    }
+
+    .b-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .b-day-on {
+        width: 100%;
     }
 
     .admin-links a {

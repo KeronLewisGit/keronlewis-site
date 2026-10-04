@@ -140,5 +140,23 @@ function lineChart(root) {
     new ResizeObserver(draw).observe(root);
 }
 
+// "Copy" buttons beside a private link.
+function copyButton(button) {
+    const label = button.textContent;
+
+    button.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(button.dataset.copy);
+            button.textContent = 'Copied';
+        } catch {
+            // No clipboard access: select the link so it can be copied by hand.
+            button.previousElementSibling?.select();
+            button.textContent = 'Press Ctrl/Cmd+C';
+        }
+        setTimeout(() => { button.textContent = label; }, 2000);
+    });
+}
+
 initTheme();
 document.querySelectorAll('[data-line-chart]').forEach(lineChart);
+document.querySelectorAll('[data-copy]').forEach(copyButton);

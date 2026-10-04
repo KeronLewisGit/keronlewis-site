@@ -23,6 +23,9 @@ return [
         'email' => 'keronlewis@live.com',
         'phone' => '+1 (868) 275-3268',
         'phone_e164' => '+18682753268',
+        // The address printed on share images.
+        'website' => 'keronlewis.dev',
+        'price_range' => 'From TT$1,500',
         'availability' => 'Open to full-time roles and contracts',
         'remote' => 'Open to remote',
 
@@ -76,17 +79,18 @@ return [
     |                     (under about 155 characters)
     |   'page.sections'   each with a 'heading', then 'body' (paragraphs)
     |                     and/or 'points' (a bulleted list)
+    |   'page.faq'        optional questions and answers shown under the sections
     |   'page.projects'   slugs from 'projects' below, shown as related work
     */
     'services' => [
         [
             'slug' => 'website-development',
             'title' => 'Website development',
-            'text' => 'Company websites, product catalogues and portfolio sites for businesses in Trinidad & Tobago, taken from the first conversation through to launch and support.',
+            'text' => 'Company websites, product catalogues and portfolio sites for businesses in Trinidad & Tobago, starting from TT$1,500. You see a mockup within 24 hours.',
             'page' => [
                 'heading' => 'Website development in Trinidad & Tobago',
                 'seo_title' => 'Website Development in Trinidad & Tobago | Keron Lewis',
-                'summary' => 'I build websites for businesses in Trinidad and Tobago: company sites, product catalogues and portfolios that work on any screen and come with training.',
+                'summary' => 'Websites for businesses in Trinidad and Tobago from TT$1,500: company sites, catalogues and portfolios, with a mockup ready within 24 hours.',
                 'sections' => [
                     [
                         'heading' => 'What I build',
@@ -103,6 +107,7 @@ return [
                     [
                         'heading' => 'How a project runs',
                         'body' => [
+                            'It starts with a mockup of your website, which I have ready within 24 hours. Once you approve it, the website can be up the same day.',
                             'I handle a website project from the first conversation to launch and the support after it. That includes the parts around the site itself: hosting, DNS, SSL and email set-up, and fixing them when something goes wrong.',
                             "Every website is handed over with documentation and a walkthrough for the people who'll be updating it.",
                         ],
@@ -112,6 +117,16 @@ return [
                         'body' => [
                             "I'm a web developer based in Port of Spain and work with clients on site in Trinidad or remotely. Client projects run through my studio, Code Canvas Consultants.",
                         ],
+                    ],
+                ],
+                'faq' => [
+                    [
+                        'question' => 'How much does a website cost?',
+                        'answer' => "Websites start from TT\$1,500. Tell me what you need the site to do and I'll give you a price for it.",
+                    ],
+                    [
+                        'question' => 'How long does a website take?',
+                        'answer' => 'I have a mockup of your website ready within 24 hours. Once you approve the mockup, the website can be up the same day.',
                     ],
                 ],
                 'projects' => ['cruz-garments', 'rape-crisis-society', 'chef-brigette', 'for-the-culture', 'screen-stars', 'chez-nous-de-rubies'],
@@ -240,6 +255,24 @@ return [
         'role' => 'A role or contract',
         'project' => 'A site, store or integration',
         'other' => 'Something else',
+    ],
+
+    /*
+    | Extra questions the contact form asks when the topic is a project.
+    | Both are optional for the visitor.
+    */
+    'contact_budgets' => [
+        '1500-5000' => 'TT$1,500 to TT$5,000',
+        '5000-15000' => 'TT$5,000 to TT$15,000',
+        '15000-plus' => 'More than TT$15,000',
+        'unsure' => 'Not sure yet',
+    ],
+
+    'contact_timelines' => [
+        'asap' => 'As soon as possible',
+        'month' => 'Within a month',
+        'quarter' => 'In one to three months',
+        'flexible' => 'No fixed date',
     ],
 
     /*
