@@ -12,7 +12,7 @@
         ['group' => 'Go to', 'label' => 'Selected work', 'href' => $home.'#work'],
         ['group' => 'Go to', 'label' => 'Experience', 'href' => $home.'#experience'],
         ['group' => 'Go to', 'label' => 'Skills', 'href' => $home.'#skills'],
-        ['group' => 'Go to', 'label' => 'Work I take on', 'href' => $home.'#services'],
+        ['group' => 'Go to', 'label' => 'Services', 'href' => $home.'#services'],
         ['group' => 'Go to', 'label' => 'About', 'href' => $home.'#about'],
         ['group' => 'Go to', 'label' => 'Contact form', 'href' => $home.'#contact'],
         ['group' => 'Go to', 'label' => 'Résumé', 'href' => route('resume')],
@@ -24,6 +24,10 @@
     ];
     foreach ($profile['links'] as $link) {
         $commands[] = ['group' => 'Elsewhere', 'label' => $link['label'], 'hint' => $link['handle'], 'href' => $link['url'], 'external' => true];
+    }
+    $services = app(\App\Support\Portfolio::class)->services();
+    foreach ($services as $service) {
+        $commands[] = ['group' => 'Services', 'label' => $service['title'], 'hint' => $profile['location'], 'href' => $service['url']];
     }
     foreach (config('portfolio.projects') as $project) {
         if (isset($project['case_study'])) {
@@ -52,6 +56,9 @@
     @if ($siteVerification)
         <meta name="google-site-verification" content="{{ $siteVerification }}">
     @endif
+    {{-- Where the business is, for search engines that read these (Bing does). --}}
+    <meta name="geo.region" content="{{ $profile['country_code'] }}">
+    <meta name="geo.placename" content="{{ $profile['location'] }}">
     <meta name="theme-color" content="#F5F2EB" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#15140F" media="(prefers-color-scheme: dark)">
 
@@ -113,6 +120,7 @@
 
             <nav class="nav-links" id="menu" aria-label="Main">
                 <a href="{{ $home }}#work" @if ($onHome) data-spy="work" @endif>Work</a>
+                <a href="{{ $home }}#services" @if ($onHome) data-spy="services" @elseif (request()->routeIs('services.show')) aria-current="page" @endif>Services</a>
                 <a href="{{ $home }}#experience" @if ($onHome) data-spy="experience" @endif>Experience</a>
                 <a href="{{ $home }}#skills" @if ($onHome) data-spy="skills" @endif>Skills</a>
                 <a href="{{ $home }}#about" @if ($onHome) data-spy="about" @endif>About</a>
@@ -139,7 +147,14 @@
     </main>
 
     <footer class="footer">
-        <div class="wrap"><div class="footer-row">
+        <div class="wrap">
+            <nav class="footer-services" aria-label="Services">
+                <span>{{ $profile['title'] }} in {{ $profile['location'] }}</span>
+                @foreach ($services as $service)
+                    <a href="{{ $service['url'] }}">{{ $service['title'] }}</a>
+                @endforeach
+            </nav>
+        <div class="footer-row">
             <span>© {{ date('Y') }} {{ $profile['name'] }}. Designed and built by me, on Laravel.</span>
             <span class="footer-links">
                 <a href="{{ route('resume') }}">Résumé</a>

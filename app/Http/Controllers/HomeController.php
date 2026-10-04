@@ -18,7 +18,7 @@ class HomeController extends Controller
             'education' => config('portfolio.education'),
             'certifications' => config('portfolio.certifications'),
             'topics' => config('portfolio.contact_topics'),
-            'services' => config('portfolio.services'),
+            'services' => $portfolio->services(),
         ]);
     }
 }
