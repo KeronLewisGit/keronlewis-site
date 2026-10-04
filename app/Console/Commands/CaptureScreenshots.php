@@ -15,6 +15,9 @@ class CaptureScreenshots extends Command
     /** Width the stored image is scaled to. */
     private const WIDTH = 900;
 
+    /** Width of the smaller copy the project cards load; the full image is kept for the preview and case study. */
+    private const THUMB_WIDTH = 400;
+
     public function handle(): int
     {
         $dir = public_path('img/work');
@@ -36,6 +39,7 @@ class CaptureScreenshots extends Command
 
             if (File::exists($target) && ! $this->option('force')) {
                 $this->line("  skip  {$project['slug']} (exists, use --force to refresh)");
+                $this->saveThumbnail($target, replace: false);
 
                 continue;
             }
@@ -56,10 +60,28 @@ class CaptureScreenshots extends Command
 
             $scaled = imagescale($image, self::WIDTH);
             imagewebp($scaled, $target, 76);
+            $this->saveThumbnail($target, replace: true);
 
             $this->info(sprintf('  saved %s (%dx%d, %d KB)', $project['slug'], imagesx($scaled), imagesy($scaled), filesize($target) / 1024));
         }
 
         return $failed ? self::FAILURE : self::SUCCESS;
+    }
+
+    /**
+     * Write thumbs/{slug}.webp beside a screenshot, scaled down from it.
+     */
+    private function saveThumbnail(string $screenshot, bool $replace): void
+    {
+        $thumb = dirname($screenshot).'/thumbs/'.basename($screenshot);
+
+        if (File::exists($thumb) && ! $replace) {
+            return;
+        }
+
+        File::ensureDirectoryExists(dirname($thumb));
+        imagewebp(imagescale(imagecreatefromwebp($screenshot), self::THUMB_WIDTH), $thumb, 62);
+
+        $this->line(sprintf('  thumb %s (%d KB)', basename($thumb, '.webp'), filesize($thumb) / 1024));
     }
 }

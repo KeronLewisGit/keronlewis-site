@@ -24,11 +24,18 @@ class Portfolio
             $path = public_path($file);
             $size = is_file($path) ? @getimagesize($path) : false;
 
+            // The cards load a narrower copy; see `php artisan portfolio:screenshots`.
+            $thumbFile = "img/work/thumbs/{$project['slug']}.webp";
+            $thumbPath = public_path($thumbFile);
+            $thumbSize = $size && is_file($thumbPath) ? @getimagesize($thumbPath) : false;
+
             return $project + [
                 'host' => Str::of(parse_url($project['url'], PHP_URL_HOST))->replaceStart('www.', '')->toString(),
                 'image' => $size ? asset($file).'?v='.filemtime($path) : null,
                 'image_width' => $size[0] ?? null,
                 'image_height' => $size[1] ?? null,
+                'thumb' => $thumbSize ? asset($thumbFile).'?v='.filemtime($thumbPath) : null,
+                'thumb_width' => $thumbSize[0] ?? null,
                 'case_url' => isset($project['case_study']) ? route('work.show', $project['slug']) : null,
             ];
         });

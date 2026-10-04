@@ -163,6 +163,19 @@ class PagesTest extends TestCase
             ->assertSee("First line\n    indented line", false);
     }
 
+    public function test_project_cards_load_the_small_screenshot_and_offer_the_full_one(): void
+    {
+        $response = $this->get('/');
+
+        foreach (app(Portfolio::class)->projects() as $project) {
+            $this->assertNotNull($project['thumb'], "{$project['slug']} has no thumbnail; run `php artisan portfolio:screenshots`.");
+            $this->assertLessThan($project['image_width'], $project['thumb_width']);
+
+            $response->assertSee('<img src="'.e($project['thumb']).'"', false)
+                ->assertSee(e("{$project['thumb']} {$project['thumb_width']}w, {$project['image']} {$project['image_width']}w"), false);
+        }
+    }
+
     public function test_unknown_pages_get_the_styled_404(): void
     {
         $this->get('/nope')->assertNotFound()->assertSee("That page isn't here.", false);

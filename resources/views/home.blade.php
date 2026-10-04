@@ -77,7 +77,9 @@
                             <span class="shot-bar"><i></i><i></i><i></i><span class="shot-host">{{ $project['host'] }}</span></span>
                             <span class="shot-view">
                                 @if ($project['image'])
-                                    <img src="{{ $project['image'] }}" width="{{ $project['image_width'] }}" height="{{ $project['image_height'] }}" loading="lazy" decoding="async" alt="{{ $project['name'] }} website, a {{ Str::lower($project['category']) }} site built on WordPress by {{ $profile['name'] }}"
+                                    <img src="{{ $project['thumb'] ?? $project['image'] }}"
+                                         @if ($project['thumb']) srcset="{{ $project['thumb'] }} {{ $project['thumb_width'] }}w, {{ $project['image'] }} {{ $project['image_width'] }}w" sizes="(max-width: 640px) calc(100vw - 42px), (max-width: 1000px) calc(50vw - 42px), 350px" @endif
+                                         width="{{ $project['image_width'] }}" height="{{ $project['image_height'] }}" loading="lazy" decoding="async" alt="{{ $project['name'] }} website, a {{ Str::lower($project['category']) }} site built on WordPress by {{ $profile['name'] }}"
                                          style="--pan: {{ round(max(1.2, ($project['image_height'] / $project['image_width'] * 350 - 220) / 200), 1) }}s">
                                 @else
                                     <span class="shot-empty">{{ $project['host'] }}</span>
