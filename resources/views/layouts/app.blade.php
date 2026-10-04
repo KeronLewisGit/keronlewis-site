@@ -96,6 +96,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="@yield('body-class')">
+    {{-- Cloudflare's email obfuscation would turn each mailto: link into /cdn-cgi/l/email-protection, which
+         crawlers see as a broken page, and each visible address into "[email protected]". These markers switch it off. --}}
+    <!--email_off-->
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="progress" aria-hidden="true"><span data-progress></span></div>
 
@@ -172,5 +175,6 @@
             </div>
         </section>
     @endif
+    <!--/email_off-->
 </body>
 </html>

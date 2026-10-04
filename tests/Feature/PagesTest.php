@@ -21,6 +21,8 @@ class PagesTest extends TestCase
             ->assertSee('Selected work')
             ->assertSee('Work I take on')
             ->assertSee('<title>Keron Lewis | Full-Stack Web Developer in Trinidad &amp; Tobago</title>', false)
+            ->assertSee('<a href="mailto:'.config('portfolio.profile.email').'">', false)
+            ->assertSeeInOrder(['<!--email_off-->', 'mailto:', '<!--/email_off-->'], false)
             ->assertSee('"@type":"ProfilePage"', false)
             ->assertSee('"@type":"Occupation"', false);
 
