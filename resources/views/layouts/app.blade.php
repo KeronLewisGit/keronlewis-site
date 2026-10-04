@@ -46,6 +46,9 @@
     <meta name="author" content="{{ $profile['name'] }}">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ url()->current() }}">
+    {{-- The site is in English only, so each page names itself as the English and the default version. --}}
+    <link rel="alternate" hreflang="en" href="{{ url()->current() }}">
+    <link rel="alternate" hreflang="x-default" href="{{ url()->current() }}">
     @if ($siteVerification)
         <meta name="google-site-verification" content="{{ $siteVerification }}">
     @endif

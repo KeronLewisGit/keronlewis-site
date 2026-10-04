@@ -78,7 +78,10 @@ class PagesTest extends TestCase
         $this->get('/resume')
             ->assertSee('<title>Keron Lewis Résumé (CV) | Full-Stack PHP &amp; WordPress Developer</title>', false)
             ->assertSee('<link rel="canonical" href="'.route('resume').'">', false);
-        $this->get('/resume?skill=PHP')->assertSee('<link rel="canonical" href="'.route('resume').'">', false);
+        $this->get('/resume?skill=PHP')
+            ->assertSee('<link rel="canonical" href="'.route('resume').'">', false)
+            ->assertSee('<link rel="alternate" hreflang="en" href="'.route('resume').'">', false)
+            ->assertSee('<link rel="alternate" hreflang="x-default" href="'.route('resume').'">', false);
     }
 
     public function test_resume_downloads_as_a_pdf(): void
