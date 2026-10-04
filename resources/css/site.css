@@ -958,11 +958,33 @@ html:not(.js) .hero {
     margin-top: auto;
 }
 
-/* A client's words about a project; shown on its card and its case study. */
+/* ---------- testimonials ----------
+   A client's words: a card with an oversized quotation mark, the standout
+   phrase set large, highlights marked in the text and, when the text is
+   long, a "Read more" button (added by quotes.js). */
 .quote {
-    margin: 18px 0 0;
-    padding-left: 14px;
-    border-left: 2px solid var(--coral);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 30px 0 0;
+    padding: 30px 28px 24px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    transition: rotate .3s ease, translate .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+
+.quote::before {
+    content: '\201C';
+    position: absolute;
+    top: -22px;
+    left: 22px;
+    font-family: var(--font-display);
+    font-size: 5.6rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--coral);
 }
 
 .quote blockquote {
@@ -971,39 +993,152 @@ html:not(.js) .hero {
 
 .quote p {
     color: var(--ink);
-    font-size: .95rem;
+    font-size: 1.02rem;
+    line-height: 1.6;
     margin: 0;
 }
 
-.quote figcaption {
+.quote .quote-pull {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1.15;
+    margin: 8px 0 14px;
+    text-wrap: balance;
+}
+
+/* A marker-pen stroke under the phrases picked out in the admin area. */
+.quote mark {
+    color: inherit;
+    padding: 0 2px;
+    background: linear-gradient(transparent 58%, color-mix(in srgb, var(--coral) 38%, transparent) 58%);
+    border-radius: 2px;
+}
+
+.js .quote [data-quote]:not(.is-open) p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+    overflow: hidden;
+}
+
+.quote-more {
     margin-top: 8px;
-    font-size: .82rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--coral-deep);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.quote figcaption {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.quote-avatar {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--teal);
+    background: color-mix(in srgb, var(--teal) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--teal) 25%, transparent);
+}
+
+.quote-by {
+    font-size: .9rem;
+    line-height: 1.35;
+}
+
+.quote-by strong {
+    display: block;
     font-weight: 600;
 }
 
-.quote figcaption span {
-    font-weight: 400;
+.quote-by span {
     color: var(--muted);
+    font-size: .84rem;
 }
 
-.quote figcaption span::before {
-    content: ' · ';
+/* Inside a project card there is no room for the full treatment. */
+.quote.is-compact {
+    margin-top: 18px;
+    padding: 0 0 0 14px;
+    background: none;
+    border: 0;
+    border-left: 2px solid var(--coral);
+    border-radius: 0;
+}
+
+.quote.is-compact::before,
+.quote.is-compact .quote-avatar {
+    content: none;
+    display: none;
+}
+
+.quote.is-compact p {
+    font-size: .95rem;
+}
+
+.js .quote.is-compact [data-quote]:not(.is-open) p {
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+}
+
+.quote.is-compact figcaption {
+    margin-top: 10px;
 }
 
 /* Testimonials that aren't tied to one project's card. */
 .quotes {
-    margin-top: 44px;
+    margin-top: 48px;
 }
 
 .quotes h3 {
     font-size: 1.28rem;
-    margin-bottom: 4px;
 }
 
 .quotes-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px 40px;
+    align-items: start;
+    gap: 6px 30px;
+}
+
+/* A lone testimonial gets a comfortable reading width instead of half the page. */
+.quotes-grid:has(> :only-child) {
+    grid-template-columns: minmax(0, 720px);
+}
+
+/* Cards sit slightly askew, like notes pinned to a board, and straighten when pointed at. */
+.quotes-grid .quote:nth-child(odd) {
+    rotate: -.7deg;
+}
+
+.quotes-grid .quote:nth-child(even) {
+    rotate: .6deg;
+}
+
+.quotes-grid .quote:hover {
+    rotate: 0deg;
+    translate: 0 -3px;
+    border-color: var(--line-strong);
+    box-shadow: var(--shadow);
 }
 
 /* ---------- project preview dialog ---------- */
@@ -2163,16 +2298,24 @@ button.chip {
     content: none;
 }
 
-.case .quote {
-    margin-top: 0;
+/* On the ruled pages the general "soft grey text, 70 characters wide" rule would mute the quote. */
+.policy-body .quote {
+    max-width: 640px;
+    margin-top: 24px;
 }
 
-.case .quote p {
-    font-size: 1.1rem;
+.policy-body .quote > :not(.quote-more),
+.policy-body .quote p {
+    color: var(--ink);
+    margin-bottom: 0;
+}
+
+.policy-body .quote .quote-pull {
+    margin-bottom: 14px;
 }
 
 .policy-body .quote + .quote {
-    margin-top: 22px;
+    margin-top: 44px;
 }
 
 .faq h3 {

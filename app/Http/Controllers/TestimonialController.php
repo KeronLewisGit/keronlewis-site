@@ -25,23 +25,15 @@ class TestimonialController extends Controller
     {
         if ($testimonial->submitted_at === null) {
             $data = $request->validate([
-                'name' => ['required', 'string', 'max:120'],
-                'role' => ['nullable', 'string', 'max:160'],
                 'quote' => ['required', 'string', 'min:20', 'max:600'],
                 'consent' => ['accepted'],
             ], [
-                'name.required' => 'Please add your name.',
                 'quote.required' => 'The testimonial is empty.',
                 'quote.min' => 'Could you add a little more detail?',
                 'consent.accepted' => 'Please confirm that this can be published.',
             ]);
 
-            $testimonial->update([
-                'name' => $data['name'],
-                'role' => $data['role'] ?? null,
-                'quote' => $data['quote'],
-                'submitted_at' => now(),
-            ]);
+            $testimonial->update(['quote' => $data['quote'], 'submitted_at' => now()]);
         }
 
         return redirect()->route('testimonials.create', $testimonial->token);

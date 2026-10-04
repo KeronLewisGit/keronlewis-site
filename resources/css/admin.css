@@ -830,6 +830,24 @@
     margin-top: 12px;
 }
 
+.t-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    font-size: .84rem;
+}
+
+.t-links a {
+    color: var(--ink);
+    text-decoration-color: var(--coral);
+    text-underline-offset: 3px;
+}
+
+.edit-title {
+    font-size: 1.7rem;
+    margin-bottom: 22px;
+}
+
 .link-danger {
     font-size: .84rem;
     color: var(--delta-down);

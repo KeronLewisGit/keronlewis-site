@@ -10,6 +10,7 @@ import { initContact } from './modules/contact';
 import { initResume } from './modules/resume';
 import { initTracking } from './modules/track';
 import { initConsent } from './modules/consent';
+import { initQuotes } from './modules/quotes';
 
 initTheme();
 initNav();
@@ -23,3 +24,4 @@ initContact();
 initResume();
 initTracking();
 initConsent();
+initQuotes();

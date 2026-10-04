@@ -59,7 +59,7 @@
                 <section class="policy-row">
                     <h2>What the client said</h2>
                     <div class="policy-body">
-                        <x-testimonial :testimonial="$project['testimonial']" />
+                        <x-testimonial :testimonial="$project['testimonial']" :omit="$project['name']" />
                     </div>
                 </section>
             @endif
