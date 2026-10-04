@@ -19,7 +19,7 @@ php artisan serve    # http://localhost:8000
 
 Everything the site says lives in **`config/portfolio.php`**: profile, projects, experience, skills, education. The home page, `/resume`, the PDF, the vCard and `/resume.json` all read from that one file.
 
-- `profile.seo` holds the page titles and descriptions search engines show; `services` holds the "Work I take on" cards.
+- `profile.seo` holds the page titles and descriptions search engines show; `services` holds the "Web development services" cards and the page each one has at `/services/{slug}`; its shape is described above `services` in the config file.
 - A role can carry an `ended` block with a `from` date; from that day its values replace the role's own (Label House is set to become "Apr 2025 – Nov 2026" on 16 November 2026). Remove the block to cancel it.
 - A role's `stack` entries must match names under `skills`; that is what links the skill chips to roles (a test checks this).
 - A project with a `case_study` block gets its own page at `/work/{slug}`, linked from its card, the quick search and the sitemap. The block's shape is described above `projects` in the config file.
@@ -31,6 +31,7 @@ Everything the site says lives in **`config/portfolio.php`**: profile, projects,
 | Path | What it is |
 | --- | --- |
 | `/` | Portfolio: work, experience, skills, about, contact form |
+| `/services/{slug}` | One page per service, written for search (title, summary, sections, related work) |
 | `/work/{slug}` | Case study for a project that has a `case_study` block |
 | `/resume` | Interactive résumé with a print stylesheet |
 | `/resume.pdf` | PDF download (dompdf, template in `resources/views/resume/pdf.blade.php`) |

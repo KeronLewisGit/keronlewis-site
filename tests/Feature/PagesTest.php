@@ -19,8 +19,8 @@ class PagesTest extends TestCase
         $response->assertOk()
             ->assertSee('Keron Lewis')
             ->assertSee('Selected work')
-            ->assertSee('Work I take on')
-            ->assertSee('<title>Keron Lewis | Full-Stack Web Developer in Trinidad &amp; Tobago</title>', false)
+            ->assertSee('Web development services')
+            ->assertSee('<title>'.e(config('portfolio.profile.seo.home_title')).'</title>', false)
             ->assertSee('<a href="mailto:'.config('portfolio.profile.email').'">', false)
             ->assertSeeInOrder(['<!--email_off-->', 'mailto:', '<!--/email_off-->'], false)
             ->assertSee('"@type":"ProfilePage"', false)
@@ -123,7 +123,11 @@ class PagesTest extends TestCase
 
     public function test_public_pages_have_alt_text_and_a_clean_heading_outline(): void
     {
-        $paths = ['/', '/resume', '/privacy', ...app(Portfolio::class)->caseStudies()->map(fn (array $project) => "/work/{$project['slug']}")];
+        $paths = [
+            '/', '/resume', '/privacy',
+            ...app(Portfolio::class)->caseStudies()->map(fn (array $project) => "/work/{$project['slug']}"),
+            ...app(Portfolio::class)->services()->map(fn (array $service) => "/services/{$service['slug']}"),
+        ];
 
         foreach ($paths as $path) {
             $document = new \DOMDocument;

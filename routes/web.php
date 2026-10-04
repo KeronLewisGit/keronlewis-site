@@ -9,10 +9,12 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\SeoController;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/work/{slug}', CaseStudyController::class)->name('work.show');
+Route::get('/services/{slug}', ServiceController::class)->name('services.show');
 
 Route::get('/resume', [ResumeController::class, 'show'])->name('resume');
 Route::get('/resume.pdf', [ResumeController::class, 'pdf'])->name('resume.pdf');

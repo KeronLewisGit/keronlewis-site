@@ -31,8 +31,8 @@ return [
         | Keep titles under about 60 characters and descriptions under about 155.
         */
         'seo' => [
-            'home_title' => 'Keron Lewis | Full-Stack Web Developer in Trinidad & Tobago',
-            'home_description' => 'Full-stack web developer in Port of Spain, Trinidad and Tobago. PHP, MySQL, JavaScript, React, WordPress, WooCommerce. Open to remote roles and contracts.',
+            'home_title' => 'Web Development in Trinidad & Tobago | Keron Lewis',
+            'home_description' => 'Web development in Trinidad and Tobago by Keron Lewis, a web developer in Port of Spain: business websites, WordPress and WooCommerce stores, and web apps.',
             'resume_title' => 'Keron Lewis Résumé (CV) | Full-Stack PHP & WordPress Developer',
             'resume_description' => 'Résumé of Keron Lewis, full-stack web developer in Trinidad and Tobago: PHP, MySQL, React, WordPress and API integration work since 2016. PDF download.',
         ],
@@ -40,7 +40,7 @@ return [
         'tagline' => 'Websites, web apps, and the plumbing behind them.',
         'tagline_mark' => 'plumbing',
 
-        'lead' => "I've been building for the web since 2016, mostly for businesses in Trinidad & Tobago and around the Caribbean. Day to day that means PHP and MySQL on the server, JavaScript and React in the browser, and a lot of REST APIs in between.",
+        'lead' => 'I build websites, WordPress and WooCommerce stores, and custom web apps for businesses in Trinidad & Tobago and around the Caribbean, and have done since 2016. Day to day that means PHP and MySQL on the server, JavaScript and React in the browser, and a lot of REST APIs in between.',
 
         'summary' => 'Full-stack web developer based in Port of Spain, building for the web since 2016. Most of my work is PHP and MySQL applications, WordPress and WooCommerce builds, and integrations between business systems over REST APIs and webhooks. I usually own a piece of work from requirements through to release, then document it and train the people who will use it. Currently studying for an MSc in Data Science at UWI.',
 
@@ -65,20 +65,168 @@ return [
     ],
 
     /*
-    | The kinds of work on offer, shown on the home page under "Work I take on".
+    | The services on offer. Each one is a card on the home page under
+    | "Web development services" and has its own page at /services/{slug},
+    | which is what search engines land people on.
+    |
+    |   'title' / 'text'  the card on the home page
+    |   'page.heading'    the page's main heading
+    |   'page.seo_title'  the browser-tab title (under about 60 characters)
+    |   'page.summary'    the line under the heading and the search snippet
+    |                     (under about 155 characters)
+    |   'page.sections'   each with a 'heading', then 'body' (paragraphs)
+    |                     and/or 'points' (a bulleted list)
+    |   'page.projects'   slugs from 'projects' below, shown as related work
     */
     'services' => [
         [
-            'title' => 'Full-stack web development',
-            'text' => 'PHP and MySQL back ends, JavaScript and React front ends, and the REST APIs between them. As a full-time developer or on contract.',
+            'slug' => 'website-development',
+            'title' => 'Website development',
+            'text' => 'Company websites, product catalogues and portfolio sites for businesses in Trinidad & Tobago, taken from the first conversation through to launch and support.',
+            'page' => [
+                'heading' => 'Website development in Trinidad & Tobago',
+                'seo_title' => 'Website Development in Trinidad & Tobago | Keron Lewis',
+                'summary' => 'I build websites for businesses in Trinidad and Tobago: company sites, product catalogues and portfolios that work on any screen and come with training.',
+                'sections' => [
+                    [
+                        'heading' => 'What I build',
+                        'body' => [
+                            "Most of the websites I build are for small and mid-sized businesses and organisations in Trinidad & Tobago and around the Caribbean. Recent ones include a garment manufacturer's product catalogue, a national nonprofit's site with a resources section, a private chef's portfolio and an events company's site.",
+                        ],
+                        'points' => [
+                            'Company and brand websites.',
+                            'Product catalogues organised by product line.',
+                            'Portfolio and gallery sites.',
+                            'Websites for nonprofits and community organisations.',
+                        ],
+                    ],
+                    [
+                        'heading' => 'How a project runs',
+                        'body' => [
+                            'I handle a website project from the first conversation to launch and the support after it. That includes the parts around the site itself: hosting, DNS, SSL and email set-up, and fixing them when something goes wrong.',
+                            "Every website is handed over with documentation and a walkthrough for the people who'll be updating it.",
+                        ],
+                    ],
+                    [
+                        'heading' => 'Where I work',
+                        'body' => [
+                            "I'm a web developer based in Port of Spain and work with clients on site in Trinidad or remotely. Client projects run through my studio, Code Canvas Consultants.",
+                        ],
+                    ],
+                ],
+                'projects' => ['cruz-garments', 'rape-crisis-society', 'chef-brigette', 'for-the-culture', 'screen-stars', 'chez-nous-de-rubies'],
+            ],
         ],
         [
-            'title' => 'WordPress and WooCommerce sites',
-            'text' => 'Company websites, online stores and course platforms built on WordPress, Elementor and WooCommerce, including checkout through Caribbean payment gateways such as WiPay.',
+            'slug' => 'wordpress-development',
+            'title' => 'WordPress development',
+            'text' => 'WordPress, Elementor and WooCommerce builds: company sites, online stores and course platforms, with checkout through Caribbean payment gateways such as WiPay.',
+            'page' => [
+                'heading' => 'WordPress development in Trinidad & Tobago',
+                'seo_title' => 'WordPress Developer in Trinidad & Tobago | Keron Lewis',
+                'summary' => 'WordPress and WooCommerce development in Trinidad and Tobago: company websites, online stores with WiPay checkout, and course platforms.',
+                'sections' => [
+                    [
+                        'heading' => 'What I build',
+                        'body' => [
+                            "I've been a WordPress developer since 2016, and the live sites in my portfolio run on it.",
+                        ],
+                        'points' => [
+                            'Company websites on WordPress and Elementor.',
+                            'Online stores on WooCommerce, with checkout through Caribbean payment gateways such as WiPay.',
+                            'Course platforms with enrolment, class scheduling and certificates.',
+                            'Forms and internal workflows with Gravity Forms.',
+                        ],
+                    ],
+                    [
+                        'heading' => 'When the plugins run out',
+                        'body' => [
+                            "Where configuration isn't enough I write PHP, JavaScript and CSS, or connect WordPress to other systems with REST APIs and webhooks. Two examples are the paid SEO audit tool on my studio's site and the drinks calculator I wrote for Mixers Anonymous.",
+                        ],
+                    ],
+                    [
+                        'heading' => 'Looking after a site',
+                        'body' => [
+                            'I also sort out the things that go wrong on WordPress sites: plugin conflicts, payment problems, hosting, DNS, Cloudflare, SSL and email delivery. I deal with clients directly and explain the options in plain language.',
+                        ],
+                    ],
+                ],
+                'projects' => ['code-canvas', 'mixers-anonymous', 'mixers-training', 'cruz-garments', 'chef-brigette', 'screen-stars'],
+            ],
         ],
         [
+            'slug' => 'web-app-development',
+            'title' => 'Web app development',
+            'text' => 'Custom web applications in PHP, MySQL, JavaScript and React: internal tools, multi-step forms, and the reports a business runs on.',
+            'page' => [
+                'heading' => 'Web app development in Trinidad & Tobago',
+                'seo_title' => 'Web App Development in Trinidad & Tobago | Keron Lewis',
+                'summary' => 'Custom web app development in Trinidad and Tobago: business applications, internal tools and reporting built in PHP, MySQL, JavaScript and React.',
+                'sections' => [
+                    [
+                        'heading' => 'What I build',
+                        'body' => [
+                            "A web app is software you open in a browser, on a phone or a computer, with nothing to install. I build them for the jobs an off-the-shelf product doesn't cover.",
+                        ],
+                        'points' => [
+                            'Business applications in PHP and MySQL.',
+                            'Internal tools and multi-step forms with validation, notifications and reporting.',
+                            'MySQL reports that replace a spreadsheet someone puts together by hand.',
+                            'Front ends in JavaScript and React.',
+                        ],
+                    ],
+                    [
+                        'heading' => 'Experience behind it',
+                        'body' => [
+                            "Since 2021 I've developed and maintained production business applications in PHP, Phalcon and MySQL for A.V. Knowles & Co. At Label House Group I built a multi-step quote-request application with validation, prefill logic, notifications and reporting.",
+                            'This site is a small web app too: I designed and built it on Laravel.',
+                        ],
+                    ],
+                    [
+                        'heading' => 'From requirements to release',
+                        'body' => [
+                            'I usually own a piece of app development from requirements through to release, test it properly before it ships, then document it and train the people who will use it.',
+                        ],
+                    ],
+                ],
+                'projects' => ['code-canvas', 'mixers-anonymous'],
+            ],
+        ],
+        [
+            'slug' => 'integrations-automation',
             'title' => 'Integrations and automation',
-            'text' => 'Getting business systems to share data using REST APIs, webhooks, Make, Zapier and n8n. Internal forms, workflow automation and MySQL reporting.',
+            'text' => 'Getting business systems to share data using REST APIs, webhooks, Make, Zapier and n8n, so nobody has to retype it.',
+            'page' => [
+                'heading' => 'Integrations and automation for businesses in Trinidad & Tobago',
+                'seo_title' => 'API Integration & Automation in Trinidad & Tobago | Keron Lewis',
+                'summary' => 'API integrations and workflow automation in Trinidad and Tobago: REST APIs, webhooks, payment gateways, Make, Zapier and n8n.',
+                'sections' => [
+                    [
+                        'heading' => 'What I build',
+                        'points' => [
+                            'Integrations between business systems over REST APIs and webhooks.',
+                            'Workflow automation with Make, Zapier and n8n.',
+                            'Payment gateway integration, including WiPay for WooCommerce stores.',
+                            'Internal forms that feed straight into the tools a team already uses.',
+                        ],
+                    ],
+                    [
+                        'heading' => 'Examples',
+                        'body' => [
+                            'At Label House Group I ran an order-to-invoice automation pilot that cut cycle time by about 35%, and scoped a two-way integration between ClickUp and the Radius ERP.',
+                            'For my own studio I built a Python and Playwright pipeline that extracted and structured more than 2,100 knowledge-base articles.',
+                        ],
+                    ],
+                    [
+                        'heading' => 'How I approach it',
+                        'body' => [
+                            'Before building anything I work out the data flow and the error handling, and compare the options: an automation platform such as Make or n8n, or a custom script.',
+                            'When an integration fails in production, I trace the API, permission or data-flow problem back to its root cause.',
+                        ],
+                    ],
+                ],
+                'projects' => ['code-canvas'],
+            ],
         ],
     ],
 

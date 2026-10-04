@@ -49,6 +49,16 @@ class Portfolio
         return $this->projects()->whereNotNull('case_url')->values();
     }
 
+    /**
+     * The services on offer, each with the address of its own page.
+     */
+    public function services(): Collection
+    {
+        return collect(config('portfolio.services'))->map(fn (array $service) => $service + [
+            'url' => route('services.show', $service['slug']),
+        ]);
+    }
+
     public function projectGroups(): array
     {
         return config('portfolio.project_groups');
@@ -172,6 +182,21 @@ class Portfolio
                     'worksFor' => $this->experience()->whereNull('end')
                         ->map(fn ($role) => ['@type' => 'Organization', 'name' => $role['org']])->values()->all(),
                 ],
+                $this->businessSchema() + [
+                    'hasOfferCatalog' => [
+                        '@type' => 'OfferCatalog',
+                        'name' => 'Web development services',
+                        'itemListElement' => $this->services()->map(fn (array $service) => [
+                            '@type' => 'Offer',
+                            'itemOffered' => [
+                                '@type' => 'Service',
+                                'name' => $service['title'],
+                                'description' => $service['text'],
+                                'url' => $service['url'],
+                            ],
+                        ])->all(),
+                    ],
+                ],
                 [
                     '@type' => 'WebSite',
                     '@id' => $site,
@@ -187,6 +212,68 @@ class Portfolio
                     'isPartOf' => ['@id' => $site],
                     'mainEntity' => ['@id' => $person],
                     'dateModified' => Carbon::createFromTimestamp(filemtime(config_path('portfolio.php')))->toIso8601String(),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * The business side of the site, for local search: who offers the
+     * services, where they are based and which countries they serve.
+     */
+    private function businessSchema(): array
+    {
+        $profile = $this->profile();
+
+        return [
+            '@type' => 'ProfessionalService',
+            '@id' => url('/').'#business',
+            'name' => "{$profile['name']}, Web Developer",
+            'description' => $profile['seo']['home_description'],
+            'url' => url('/'),
+            'image' => asset('og-cover.png'),
+            'email' => $profile['email'],
+            'telephone' => $profile['phone_e164'],
+            'address' => [
+                '@type' => 'PostalAddress',
+                'addressLocality' => $profile['city'],
+                'addressCountry' => $profile['country_code'],
+            ],
+            'areaServed' => [
+                ['@type' => 'Country', 'name' => 'Trinidad and Tobago'],
+                ['@type' => 'Place', 'name' => 'Caribbean'],
+            ],
+            'founder' => ['@id' => url('/').'#person'],
+            'sameAs' => collect($profile['links'])->pluck('url')->all(),
+        ];
+    }
+
+    /**
+     * Structured data for one service page: the service, who provides it
+     * and where the page sits in the site.
+     */
+    public function serviceSchema(array $service): array
+    {
+        return [
+            '@context' => 'https://schema.org',
+            '@graph' => [
+                [
+                    '@type' => 'Service',
+                    '@id' => $service['url'].'#service',
+                    'name' => $service['page']['heading'],
+                    'serviceType' => $service['title'],
+                    'description' => $service['page']['summary'],
+                    'url' => $service['url'],
+                    'provider' => $this->businessSchema(),
+                    'areaServed' => ['@type' => 'Country', 'name' => 'Trinidad and Tobago'],
+                ],
+                [
+                    '@type' => 'BreadcrumbList',
+                    'itemListElement' => [
+                        ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => url('/')],
+                        ['@type' => 'ListItem', 'position' => 2, 'name' => 'Services', 'item' => url('/').'#services'],
+                        ['@type' => 'ListItem', 'position' => 3, 'name' => $service['title'], 'item' => $service['url']],
+                    ],
                 ],
             ],
         ];

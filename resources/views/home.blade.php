@@ -188,15 +188,16 @@
         <div class="wrap">
             <header class="sec-head reveal">
                 <span class="num">04</span>
-                <h2>Work I take on</h2>
+                <h2>Web development services</h2>
             </header>
-            <p class="subhead reveal">I'm available for full-time web developer roles and for contracts, remote or on site in Trinidad &amp; Tobago. Freelance projects run through my studio, Code Canvas.</p>
+            <p class="subhead reveal">Web development for businesses in Trinidad &amp; Tobago and the wider Caribbean, remote or on site. Client projects run through my studio, Code Canvas, and I'm also open to full-time web developer roles and contracts.</p>
 
             <div class="services">
                 @foreach ($services as $service)
                     <article class="service reveal">
                         <h3>{{ $service['title'] }}</h3>
                         <p>{{ $service['text'] }}</p>
+                        <a class="visit" href="{{ $service['url'] }}">{{ $service['title'] }} in detail <x-icon name="arrow-right" /></a>
                     </article>
                 @endforeach
             </div>
