@@ -10,7 +10,7 @@
             @if ($testimonial->submitted_at)
                 <header class="policy-head">
                     <p class="eyebrow">Testimonial</p>
-                    <h1>Thank you, {{ $testimonial->name }}.</h1>
+                    <h1>Thank you, {{ $testimonial->sent_to }}.</h1>
                     <p class="lead">Your testimonial has reached me. I'll read it and then add it to the site.</p>
                     <div class="cta-row">
                         <a class="btn btn-primary" href="{{ route('home') }}">Go to the site <x-icon name="arrow-right" /></a>
@@ -25,24 +25,12 @@
                         @if ($testimonial->projectName())
                             Tell me how the work on {{ $testimonial->projectName() }} went for you.
                         @endif
-                        I read every testimonial before it goes on the site, and only your name, your role and your words are shown.
+                        I read every testimonial before it goes on the site.
                     </p>
                 </header>
 
                 <form class="plain-form" method="POST" action="{{ route('testimonials.store', $testimonial->token) }}">
                     @csrf
-
-                    <div class="plain-field">
-                        <label for="t-name">Your name</label>
-                        <input id="t-name" name="name" type="text" autocomplete="name" value="{{ old('name', $testimonial->sent_to) }}" maxlength="120" required>
-                        @error('name')<p class="plain-error">{{ $message }}</p>@enderror
-                    </div>
-
-                    <div class="plain-field">
-                        <label for="t-role">Your role and company <span>optional</span></label>
-                        <input id="t-role" name="role" type="text" autocomplete="organization-title" value="{{ old('role') }}" maxlength="160" placeholder="Owner, Example Ltd.">
-                        @error('role')<p class="plain-error">{{ $message }}</p>@enderror
-                    </div>
 
                     <div class="plain-field">
                         <label for="t-quote">Your testimonial</label>
@@ -54,7 +42,7 @@
                     <div class="plain-field">
                         <label class="plain-check">
                             <input type="checkbox" name="consent" value="1" @checked(old('consent')) required>
-                            <span>I'm happy for this to be published on this website with my name and role.</span>
+                            <span>I'm happy for this to be published on this website as "{{ $testimonial->sent_to }}@if ($testimonial->projectName()), {{ $testimonial->projectName() }}@endif".</span>
                         </label>
                         @error('consent')<p class="plain-error">{{ $message }}</p>@enderror
                     </div>

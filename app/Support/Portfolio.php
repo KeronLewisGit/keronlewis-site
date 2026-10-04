@@ -52,7 +52,7 @@ class Portfolio
     public function testimonials(): Collection
     {
         return $this->testimonials ??= Testimonial::approved()->latest('approved_at')->latest('id')->get()
-            ->map(fn (Testimonial $testimonial) => $testimonial->only(['id', 'quote', 'name', 'role', 'project_slug']));
+            ->map(fn (Testimonial $testimonial) => $testimonial->forDisplay());
     }
 
     /**

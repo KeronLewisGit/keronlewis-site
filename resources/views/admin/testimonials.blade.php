@@ -23,20 +23,20 @@
             <div class="a-field">
                 <label for="sent_to">Client's name</label>
                 <input id="sent_to" name="sent_to" type="text" value="{{ old('sent_to') }}" maxlength="120" required>
-                <p class="a-hint">They'll see this on the page, and it's filled in as their name for them to change.</p>
+                <p class="a-hint">Shown beside their testimonial on the site, and they'll see it on the page they open.</p>
                 @error('sent_to')<p class="a-error">{{ $message }}</p>@enderror
             </div>
 
             <div class="a-field">
-                <label for="project_slug">Project it's about</label>
-                <select id="project_slug" name="project_slug">
-                    <option value="">No particular project</option>
-                    @foreach ($projects as $slug => $name)
-                        <option value="{{ $slug }}" @selected(old('project_slug') === $slug)>{{ $name }}</option>
+                <label for="project">Project or company</label>
+                <input id="project" name="project" type="text" value="{{ old('project') }}" maxlength="160" list="project-names" autocomplete="off">
+                <datalist id="project-names">
+                    @foreach ($projects as $name)
+                        <option value="{{ $name }}"></option>
                     @endforeach
-                </select>
-                <p class="a-hint">A testimonial tied to a project shows on that project's card and case study. The rest show under "What clients say".</p>
-                @error('project_slug')<p class="a-error">{{ $message }}</p>@enderror
+                </datalist>
+                <p class="a-hint">Shown after their name. Type anything, or pick a project from your portfolio to also show the testimonial on that project's card and case study.</p>
+                @error('project')<p class="a-error">{{ $message }}</p>@enderror
             </div>
 
             <button class="btn btn-primary" type="submit">Create link</button>
@@ -51,11 +51,14 @@
                         <input type="text" value="{{ $testimonial->link() }}" readonly aria-label="Private link for {{ $testimonial->sent_to }}">
                         <button class="btn btn-ghost" type="button" data-copy="{{ $testimonial->link() }}">Copy</button>
                     </div>
-                    <form method="POST" action="{{ route('admin.testimonials.destroy', $testimonial) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button class="link-danger" type="submit">Cancel this link</button>
-                    </form>
+                    <div class="t-links">
+                        <a href="{{ route('admin.testimonials.edit', $testimonial) }}">Edit name or project</a>
+                        <form method="POST" action="{{ route('admin.testimonials.destroy', $testimonial) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button class="link-danger" type="submit">Cancel this link</button>
+                        </form>
+                    </div>
                 </div>
             @empty
                 <p class="none">No links waiting. Create one and send it to a client.</p>
@@ -68,13 +71,14 @@
         @forelse ($pending as $testimonial)
             <article class="t-item">
                 <blockquote>{{ $testimonial->quote }}</blockquote>
-                <p class="t-who">{{ $testimonial->name }}@if ($testimonial->role) <span>· {{ $testimonial->role }}</span>@endif @if ($testimonial->projectName()) <span>· about {{ $testimonial->projectName() }}</span>@endif <span>· sent {{ $testimonial->submitted_at->timezone($timezone)->format('j M Y') }}</span></p>
+                <p class="t-who">{{ $testimonial->sent_to }}@if ($testimonial->projectName()) <span>· {{ $testimonial->projectName() }}</span>@endif <span>· sent {{ $testimonial->submitted_at->timezone($timezone)->format('j M Y') }}</span></p>
                 <div class="t-actions">
                     <form method="POST" action="{{ route('admin.testimonials.approve', $testimonial) }}">
                         @csrf
                         @method('PATCH')
                         <button class="btn btn-primary" type="submit">Approve and publish</button>
                     </form>
+                    <a class="btn btn-ghost" href="{{ route('admin.testimonials.edit', $testimonial) }}">Edit</a>
                     <form method="POST" action="{{ route('admin.testimonials.destroy', $testimonial) }}">
                         @csrf
                         @method('DELETE')
@@ -92,8 +96,9 @@
         @forelse ($approved as $testimonial)
             <article class="t-item">
                 <blockquote>{{ $testimonial->quote }}</blockquote>
-                <p class="t-who">{{ $testimonial->name }}@if ($testimonial->role) <span>· {{ $testimonial->role }}</span>@endif @if ($testimonial->projectName()) <span>· about {{ $testimonial->projectName() }}</span>@endif <span>· published {{ $testimonial->approved_at->timezone($timezone)->format('j M Y') }}</span></p>
+                <p class="t-who">{{ $testimonial->sent_to }}@if ($testimonial->projectName()) <span>· {{ $testimonial->projectName() }}</span>@endif <span>· published {{ $testimonial->approved_at->timezone($timezone)->format('j M Y') }}</span></p>
                 <div class="t-actions">
+                    <a class="btn btn-ghost" href="{{ route('admin.testimonials.edit', $testimonial) }}">Edit</a>
                     <form method="POST" action="{{ route('admin.testimonials.unpublish', $testimonial) }}">
                         @csrf
                         @method('PATCH')

@@ -31,8 +31,6 @@ class TestimonialFactory extends Factory
     public function submitted(): static
     {
         return $this->state(fn (array $attributes) => [
-            'name' => $attributes['sent_to'],
-            'role' => fake()->jobTitle().', '.fake()->company(),
             'quote' => fake()->paragraph(),
             'submitted_at' => now(),
         ]);

@@ -64,6 +64,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('testimonials', [AdminTestimonialController::class, 'index'])->name('testimonials');
         Route::post('testimonials', [AdminTestimonialController::class, 'store'])->name('testimonials.store');
+        Route::get('testimonials/{testimonial}/edit', [AdminTestimonialController::class, 'edit'])->name('testimonials.edit');
+        Route::put('testimonials/{testimonial}', [AdminTestimonialController::class, 'update'])->name('testimonials.update');
         Route::patch('testimonials/{testimonial}/approve', [AdminTestimonialController::class, 'approve'])->name('testimonials.approve');
         Route::patch('testimonials/{testimonial}/unpublish', [AdminTestimonialController::class, 'unpublish'])->name('testimonials.unpublish');
         Route::delete('testimonials/{testimonial}', [AdminTestimonialController::class, 'destroy'])->name('testimonials.destroy');

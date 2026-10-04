@@ -12,15 +12,13 @@ class TestimonialTest extends TestCase
     use RefreshDatabase;
 
     private array $valid = [
-        'name' => 'Jane Client',
-        'role' => 'Owner, Example Ltd.',
         'quote' => 'Delivered on time and explained every step along the way.',
         'consent' => '1',
     ];
 
     public function test_only_someone_with_the_link_can_open_the_form(): void
     {
-        $testimonial = Testimonial::factory()->create(['sent_to' => 'Jane Client', 'project_slug' => 'code-canvas']);
+        $testimonial = Testimonial::invite('Jane Client', 'Code Canvas Consultants');
 
         $this->get($testimonial->link())
             ->assertOk()
@@ -36,12 +34,12 @@ class TestimonialTest extends TestCase
 
     public function test_a_submitted_testimonial_waits_for_approval_before_it_shows(): void
     {
-        $testimonial = Testimonial::factory()->create();
+        $testimonial = Testimonial::invite('Jane Client');
 
         $this->post($testimonial->link(), $this->valid)->assertRedirect($testimonial->link());
 
         $testimonial->refresh();
-        $this->assertSame('Jane Client', $testimonial->name);
+        $this->assertSame('Delivered on time and explained every step along the way.', $testimonial->quote);
         $this->assertNotNull($testimonial->submitted_at);
         $this->assertNull($testimonial->approved_at);
 
@@ -62,21 +60,23 @@ class TestimonialTest extends TestCase
     {
         $testimonial = Testimonial::factory()->create();
 
-        $this->post($testimonial->link(), ['name' => '', 'quote' => 'Too short'])
-            ->assertSessionHasErrors(['name', 'quote', 'consent']);
+        $this->post($testimonial->link(), ['quote' => 'Too short'])->assertSessionHasErrors(['quote', 'consent']);
 
         $this->assertNull($testimonial->fresh()->submitted_at);
     }
 
     public function test_guests_cannot_manage_testimonials(): void
     {
-        $testimonial = Testimonial::factory()->submitted()->create();
+        $testimonial = Testimonial::factory()->submitted()->create(['sent_to' => 'Jane Client']);
 
         $this->get('/admin/testimonials')->assertRedirect(route('admin.login'));
         $this->post('/admin/testimonials', ['sent_to' => 'Someone'])->assertRedirect(route('admin.login'));
+        $this->get("/admin/testimonials/{$testimonial->id}/edit")->assertRedirect(route('admin.login'));
+        $this->put("/admin/testimonials/{$testimonial->id}", ['sent_to' => 'Changed'])->assertRedirect(route('admin.login'));
         $this->patch("/admin/testimonials/{$testimonial->id}/approve")->assertRedirect(route('admin.login'));
 
         $this->assertNull($testimonial->fresh()->approved_at);
+        $this->assertSame('Jane Client', $testimonial->fresh()->sent_to);
         $this->assertDatabaseCount('testimonials', 1);
     }
 
@@ -84,23 +84,36 @@ class TestimonialTest extends TestCase
     {
         $admin = User::factory()->create();
 
-        $this->actingAs($admin)->post('/admin/testimonials', ['sent_to' => 'Jane Client', 'project_slug' => 'code-canvas'])
+        $this->actingAs($admin)->post('/admin/testimonials', ['sent_to' => 'Jane Client', 'project' => 'code canvas consultants'])
             ->assertRedirect(route('admin.testimonials'));
-        $this->actingAs($admin)->post('/admin/testimonials', ['sent_to' => 'Jane Client', 'project_slug' => 'not-a-project'])
-            ->assertSessionHasErrors('project_slug');
+        $this->actingAs($admin)->post('/admin/testimonials', ['sent_to' => ''])->assertSessionHasErrors('sent_to');
 
         $testimonial = Testimonial::sole();
         $this->assertSame(40, strlen($testimonial->token));
+        // A name that matches a portfolio project ties the testimonial to it.
+        $this->assertSame(['code-canvas', 'Code Canvas Consultants'], [$testimonial->project_slug, $testimonial->project]);
 
         $this->actingAs($admin)->get('/admin/testimonials')->assertOk()->assertSee($testimonial->link())->assertSee('Jane Client');
+    }
+
+    public function test_the_name_and_project_shown_are_the_ones_the_admin_entered(): void
+    {
+        $testimonial = Testimonial::invite('Dr. Jane Client', 'Quantum Global Institute');
+        $this->post($testimonial->link(), $this->valid);
+        $testimonial->update(['approved_at' => now()]);
+
+        // Not one of the portfolio projects, so it isn't tied to a card.
+        $this->assertNull($testimonial->project_slug);
+
+        $this->get('/')->assertSeeInOrder(['What clients say', 'Delivered on time and explained every step', 'Dr. Jane Client', 'Quantum Global Institute']);
     }
 
     public function test_an_approved_testimonial_shows_on_its_project_and_can_be_taken_down(): void
     {
         $admin = User::factory()->create();
         $testimonial = Testimonial::factory()->submitted()->create([
+            'sent_to' => 'Jane Client',
             'project_slug' => 'code-canvas',
-            'name' => 'Jane Client',
             'quote' => 'Delivered on time and explained every step along the way.',
         ]);
 
@@ -115,9 +128,49 @@ class TestimonialTest extends TestCase
         $this->get('/')->assertDontSee('Delivered on time and explained every step');
     }
 
+    public function test_the_admin_can_correct_a_testimonial_and_pick_phrases_to_highlight(): void
+    {
+        $admin = User::factory()->create();
+        $testimonial = Testimonial::factory()->approved()->create([
+            'sent_to' => 'Caron Louis',
+            'quote' => 'Working with Caron was great. We grew from 100 to over 300 students <b>fast</b>.',
+        ]);
+
+        $this->actingAs($admin)->get("/admin/testimonials/{$testimonial->id}/edit")->assertOk()->assertSee('Working with Caron was great.');
+
+        $this->actingAs($admin)->put("/admin/testimonials/{$testimonial->id}", [
+            'sent_to' => 'Jane Client',
+            'project' => 'Quantum Global Institute',
+            'quote' => 'Working with Keron was great. We grew from 100 to over 300 students <b>fast</b>.',
+            'highlights' => "from 100 to over 300 students\n",
+        ])->assertRedirect(route('admin.testimonials'));
+
+        $this->assertSame(['from 100 to over 300 students'], $testimonial->fresh()->highlights);
+
+        $this->get('/')
+            // The first highlight is set large above the words, and marked within them.
+            ->assertSee('<p class="quote-pull">From 100 to over 300 students</p>', false)
+            ->assertSee('We grew <mark>from 100 to over 300 students</mark> &lt;b&gt;fast&lt;/b&gt;.', false)
+            ->assertSeeInOrder(['Working with Keron was great.', 'Jane Client', 'Quantum Global Institute'])
+            ->assertDontSee('Caron');
+    }
+
+    public function test_a_highlight_has_to_be_a_phrase_from_the_testimonial(): void
+    {
+        $testimonial = Testimonial::factory()->submitted()->create(['quote' => 'Delivered on time and explained every step along the way.']);
+
+        $this->actingAs(User::factory()->create())->put("/admin/testimonials/{$testimonial->id}", [
+            'sent_to' => 'Jane Client',
+            'quote' => 'Delivered on time and explained every step along the way.',
+            'highlights' => 'best developer in the world',
+        ])->assertSessionHasErrors('highlights');
+
+        $this->assertNull($testimonial->fresh()->highlights);
+    }
+
     public function test_an_approved_testimonial_without_a_project_shows_under_what_clients_say(): void
     {
-        Testimonial::factory()->approved()->create(['name' => 'Jane Client', 'quote' => 'A pleasure to work with from the first call to launch.']);
+        Testimonial::factory()->approved()->create(['sent_to' => 'Jane Client', 'quote' => 'A pleasure to work with from the first call to launch.']);
 
         $this->get('/')->assertSeeInOrder(['What clients say', 'A pleasure to work with from the first call to launch.', 'Jane Client']);
     }
