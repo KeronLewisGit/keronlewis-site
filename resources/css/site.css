@@ -479,12 +479,45 @@ html:not(.js) .hero {
     margin-top: 26px;
 }
 
+.hero-offer {
+    margin-top: 26px;
+}
+
+.hero-offer a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .94rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 9px 16px;
+    border: 1px solid color-mix(in srgb, var(--coral) 40%, var(--line-strong));
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--coral) 8%, transparent);
+    transition: border-color .2s, gap .2s;
+}
+
+.hero-offer a:hover {
+    border-color: var(--coral);
+    gap: 12px;
+}
+
+.hero-offer .icon {
+    color: var(--coral-deep);
+}
+
 .cta-row {
     display: flex;
     flex-wrap: wrap;
     gap: 14px;
     margin-top: 32px;
     align-items: center;
+}
+
+.hero-offer + .cta-row {
+    margin-top: 18px;
 }
 
 .copy-link {

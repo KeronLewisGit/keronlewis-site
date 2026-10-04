@@ -3,6 +3,7 @@
 @php
     [$taglineBefore, $taglineAfter] = explode($profile['tagline_mark'], $profile['tagline'], 2) + [1 => ''];
     $localTime = now()->timezone($profile['timezone']);
+    $offerUrl = $services->firstWhere('slug', $profile['offer']['service'])['url'] ?? null;
 @endphp
 
 @section('content')
@@ -17,9 +18,17 @@
                     {{ $taglineBefore }}<span class="marker">{{ $profile['tagline_mark'] }}<svg viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 16 C 50 6, 150 6, 196 14"/></svg></span>{{ $taglineAfter }}
                 </p>
                 <p class="lead">{{ $profile['lead'] }}</p>
+                @if ($offerUrl)
+                    <p class="hero-offer"><a href="{{ $offerUrl }}">{{ $profile['offer']['text'] }} <x-icon name="arrow-right" /></a></p>
+                @endif
                 <div class="cta-row">
                     <a class="btn btn-primary" href="#contact">Get in touch <x-icon name="arrow-right" /></a>
-                    <a class="btn btn-ghost" href="{{ route('resume') }}"><x-icon name="file" /> Read my résumé</a>
+                    {{-- Clients come first here; the résumé stays one tap away in the menu. --}}
+                    @if ($bookingOpen)
+                        <a class="btn btn-ghost" href="{{ route('booking.show') }}"><x-icon name="phone" /> Book a call</a>
+                    @else
+                        <a class="btn btn-ghost" href="{{ route('resume') }}"><x-icon name="file" /> Read my résumé</a>
+                    @endif
                     <button class="copy-link" type="button" data-copy="{{ $profile['email'] }}" data-copy-label="Email address copied">
                         <x-icon name="copy" /> {{ $profile['email'] }}
                     </button>
