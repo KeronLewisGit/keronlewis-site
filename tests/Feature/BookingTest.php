@@ -48,12 +48,13 @@ class BookingTest extends TestCase
     {
         $this->get('/book')->assertOk()->assertSee("Online booking isn't open at the moment")->assertSee('noindex');
         $this->post('/book', $this->valid)->assertNotFound();
-        $this->get('/')->assertDontSee('Book a call');
+        $this->get('/')->assertDontSee('Book a call')->assertSee('Read my résumé');
         $this->get('/sitemap.xml')->assertDontSee(route('booking.show'));
 
         $this->openBooking();
 
-        $this->get('/')->assertSee('href="'.route('booking.show').'"', false);
+        // Once booking is open it takes the résumé's place beside "Get in touch".
+        $this->get('/')->assertSee('href="'.route('booking.show').'"', false)->assertDontSee('Read my résumé');
         $this->get('/sitemap.xml')->assertSee(route('booking.show'));
     }
 

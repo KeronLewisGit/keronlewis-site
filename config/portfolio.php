@@ -26,7 +26,13 @@ return [
         // The address printed on share images.
         'website' => 'keronlewis.dev',
         'price_range' => 'From TT$1,500',
-        'availability' => 'Open to full-time roles and contracts',
+        'availability' => 'Taking on new projects',
+
+        // The line above the buttons at the top of the home page, linking to one of the 'services' below.
+        'offer' => [
+            'text' => 'Websites from TT$1,500, with a mockup within 24 hours',
+            'service' => 'website-development',
+        ],
         'remote' => 'Open to remote',
 
         /*
