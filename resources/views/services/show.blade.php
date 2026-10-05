@@ -60,9 +60,11 @@
                 <section class="policy-row">
                     <h2>What clients say</h2>
                     <div class="policy-body">
-                        @foreach ($testimonials as $testimonial)
-                            <x-testimonial :testimonial="$testimonial" />
-                        @endforeach
+                        <div class="quotes-grid">
+                            @foreach ($testimonials as $testimonial)
+                                <x-testimonial :testimonial="$testimonial" />
+                            @endforeach
+                        </div>
                     </div>
                 </section>
             @endif

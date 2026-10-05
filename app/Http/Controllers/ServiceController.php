@@ -26,7 +26,7 @@ class ServiceController extends Controller
                 ->filter()
                 ->values(),
             'others' => $services->where('slug', '!==', $slug)->values(),
-            'testimonials' => $portfolio->testimonials()->take(3),
+            'testimonials' => $portfolio->testimonials()->take(2),
             'bookingOpen' => $calendar->isEnabled(),
             'schema' => $portfolio->serviceSchema($service),
         ]);
