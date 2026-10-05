@@ -25,7 +25,7 @@
                     <option value="{{ $name }}"></option>
                 @endforeach
             </datalist>
-            <p class="a-hint">Shown after the name. If it matches a project in your portfolio, the testimonial also appears on that project's card and case study.</p>
+            <p class="a-hint">Shown after the name. If it matches a project in your portfolio, the testimonial also appears on that project's case study.</p>
             @error('project')<p class="a-error">{{ $message }}</p>@enderror
         </div>
 
@@ -40,7 +40,7 @@
             <div class="a-field">
                 <label for="highlights">Phrases to highlight</label>
                 <textarea id="highlights" name="highlights" rows="3" placeholder="from 100 to over 300 students">{{ old('highlights', implode("\n", $testimonial->highlights ?? [])) }}</textarea>
-                <p class="a-hint">One per line, copied word for word from the testimonial. Each is marked in the text, and the first is also shown large above it.</p>
+                <p class="a-hint">One per line, copied word for word from the testimonial. Each is marked in the text, and the first is also shown large above it. Give every testimonial one so the cards on the site match.</p>
                 @error('highlights')<p class="a-error">{{ $message }}</p>@enderror
             </div>
         @else

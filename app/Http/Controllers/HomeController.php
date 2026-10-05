@@ -20,7 +20,7 @@ class HomeController extends Controller
             'certifications' => config('portfolio.certifications'),
             'topics' => config('portfolio.contact_topics'),
             'services' => $portfolio->services(),
-            'testimonials' => $portfolio->otherTestimonials(),
+            'testimonials' => $portfolio->testimonials(),
             'bookingOpen' => $calendar->isEnabled(),
             'budgets' => config('portfolio.contact_budgets'),
             'timelines' => config('portfolio.contact_timelines'),

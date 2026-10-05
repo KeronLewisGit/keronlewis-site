@@ -120,7 +120,8 @@ class TestimonialTest extends TestCase
         $this->actingAs($admin)->get('/admin/testimonials')->assertSee('aria-label="1 waiting for approval"', false);
         $this->actingAs($admin)->patch("/admin/testimonials/{$testimonial->id}/approve")->assertRedirect(route('admin.testimonials'));
 
-        $this->get('/')->assertSee('Delivered on time and explained every step')->assertDontSee('What clients say');
+        // Tied to a portfolio project, it is still listed with the rest on the home page.
+        $this->get('/')->assertSeeInOrder(['What clients say', 'Delivered on time and explained every step', 'Jane Client', 'Code Canvas Consultants']);
         $this->get('/work/code-canvas')->assertSeeInOrder(['What the client said', 'Delivered on time and explained every step', 'Jane Client']);
         $this->get('/services/website-development')->assertSeeInOrder(['What clients say', 'Delivered on time and explained every step']);
 
@@ -168,11 +169,16 @@ class TestimonialTest extends TestCase
         $this->assertNull($testimonial->fresh()->highlights);
     }
 
-    public function test_an_approved_testimonial_without_a_project_shows_under_what_clients_say(): void
+    public function test_every_approved_testimonial_is_listed_under_what_clients_say(): void
     {
-        Testimonial::factory()->approved()->create(['sent_to' => 'Jane Client', 'quote' => 'A pleasure to work with from the first call to launch.']);
+        Testimonial::factory()->approved()->create(['sent_to' => 'Jane Client', 'quote' => 'A pleasure to work with from the first call to launch.', 'approved_at' => now()->subDay()]);
+        Testimonial::factory()->approved()->create(['sent_to' => 'Rhea Ward', 'project_slug' => 'for-the-culture', 'quote' => 'Patient and thorough with the technical side of my business.']);
+        // Something a client typed on an older form is not shown; only the name and project entered in the admin are.
+        Testimonial::factory()->approved()->create(['sent_to' => 'Sam Owner', 'role' => 'Education and Research', 'approved_at' => now()->subDays(2)]);
 
-        $this->get('/')->assertSeeInOrder(['What clients say', 'A pleasure to work with from the first call to launch.', 'Jane Client']);
+        $this->get('/')
+            ->assertSeeInOrder(['What clients say', 'Patient and thorough', 'Rhea Ward', 'For The Culture', 'A pleasure to work with', 'Jane Client', 'Sam Owner'])
+            ->assertDontSee('Education and Research');
     }
 
     public function test_an_unanswered_link_cannot_be_approved_and_any_testimonial_can_be_deleted(): void

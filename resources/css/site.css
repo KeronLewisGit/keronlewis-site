@@ -972,7 +972,7 @@ html:not(.js) .hero {
     background: var(--paper);
     border: 1px solid var(--line);
     border-radius: var(--r);
-    transition: rotate .3s ease, translate .3s ease, box-shadow .3s ease, border-color .3s ease;
+    transition: translate .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
 
 .quote::before {
@@ -1075,36 +1075,8 @@ html:not(.js) .hero {
     font-size: .84rem;
 }
 
-/* Inside a project card there is no room for the full treatment. */
-.quote.is-compact {
-    margin-top: 18px;
-    padding: 0 0 0 14px;
-    background: none;
-    border: 0;
-    border-left: 2px solid var(--coral);
-    border-radius: 0;
-}
-
-.quote.is-compact::before,
-.quote.is-compact .quote-avatar {
-    content: none;
-    display: none;
-}
-
-.quote.is-compact p {
-    font-size: .95rem;
-}
-
-.js .quote.is-compact [data-quote]:not(.is-open) p {
-    -webkit-line-clamp: 4;
-    line-clamp: 4;
-}
-
-.quote.is-compact figcaption {
-    margin-top: 10px;
-}
-
-/* Testimonials that aren't tied to one project's card. */
+/* Every testimonial, in a row of matching cards: same height, the headline
+   given room for two lines, and the name pinned to the bottom edge. */
 .quotes {
     margin-top: 48px;
 }
@@ -1115,27 +1087,38 @@ html:not(.js) .hero {
 
 .quotes-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
-    gap: 6px 30px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    align-items: stretch;
+    gap: 6px 26px;
 }
 
-/* A lone testimonial gets a comfortable reading width instead of half the page. */
+/* A lone testimonial gets a comfortable reading width instead of the whole page. */
 .quotes-grid:has(> :only-child) {
     grid-template-columns: minmax(0, 720px);
 }
 
-/* Cards sit slightly askew, like notes pinned to a board, and straighten when pointed at. */
-.quotes-grid .quote:nth-child(odd) {
-    rotate: -.7deg;
+.quotes-grid .quote-pull {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    font-size: 1.5rem;
+    min-height: 2.3em;
 }
 
-.quotes-grid .quote:nth-child(even) {
-    rotate: .6deg;
+/* A card with no headline shows more of its text instead, so it fills the same space. */
+.js .quotes-grid .quote:not(:has(.quote-pull)) [data-quote]:not(.is-open) p {
+    -webkit-line-clamp: 8;
+    line-clamp: 8;
+}
+
+.quotes-grid .quote figcaption {
+    margin-top: auto;
+    padding-top: 18px;
 }
 
 .quotes-grid .quote:hover {
-    rotate: 0deg;
     translate: 0 -3px;
     border-color: var(--line-strong);
     box-shadow: var(--shadow);

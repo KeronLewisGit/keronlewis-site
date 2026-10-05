@@ -53,7 +53,7 @@ A sender gets a short automatic reply saying the message arrived. When the topic
 
 ## Testimonials
 
-At `/admin/testimonials`, create a private link for a client and send it to them. What they write waits there until you approve it. The name and the project or company shown beside it are the ones you enter, and **Edit** lets you correct the wording and choose phrases to highlight: each is marked in the text and the first is set large above it. Long testimonials are cut to a few lines with a "Read more" button. An approved testimonial tied to a project shows on that project's card and case study; the rest show under "What clients say" on the home page, and the newest three show on each service page.
+At `/admin/testimonials`, create a private link for a client and send it to them. What they write waits there until you approve it. The name and the project or company shown beside it are the ones you enter, and **Edit** lets you correct the wording and choose phrases to highlight: each is marked in the text and the first is set large above it. Long testimonials are cut to a few lines with a "Read more" button. Every approved testimonial shows under "What clients say" on the home page, and the newest three show on each service page. One whose project matches a portfolio project also shows on that project's case study.
 
 ## Booking a call
 

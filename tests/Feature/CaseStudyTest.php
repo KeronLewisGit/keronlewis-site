@@ -50,7 +50,7 @@ class CaseStudyTest extends TestCase
         }
     }
 
-    public function test_a_testimonial_shows_on_the_project_card_and_its_case_study(): void
+    public function test_a_testimonial_written_into_the_config_shows_on_the_home_page_and_its_case_study(): void
     {
         $this->get('/')->assertDontSee('class="quote"', false);
 

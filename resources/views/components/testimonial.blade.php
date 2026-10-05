@@ -1,4 +1,4 @@
-@props(['testimonial', 'compact' => false, 'omit' => null])
+@props(['testimonial', 'omit' => null])
 @php
     // The line under the name is left out when it would only repeat the name, or the project the quote already sits under.
     $detail = $testimonial['detail'] ?? ($testimonial['role'] ?? null);
@@ -12,8 +12,8 @@
         $words = preg_replace('/'.preg_quote(e($phrase), '/').'/iu', '<mark>$0</mark>', $words, 1);
     }
 @endphp
-<figure {{ $attributes->class(['quote', 'is-compact' => $compact]) }}>
-    @if (! $compact && $highlights)
+<figure {{ $attributes->class(['quote']) }}>
+    @if ($highlights)
         <p class="quote-pull">{{ Str::ucfirst($highlights[0]) }}</p>
     @endif
     {{-- quotes.js adds a "Read more" button when the text runs past a few lines. --}}

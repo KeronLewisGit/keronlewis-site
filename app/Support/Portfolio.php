@@ -40,29 +40,28 @@ class Portfolio
                 'thumb' => $thumbSize ? asset($thumbFile).'?v='.filemtime($thumbPath) : null,
                 'thumb_width' => $thumbSize[0] ?? null,
                 'case_url' => isset($project['case_study']) ? route('work.show', $project['slug']) : null,
-                // One written into the config wins; otherwise the newest approved one about this project.
+                // Shown on the project's case study: the newest testimonial about this project.
                 'testimonial' => $this->testimonials()->firstWhere('project_slug', $project['slug']),
             ];
         });
     }
 
     /**
-     * Testimonials clients sent through a private link and the admin approved, newest first.
+     * Every testimonial to show, newest first: the ones clients sent through
+     * a private link and the admin approved, then any written into the config.
      */
     public function testimonials(): Collection
     {
         return $this->testimonials ??= Testimonial::approved()->latest('approved_at')->latest('id')->get()
-            ->map(fn (Testimonial $testimonial) => $testimonial->forDisplay());
-    }
-
-    /**
-     * Approved testimonials that aren't already shown on a project's card.
-     */
-    public function otherTestimonials(): Collection
-    {
-        $onCards = $this->projects()->pluck('testimonial.id')->filter();
-
-        return $this->testimonials()->whereNotIn('id', $onCards)->values();
+            ->map(fn (Testimonial $testimonial) => $testimonial->forDisplay())
+            ->concat(collect(config('portfolio.projects'))->filter(fn (array $project) => isset($project['testimonial']))->map(fn (array $project) => [
+                'quote' => $project['testimonial']['quote'],
+                'name' => $project['testimonial']['name'],
+                'detail' => $project['testimonial']['role'] ?? $project['name'],
+                'highlights' => $project['testimonial']['highlights'] ?? [],
+                'project_slug' => $project['slug'],
+            ]))
+            ->values();
     }
 
     /**

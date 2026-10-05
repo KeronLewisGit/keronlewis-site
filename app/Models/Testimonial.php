@@ -92,8 +92,7 @@ class Testimonial extends Model
             'id' => $this->id,
             'quote' => $this->quote,
             'name' => $this->sent_to,
-            // Older testimonials may only have the role their writer typed.
-            'detail' => $this->projectName() ?: $this->role,
+            'detail' => $this->projectName(),
             'highlights' => $this->highlights ?? [],
             'project_slug' => $this->project_slug,
         ];
