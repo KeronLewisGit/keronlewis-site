@@ -4,6 +4,8 @@
     [$taglineBefore, $taglineAfter] = explode($profile['tagline_mark'], $profile['tagline'], 2) + [1 => ''];
     $localTime = now()->timezone($profile['timezone']);
     $offerUrl = $services->firstWhere('slug', $profile['offer']['service'])['url'] ?? null;
+    // Sections number themselves, so one that is left out (no testimonials yet) doesn't leave a gap.
+    $number = 0;
 @endphp
 
 @section('content')
@@ -63,11 +65,11 @@
     <section class="section" id="work">
         <div class="wrap">
             <header class="sec-head reveal">
-                <span class="num">01</span>
+                <span class="num">{{ sprintf('%02d', ++$number) }}</span>
                 <h2>Selected work</h2>
             </header>
             <p class="subhead reveal">
-                Nine live sites I designed and built, most of them for clients and a few for my own businesses. They run on WordPress and Elementor, and a few have custom tools I wrote on top, like the paid SEO audit on my studio's site and the drinks calculator for Mixers Anonymous. My back-end and automation work is mostly internal to the companies I've worked for, so that's covered under <a href="#experience">Experience</a>.
+Nine live sites I designed and built, for clients and for my own businesses. A few have custom tools I wrote on top, like the paid SEO audit and the drinks calculator. My back-end and automation work is covered under <a href="#experience">Experience</a>.
             </p>
 
             <div class="filters reveal" role="group" aria-label="Filter projects">
@@ -116,24 +118,36 @@
                 @endforeach
             </div>
 
-            @if ($testimonials->isNotEmpty())
-                <div class="quotes reveal">
-                    <h3>What clients say</h3>
-                    <div class="quotes-grid">
-                        @foreach ($testimonials as $testimonial)
-                            <x-testimonial :testimonial="$testimonial" />
-                        @endforeach
-                    </div>
-                </div>
-            @endif
+            {{-- On a phone only the first few projects show until this is pressed; work.js handles it. --}}
+            <p class="work-more" data-work-more hidden>
+                <button class="btn btn-ghost" type="button">Show all {{ $projects->count() }} projects <x-icon name="chevron-down" /></button>
+            </p>
         </div>
     </section>
+
+    {{-- TESTIMONIALS --}}
+    @if ($testimonials->isNotEmpty())
+        <section class="section" id="testimonials">
+            <div class="wrap">
+                <header class="sec-head reveal">
+                    <span class="num">{{ sprintf('%02d', ++$number) }}</span>
+                    <h2>What clients say</h2>
+                </header>
+
+                <div class="quotes-grid reveal">
+                    @foreach ($testimonials as $testimonial)
+                        <x-testimonial :testimonial="$testimonial" />
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
 
     {{-- EXPERIENCE --}}
     <section class="section" id="experience">
         <div class="wrap">
             <header class="sec-head reveal">
-                <span class="num">02</span>
+                <span class="num">{{ sprintf('%02d', ++$number) }}</span>
                 <h2>Experience</h2>
                 <a class="sec-link" href="{{ route('resume') }}">Full résumé <x-icon name="arrow-right" /></a>
             </header>
@@ -172,7 +186,7 @@
     <section class="section" id="skills">
         <div class="wrap">
             <header class="sec-head reveal">
-                <span class="num">03</span>
+                <span class="num">{{ sprintf('%02d', ++$number) }}</span>
                 <h2>What I work with</h2>
             </header>
             <p class="subhead reveal">Pick a skill to see which roles I've used it in.</p>
@@ -204,7 +218,7 @@
     <section class="section" id="services">
         <div class="wrap">
             <header class="sec-head reveal">
-                <span class="num">04</span>
+                <span class="num">{{ sprintf('%02d', ++$number) }}</span>
                 <h2>Web development services</h2>
             </header>
             <p class="subhead reveal">Web development for businesses in Trinidad &amp; Tobago and the wider Caribbean, remote or on site. Client projects run through my studio, Code Canvas, and I'm also open to full-time web developer roles and contracts.</p>
@@ -221,10 +235,12 @@
 
             <p class="services-cta reveal">
                 <a class="btn btn-primary" href="#contact">Talk to me about a role or project <x-icon name="arrow-right" /></a>
+                {{-- One second choice, not two: a call when booking is open, the résumé otherwise. --}}
                 @if ($bookingOpen)
                     <a class="btn btn-ghost" href="{{ route('booking.show') }}"><x-icon name="phone" /> Book a call</a>
+                @else
+                    <a class="btn btn-ghost" href="{{ route('resume.pdf') }}"><x-icon name="download" /> Download my résumé</a>
                 @endif
-                <a class="btn btn-ghost" href="{{ route('resume.pdf') }}"><x-icon name="download" /> Download my résumé</a>
             </p>
         </div>
     </section>
@@ -233,7 +249,7 @@
     <section class="section" id="about">
         <div class="wrap">
             <header class="sec-head reveal">
-                <span class="num">05</span>
+                <span class="num">{{ sprintf('%02d', ++$number) }}</span>
                 <h2>About</h2>
             </header>
 
@@ -277,7 +293,7 @@
         <div class="wrap reveal">
             <div class="contact-card">
                 <div class="contact-copy">
-                    <p class="eyebrow"><span class="num">06</span> Contact</p>
+                    <p class="eyebrow"><span class="num">{{ sprintf('%02d', ++$number) }}</span> Contact</p>
                     <h2>Get in touch</h2>
                     <p>I'm open to full-stack and web development roles, full-time or contract, remote or in Trinidad. I also take on client projects through Code Canvas. Use the form, or email me directly.</p>
 

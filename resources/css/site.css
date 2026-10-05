@@ -25,6 +25,11 @@
     --max: 1160px;
     --r: 14px;
     --nav-h: 64px;
+
+    /* Vertical rhythm. Every section, heading block and card grid takes its spacing from these three. */
+    --space-section: 96px;
+    --space-block: 32px;
+    --space-gap: 24px;
 }
 
 :root[data-theme='dark'] {
@@ -637,7 +642,7 @@ html:not(.js) .hero {
 
 /* ---------- sections ---------- */
 .section {
-    padding: 88px 0;
+    padding: var(--space-section) 0;
     position: relative;
 }
 
@@ -645,7 +650,7 @@ html:not(.js) .hero {
     display: flex;
     align-items: baseline;
     gap: 16px;
-    margin-bottom: 28px;
+    margin-bottom: var(--space-block);
     border-bottom: 1px solid var(--line);
     padding-bottom: 16px;
 }
@@ -681,7 +686,7 @@ html:not(.js) .hero {
 .subhead {
     font-size: 1.05rem;
     color: var(--ink-soft);
-    margin-bottom: 26px;
+    margin-bottom: var(--space-block);
     max-width: 68ch;
 }
 
@@ -696,7 +701,7 @@ html:not(.js) .hero {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 30px;
+    margin-bottom: var(--space-block);
 }
 
 .filter {
@@ -738,7 +743,18 @@ html:not(.js) .hero {
 .work-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 26px;
+    gap: var(--space-gap);
+}
+
+/* Only used on phones (see the responsive rules): the button that reveals the rest of the projects. */
+.work-more {
+    display: none;
+    margin-top: var(--space-gap);
+}
+
+.work-more .btn {
+    width: 100%;
+    justify-content: center;
 }
 
 .card {
@@ -1175,19 +1191,13 @@ html:not(.js) .hero {
 
 /* Every testimonial, in a row of matching cards: same height, the headline
    given room for two lines, and the name pinned to the bottom edge. */
-.quotes {
-    margin-top: 48px;
-}
-
-.quotes h3 {
-    font-size: 1.28rem;
-}
-
 .quotes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     align-items: stretch;
-    gap: 6px 26px;
+    /* Each card already leaves room above itself for its quotation mark. */
+    gap: 0 var(--space-gap);
+    margin-top: -6px;
 }
 
 /* A lone testimonial gets a comfortable reading width instead of the whole page. */
@@ -1513,7 +1523,7 @@ button.chip {
 .services {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 26px;
+    gap: var(--space-gap);
 }
 
 .service {
@@ -1540,7 +1550,7 @@ button.chip {
     display: flex;
     flex-wrap: wrap;
     gap: 14px;
-    margin-top: 30px;
+    margin-top: var(--space-block);
 }
 
 /* ---------- about ---------- */
@@ -2080,7 +2090,7 @@ button.chip {
    Same rhythm as the home page: a ruled header, then label-left /
    text-right rows like the Experience section. */
 .policy-head {
-    padding-bottom: 28px;
+    padding-bottom: var(--space-block);
     border-bottom: 1px solid var(--line);
 }
 
@@ -2096,8 +2106,8 @@ button.chip {
 .policy-row {
     display: grid;
     grid-template-columns: 260px minmax(0, 1fr);
-    gap: 28px;
-    padding: 28px 0;
+    gap: var(--space-block);
+    padding: var(--space-block) 0;
     border-bottom: 1px solid var(--line);
 }
 
@@ -2347,7 +2357,7 @@ button.chip {
    Built on the privacy page's ruled rows, with the project's screenshot
    in a browser frame that scrolls. */
 .case-shot {
-    margin: 36px 0 8px;
+    margin: var(--space-block) 0 0;
     border: 1px solid var(--line);
     border-radius: var(--r);
     overflow: hidden;
@@ -2380,9 +2390,13 @@ button.chip {
 }
 
 /* On the ruled pages the general "soft grey text, 70 characters wide" rule would mute the quote. */
+.policy-body .quotes-grid {
+    max-width: none;
+    margin-top: -24px;
+}
+
 .policy-body .quote {
     max-width: 640px;
-    margin-top: 24px;
 }
 
 .policy-body .quote > :not(.quote-more),
@@ -2393,10 +2407,6 @@ button.chip {
 
 .policy-body .quote .quote-pull {
     margin-bottom: 14px;
-}
-
-.policy-body .quote + .quote {
-    margin-top: 44px;
 }
 
 .faq h3 {
@@ -2561,8 +2571,10 @@ button.chip {
         bottom: 12px;
     }
 
-    .section {
-        padding: 64px 0;
+    :root {
+        --space-section: 64px;
+        --space-block: 24px;
+        --space-gap: 20px;
     }
 
     .hero {
@@ -2608,6 +2620,15 @@ button.chip {
 @media (max-width: 640px) {
     .work-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Nine full-width cards is a long scroll, so a phone starts with four. Picking a filter, or the button, shows the rest. */
+    .js .work-grid:not(.is-expanded, .is-filtered) .card:nth-child(n + 5) {
+        display: none;
+    }
+
+    .js .work-grid:not(.is-expanded, .is-filtered) + .work-more {
+        display: block;
     }
 }
 

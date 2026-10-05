@@ -18,6 +18,8 @@ function initFilters(grid) {
     filters.forEach((button) => {
         button.addEventListener('click', () => {
             const group = button.dataset.filter;
+            // A filter always shows every match, so the phone-only "first few" limit steps aside.
+            grid.classList.toggle('is-filtered', group !== 'all');
 
             transition(() => {
                 filters.forEach((other) => {
@@ -114,10 +116,25 @@ function initViewer(grid) {
     });
 }
 
+// On a phone the full list of projects is a long scroll, so CSS shows the first few and this button reveals the rest.
+function initShowAll(grid) {
+    const more = document.querySelector('[data-work-more]');
+    if (!more) return;
+
+    more.hidden = false;
+    more.querySelector('button').addEventListener('click', () => {
+        transition(() => {
+            grid.classList.add('is-expanded');
+            more.hidden = true;
+        });
+    });
+}
+
 export function initWork() {
     const grid = document.querySelector('[data-work-grid]');
     if (!grid) return;
 
+    initShowAll(grid);
     initFilters(grid);
     initGlow(grid);
     initViewer(grid);
