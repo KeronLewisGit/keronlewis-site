@@ -193,6 +193,12 @@
     </dialog>
     <script type="application/json" id="palette-data">@json($commands)</script>
 
+    {{-- "Read more" on a testimonial opens the whole thing here; quotes.js fills it in. --}}
+    <dialog class="quote-pop" data-quote-pop aria-label="Testimonial">
+        <button class="tool-btn quote-pop-close" type="button" data-quote-pop-close aria-label="Close"><x-icon name="x" /></button>
+        <div class="quote-pop-body" data-quote-pop-body></div>
+    </dialog>
+
     <div class="toast" data-toast role="status" aria-live="polite"></div>
 
     @if ($gaId)
