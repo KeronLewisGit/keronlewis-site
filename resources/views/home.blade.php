@@ -105,9 +105,6 @@
                                     <li>{{ $tag }}</li>
                                 @endforeach
                             </ul>
-                            @if ($project['testimonial'] ?? null)
-                                <x-testimonial :testimonial="$project['testimonial']" :omit="$project['name']" compact />
-                            @endif
                             <div class="card-links">
                                 @if ($project['case_url'])
                                     <a class="visit" href="{{ $project['case_url'] }}">Read the case study <x-icon name="arrow-right" /></a>

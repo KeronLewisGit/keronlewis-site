@@ -35,7 +35,7 @@
                         <option value="{{ $name }}"></option>
                     @endforeach
                 </datalist>
-                <p class="a-hint">Shown after their name. Type anything, or pick a project from your portfolio to also show the testimonial on that project's card and case study.</p>
+                <p class="a-hint">Shown after their name. Type anything, or pick a project from your portfolio to also show the testimonial on that project's case study.</p>
                 @error('project')<p class="a-error">{{ $message }}</p>@enderror
             </div>
 
