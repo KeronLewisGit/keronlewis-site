@@ -69,7 +69,7 @@
                 <h2>Selected work</h2>
             </header>
             <p class="subhead reveal">
-Nine live sites I designed and built, for clients and for my own businesses. A few have custom tools I wrote on top, like the paid SEO audit and the drinks calculator. My back-end and automation work is covered under <a href="#experience">Experience</a>.
+Seventeen live sites I designed and built, for clients and for my own businesses. The newer ones are Laravel applications and the rest run on WordPress. Several have custom tools I wrote on top, like the paid SEO audit, the drinks calculator and the insurance calculators. My back-end and automation work is covered under <a href="#experience">Experience</a>.
             </p>
 
             <div class="filters reveal" role="group" aria-label="Filter projects">
@@ -90,7 +90,7 @@ Nine live sites I designed and built, for clients and for my own businesses. A f
                                 @if ($project['image'])
                                     <img src="{{ $project['thumb'] ?? $project['image'] }}"
                                          @if ($project['thumb']) srcset="{{ $project['thumb'] }} {{ $project['thumb_width'] }}w, {{ $project['image'] }} {{ $project['image_width'] }}w" sizes="(max-width: 640px) calc(100vw - 42px), (max-width: 1000px) calc(50vw - 42px), 350px" @endif
-                                         width="{{ $project['image_width'] }}" height="{{ $project['image_height'] }}" loading="lazy" decoding="async" alt="{{ $project['name'] }} website, a {{ Str::lower($project['category']) }} site built on WordPress by {{ $profile['name'] }}"
+                                         width="{{ $project['image_width'] }}" height="{{ $project['image_height'] }}" loading="lazy" decoding="async" alt="{{ $project['name'] }} website, a {{ Str::lower($project['category']) }} site built with {{ $project['stack'][0] }} by {{ $profile['name'] }}"
                                          style="--pan: {{ round(max(1.2, ($project['image_height'] / $project['image_width'] * 350 - 220) / 200), 1) }}s">
                                 @else
                                     <span class="shot-empty">{{ $project['host'] }}</span>
