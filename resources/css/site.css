@@ -746,15 +746,36 @@ html:not(.js) .hero {
     gap: var(--space-gap);
 }
 
-/* Only used on phones (see the responsive rules): the button that reveals the rest of the projects. */
-.work-more {
+/* Seventeen cards would swamp the page, so the grid opens with the first six (four on a phone) and this
+   button reveals the rest; picking a filter shows every match. The rules live under `.js` so the full
+   list still renders without scripting. */
+.js .work-grid:not(.is-expanded, .is-filtered) .card:nth-child(n + 7) {
     display: none;
+}
+
+.work-more {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     margin-top: var(--space-gap);
 }
 
-.work-more .btn {
-    width: 100%;
-    justify-content: center;
+.work-more .mono {
+    font-size: .72rem;
+    color: var(--muted);
+}
+
+.work-more .btn svg {
+    transition: rotate .25s;
+}
+
+.work-more .btn.is-open svg {
+    rotate: 180deg;
+}
+
+.js .work-grid.is-filtered + .work-more {
+    display: none;
 }
 
 .card {
@@ -2622,13 +2643,14 @@ button.chip {
         grid-template-columns: 1fr;
     }
 
-    /* Nine full-width cards is a long scroll, so a phone starts with four. Picking a filter, or the button, shows the rest. */
+    /* Full-width cards are a long scroll, so a phone starts with four instead of six. */
     .js .work-grid:not(.is-expanded, .is-filtered) .card:nth-child(n + 5) {
         display: none;
     }
 
-    .js .work-grid:not(.is-expanded, .is-filtered) + .work-more {
-        display: block;
+    .work-more .btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 

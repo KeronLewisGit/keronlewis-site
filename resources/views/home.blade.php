@@ -69,7 +69,7 @@
                 <h2>Selected work</h2>
             </header>
             <p class="subhead reveal">
-Seventeen live sites I designed and built, for clients and for my own businesses. The newer ones are Laravel applications and the rest run on WordPress. Several have custom tools I wrote on top, like the paid SEO audit, the drinks calculator and the insurance calculators. My back-end and automation work is covered under <a href="#experience">Experience</a>.
+Seventeen live sites I designed and built, for clients and for my own businesses. The newer ones are Laravel applications and the rest run on WordPress. Several have custom tools I wrote on top, like the paid SEO audit, the drinks calculator and the insurance calculators. A few are shown first; filter by sector or show all for the full list. My back-end and automation work is covered under <a href="#experience">Experience</a>.
             </p>
 
             <div class="filters reveal" role="group" aria-label="Filter projects">
@@ -81,7 +81,7 @@ Seventeen live sites I designed and built, for clients and for my own businesses
                 @endforeach
             </div>
 
-            <div class="work-grid" data-work-grid>
+            <div class="work-grid" id="work-grid" data-work-grid>
                 @foreach ($projects as $project)
                     <article class="card reveal" data-project="{{ $project['slug'] }}" data-groups="{{ implode(' ', $project['groups']) }}" style="view-transition-name: card-{{ $project['slug'] }}">
                         <a class="shot" href="{{ $project['url'] }}" target="_blank" rel="noopener" data-project-open aria-label="Preview {{ $project['name'] }}">
@@ -118,10 +118,13 @@ Seventeen live sites I designed and built, for clients and for my own businesses
                 @endforeach
             </div>
 
-            {{-- On a phone only the first few projects show until this is pressed; work.js handles it. --}}
-            <p class="work-more" data-work-more hidden>
-                <button class="btn btn-ghost" type="button">Show all {{ $projects->count() }} projects <x-icon name="chevron-down" /></button>
-            </p>
+            {{-- Only the first few projects show until this is pressed; work.js toggles it and the CSS hides the rest. --}}
+            <div class="work-more" data-work-more hidden>
+                <button class="btn btn-ghost" type="button" aria-expanded="false" aria-controls="work-grid">
+                    <span data-work-more-label>Show all {{ $projects->count() }} projects</span> <x-icon name="chevron-down" />
+                </button>
+                <span class="mono" data-work-more-note>Showing a selection of {{ $projects->count() }}</span>
+            </div>
         </div>
     </section>
 

@@ -116,17 +116,44 @@ function initViewer(grid) {
     });
 }
 
-// On a phone the full list of projects is a long scroll, so CSS shows the first few and this button reveals the rest.
+// The full list of projects is a long scroll, so CSS shows the first few and this button toggles the rest.
 function initShowAll(grid) {
     const more = document.querySelector('[data-work-more]');
     if (!more) return;
 
+    const button = more.querySelector('button');
+    const label = more.querySelector('[data-work-more-label]');
+    const note = more.querySelector('[data-work-more-note]');
+    const cards = [...grid.querySelectorAll('[data-project]')];
+    const showAll = label.textContent;
+
+    // How many cards the CSS is letting through at this screen size (six, or four on a phone).
+    const count = () => {
+        const shown = cards.filter((card) => card.offsetParent !== null).length;
+        note.textContent = shown === cards.length ? `Showing all ${cards.length}` : `Showing ${shown} of ${cards.length}`;
+    };
+
     more.hidden = false;
-    more.querySelector('button').addEventListener('click', () => {
+    count();
+    matchMedia('(max-width: 640px)').addEventListener('change', count);
+
+    button.addEventListener('click', () => {
+        const expanded = !grid.classList.contains('is-expanded');
+
         transition(() => {
-            grid.classList.add('is-expanded');
-            more.hidden = true;
+            grid.classList.toggle('is-expanded', expanded);
+            button.setAttribute('aria-expanded', String(expanded));
+            button.classList.toggle('is-open', expanded);
+            label.textContent = expanded ? 'Show fewer' : showAll;
+            count();
         });
+
+        // Collapsing can leave the reader far below the grid, so bring its top back into view.
+        if (!expanded) {
+            grid.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        } else {
+            track('work_show_all');
+        }
     });
 }
 
