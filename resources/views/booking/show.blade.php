@@ -29,6 +29,7 @@
                     <p class="lead">Send me a message instead and I'll come back to you with a time, or call me on <a href="tel:{{ $profile['phone_e164'] }}">{{ $profile['phone'] }}</a>.</p>
                     <div class="cta-row">
                         <a class="btn btn-primary" href="{{ route('home') }}#contact">Send a message <x-icon name="arrow-right" /></a>
+                        <a class="btn btn-ghost" href="{{ $profile['calendly'] }}" target="_blank" rel="noopener">Book a video call on Calendly <x-icon name="arrow-up-right" /></a>
                     </div>
                 </header>
             @else
@@ -36,6 +37,7 @@
                     <p class="eyebrow">Book a call</p>
                     <h1>Book a call with me</h1>
                     <p class="lead">Pick a time and I'll phone you to talk through your website, store or web app. Calls last {{ $minutes }} minutes. Times are Trinidad &amp; Tobago time ({{ $offset }}).</p>
+                    <p>Prefer a video call? <a href="{{ $profile['calendly'] }}" target="_blank" rel="noopener">Pick a time on Calendly</a>.</p>
                 </header>
 
                 <form class="plain-form book-form" method="POST" action="{{ route('booking.store') }}">

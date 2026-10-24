@@ -23,6 +23,7 @@ class PagesTest extends TestCase
             ->assertSeeInOrder(['Websites from TT$1,500, with a mockup within 24 hours', 'Get in touch', 'Taking on new projects'])
             ->assertSee('<title>'.e(config('portfolio.profile.seo.home_title')).'</title>', false)
             ->assertSee('<a href="mailto:'.config('portfolio.profile.email').'">', false)
+            ->assertSee('href="'.config('portfolio.profile.calendly').'"', false)
             ->assertSeeInOrder(['<!--email_off-->', 'mailto:', '<!--/email_off-->'], false)
             ->assertSee('"@type":"ProfilePage"', false)
             ->assertSee('"@type":"Occupation"', false);

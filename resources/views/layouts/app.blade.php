@@ -169,6 +169,7 @@
                 @if ($bookingOpen)
                     <a href="{{ route('booking.show') }}">Book a call</a>
                 @endif
+                <a href="{{ $profile['calendly'] }}" target="_blank" rel="noopener">Calendly</a>
                 <a href="{{ route('privacy') }}">Privacy</a>
                 @if ($gaId)
                     <button type="button" data-consent-open>Cookie settings</button>

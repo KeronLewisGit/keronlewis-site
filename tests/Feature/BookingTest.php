@@ -46,7 +46,8 @@ class BookingTest extends TestCase
 
     public function test_booking_is_closed_until_the_admin_switches_it_on(): void
     {
-        $this->get('/book')->assertOk()->assertSee("Online booking isn't open at the moment")->assertSee('noindex');
+        $this->get('/book')->assertOk()->assertSee("Online booking isn't open at the moment")->assertSee('noindex')
+            ->assertSee('href="'.config('portfolio.profile.calendly').'"', false);
         $this->post('/book', $this->valid)->assertNotFound();
         $this->get('/')->assertDontSee('Book a call')->assertSee('Read my résumé');
         $this->get('/sitemap.xml')->assertDontSee(route('booking.show'));

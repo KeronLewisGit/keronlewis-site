@@ -309,6 +309,7 @@ Seventeen live sites I designed and built, for clients and for my own businesses
                         @if ($bookingOpen)
                             <li><a href="{{ route('booking.show') }}"><x-icon name="clock" /> Book a call</a></li>
                         @endif
+                        <li><a href="{{ $profile['calendly'] }}" target="_blank" rel="noopener"><x-icon name="link" /> Book a video call on Calendly</a></li>
                         <li><a href="{{ $profile['links']['github']['url'] }}" target="_blank" rel="noopener"><x-icon name="github" /> {{ $profile['links']['github']['handle'] }}</a></li>
                         <li><a href="{{ $profile['links']['linkedin']['url'] }}" target="_blank" rel="noopener"><x-icon name="linkedin" /> {{ $profile['links']['linkedin']['handle'] }}</a></li>
                         <li><a href="{{ $profile['links']['studio']['url'] }}" target="_blank" rel="noopener"><x-icon name="globe" /> {{ $profile['links']['studio']['handle'] }}</a></li>

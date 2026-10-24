@@ -23,6 +23,8 @@ return [
         'email' => 'keronlewis@live.com',
         'phone' => '+1 (868) 275-3268',
         'phone_e164' => '+18682753268',
+        // A 30-minute video call booked through Calendly, offered beside the phone booking at /book.
+        'calendly' => 'https://calendly.com/keronlewis/30min',
         // The address printed on share images.
         'website' => 'keronlewis.dev',
         'price_range' => 'From TT$1,500',
