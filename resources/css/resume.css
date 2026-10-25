@@ -115,6 +115,7 @@
 }
 
 .r-highlights strong {
+    font-variant-numeric: tabular-nums;
     font-family: var(--font-display);
     font-size: 2.2rem;
     font-weight: 700;
@@ -263,7 +264,21 @@ a.r-note:hover {
     margin-top: -7px;
     border-radius: 4px;
     background: var(--teal);
-    transition: filter .2s, box-shadow .2s;
+    transform-origin: left;
+    transition: filter .2s, box-shadow .2s, transform 1s var(--ease-out) calc(var(--n, 0) * 90ms + 250ms);
+}
+
+/* Bars grow out along the time axis, one role after another, when the chart scrolls in. */
+.js .gantt.reveal:not(.is-in) .gantt-bar {
+    transform: scaleX(0);
+}
+
+.js .gantt.reveal .gantt-today {
+    transition: opacity .6s ease 1s;
+}
+
+.js .gantt.reveal:not(.is-in) .gantt-today {
+    opacity: 0;
 }
 
 /* Hit target taller than the mark itself. */
@@ -642,7 +657,7 @@ a.r-note:hover {
         --muted: #6b675e;
         --line: #dcd6c8;
         --line-strong: #cfc7b6;
-        --coral: #E14B33;
+        --coral: #D2412A;
         --coral-deep: #BE3A22;
         --teal: #13514C;
         color-scheme: light;

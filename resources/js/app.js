@@ -11,6 +11,7 @@ import { initResume } from './modules/resume';
 import { initTracking } from './modules/track';
 import { initConsent } from './modules/consent';
 import { initQuotes } from './modules/quotes';
+import { initCount } from './modules/count';
 
 initTheme();
 initNav();
@@ -25,3 +26,4 @@ initResume();
 initTracking();
 initConsent();
 initQuotes();
+initCount();

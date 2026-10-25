@@ -15,7 +15,7 @@
         <div class="wrap hero-grid">
             <div class="hero-copy">
                 {{-- The role and place are part of the h1 so search engines read them as the page's subject. --}}
-                <h1><span class="eyebrow">{{ $profile['title'] }} · {{ $profile['location'] }}</span> {{ $profile['name'] }}</h1>
+                <h1><span class="eyebrow">{{ $profile['title'] }} · {{ $profile['location'] }}</span> <span class="hero-name">{{ $profile['name'] }}</span></h1>
                 <p class="thesis">
                     {{ $taglineBefore }}<span class="marker">{{ $profile['tagline_mark'] }}<svg viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 16 C 50 6, 150 6, 196 14"/></svg></span>{{ $taglineAfter }}
                 </p>
@@ -60,6 +60,19 @@
             </aside>
         </div>
     </section>
+
+    {{-- A slow band of the sites below. Decorative: every name is in the work grid, so screen readers skip it. --}}
+    <div class="ticker" aria-hidden="true">
+        <div class="ticker-track">
+            @foreach ([1, 2] as $copy)
+                <ul>
+                    @foreach ($projects as $project)
+                        <li>{{ $project['name'] }}</li>
+                    @endforeach
+                </ul>
+            @endforeach
+        </div>
+    </div>
 
     {{-- WORK --}}
     <section class="section" id="work">

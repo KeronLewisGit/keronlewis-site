@@ -36,7 +36,7 @@
         <ul class="r-highlights" aria-label="Results">
             @foreach ($highlights as $item)
                 <li>
-                    <strong>{{ $item['value'] }}</strong>
+                    <strong data-count>{{ $item['value'] }}</strong>
                     <span>{{ $item['label'] }}</span>
                     <small>{{ $item['context'] }}</small>
                 </li>
@@ -49,7 +49,7 @@
                 <p class="r-note no-print">Every role on one time axis. Select a bar to jump to it.</p>
             </div>
 
-            <div class="gantt" data-gantt>
+            <div class="gantt reveal" data-gantt>
                 <div class="gantt-grid" aria-hidden="true">
                     @foreach ($chart['years'] as $tick)
                         <span @class(['gantt-tick', 'is-end' => $loop->last]) style="left: {{ $tick['left'] }}%"><i>{{ $tick['year'] }}</i></span>
@@ -62,7 +62,7 @@
                             <span class="gantt-label">{{ $bar['org'] }}<small>{{ $bar['role'] }}</small></span>
                             <span class="gantt-track">
                                 <a @class(['gantt-bar', 'tip-end' => $bar['left'] + $bar['width'] / 2 > 60]) href="#role-{{ $bar['id'] }}" data-bar="{{ $bar['id'] }}"
-                                   style="left: {{ $bar['left'] }}%; width: {{ $bar['width'] }}%"
+                                   style="left: {{ $bar['left'] }}%; width: {{ $bar['width'] }}%; --n: {{ $loop->index }}"
                                    aria-label="{{ $bar['role'] }} at {{ $bar['org'] }}, {{ $bar['period'] }}{{ $bar['type'] ? ', '.$bar['type'] : '' }}">
                                     <span class="gantt-tip" aria-hidden="true">
                                         <b>{{ $bar['role'] }}</b>

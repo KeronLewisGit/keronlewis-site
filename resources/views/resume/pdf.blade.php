@@ -34,7 +34,7 @@
     <h1>{{ $profile['name'] }}</h1>
     <p class="title">{{ $profile['title'] }}</p>
     <p class="contact">
-        {{ $profile['location'] }}<span>|</span>{{ $profile['email'] }}<span>|</span>{{ $profile['phone'] }}<br>
+        {{ $profile['location'] }}<span>|</span><a href="mailto:{{ $profile['email'] }}">{{ $profile['email'] }}</a><span>|</span><a href="tel:{{ $profile['phone_e164'] }}">{{ $profile['phone'] }}</a><br>
         <a href="{{ url('/') }}">{{ parse_url(url('/'), PHP_URL_HOST) }}</a>
         @foreach ($profile['links'] as $link)
             <span>|</span><a href="{{ $link['url'] }}">{{ $link['handle'] }}</a>
