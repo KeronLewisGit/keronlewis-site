@@ -12,12 +12,14 @@ import { initTracking } from './modules/track';
 import { initConsent } from './modules/consent';
 import { initQuotes } from './modules/quotes';
 import { initCount } from './modules/count';
+import { initKinetic } from './modules/kinetic';
 
 initTheme();
 initNav();
 initReveal();
 initCopy();
 initPalette();
+initKinetic();
 initDots();
 initClock();
 initWork();
