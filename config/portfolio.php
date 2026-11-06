@@ -325,31 +325,31 @@ return [
             'category' => 'Studio',
             'groups' => ['tools'],
             'url' => 'https://codecanvastt.com/',
-            'summary' => "My own studio's site. It includes an SEO audit tool I built, with payment handled through WiPay.",
-            'stack' => ['WordPress', 'Elementor', 'Custom tool', 'WiPay'],
+            'summary' => "My own studio's site, rebuilt in Laravel. A free site scan leads to small paid services, from a TT$6 SEO report to quick fixes, all paid by card through WiPay.",
+            'stack' => ['Laravel', 'WiPay', 'Site scanner', 'Admin back office'],
             'case_study' => [
-                'title' => 'A paid SEO audit, sold from the studio home page',
-                'summary' => "An SEO audit tool on my studio's site. Enter a web address, pay by card through WiPay, and a PDF report arrives by email.",
+                'title' => 'A studio site that sells small services on its own',
+                'summary' => "My studio's site, rebuilt in Laravel. Visitors scan their website for free, then buy a full report or a small fix by card through WiPay, without contacting me.",
                 'sections' => [
                     [
                         'heading' => 'What it is',
                         'body' => [
-                            'Code Canvas is my own web studio. Its home page carries an SEO audit tool that I built, so a visitor can check their own site and buy a full report without having to contact me first.',
+                            'Code Canvas is my own web studio. I moved its site off WordPress to Laravel in November 2026 so the tools on it could share one back office, one set of payments and one set of orders.',
                         ],
                     ],
                     [
-                        'heading' => 'How it works',
+                        'heading' => 'What visitors can do',
                         'points' => [
-                            'The visitor enters their website address and the tool analyses the site.',
-                            'The full audit is a paid report: more than 50 checks, including technical SEO, with recommendations for what to fix.',
-                            'Payment is by credit or debit card through WiPay, a Caribbean payment gateway.',
-                            'The report is produced as a PDF and emailed to the visitor straight away.',
+                            'Run a free scan of their website, then buy the full SEO and site health report for TT$6, with the fix for each problem found.',
+                            'Compare their site with up to two competitors, check a domain name, get a QR code kit, or book a strategy session.',
+                            'Pay by credit or debit card through WiPay, a Caribbean payment gateway. Each order gets a private page where reports unlock straight away and fixes show their progress.',
+                            'Work out a price for a full website with a quote calculator.',
                         ],
                     ],
                     [
                         'heading' => 'My part',
                         'body' => [
-                            'I designed and built the site on WordPress and Elementor, then wrote the audit tool and its WiPay payment step as custom work on top.',
+                            'I designed and built the whole site: the scanner, the payment flow, the order pages and an admin area for orders, prices and enquiries. That includes tools to find, export or erase a person\'s data on request, and old WordPress addresses redirect to their new pages.',
                         ],
                     ],
                 ],
