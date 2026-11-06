@@ -487,6 +487,15 @@ return [
             'stack' => ['Laravel', 'Tailwind', 'Alpine.js', 'Tender desk'],
         ],
         [
+            'slug' => 'kinks-and-queens',
+            'name' => 'Kinks & Queens',
+            'category' => 'Beauty',
+            'groups' => ['services', 'tools'],
+            'url' => 'https://lightgray-coyote-716551.hostingersite.com/',
+            'summary' => 'Site for a Trinidad textured hair brand that sells only on pre-order, with a length guide and price list for each texture, a pre-order builder, order tracking and a back office for requests, prices and photos.',
+            'stack' => ['Laravel', 'Tailwind', 'Alpine.js', 'Pre-order tracking'],
+        ],
+        [
             'slug' => 'smile-inn-dental',
             'name' => 'Smile Inn Dental',
             'category' => 'Healthcare',
