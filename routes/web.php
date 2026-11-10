@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ConnectionController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CaseStudyController;
 use App\Http\Controllers\ContactController;
@@ -19,6 +20,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeController::class)->name('home');
 Route::get('/work/{slug}', CaseStudyController::class)->name('work.show');
 Route::get('/services/{slug}', ServiceController::class)->name('services.show');
+
+// The blog is linked from the footer only; it is there for search.
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/rss.xml', [BlogController::class, 'feed'])->name('blog.feed');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('blog.show');
 
 Route::get('/resume', [ResumeController::class, 'show'])->name('resume');
 Route::get('/resume.pdf', [ResumeController::class, 'pdf'])->name('resume.pdf');

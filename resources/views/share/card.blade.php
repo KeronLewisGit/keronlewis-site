@@ -33,7 +33,7 @@
 <body>
     <div class="mark"></div>
     <p class="eyebrow">{{ $eyebrow }}</p>
-    <h1 style="font-size: {{ mb_strlen($title) <= 14 ? 124 : (mb_strlen($title) <= 26 ? 96 : 72) }}px">{{ $title }}</h1>
+    <h1 style="font-size: {{ mb_strlen($title) <= 14 ? 124 : (mb_strlen($title) <= 26 ? 96 : (mb_strlen($title) <= 48 ? 72 : 60)) }}px">{{ $title }}</h1>
     <div class="rule"></div>
     <p class="sub">{{ $subtitle }}</p>
     <footer><span>{{ $profile['website'] }}</span><span>{{ $profile['location'] }}</span></footer>

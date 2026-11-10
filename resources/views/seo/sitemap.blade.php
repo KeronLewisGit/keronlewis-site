@@ -8,4 +8,11 @@
     <changefreq>monthly</changefreq>
   </url>
 @endforeach
+@foreach ($dated as $url => $date)
+  <url>
+    <loc>{{ $url }}</loc>
+    <lastmod>{{ $date }}</lastmod>
+    <changefreq>monthly</changefreq>
+  </url>
+@endforeach
 </urlset>

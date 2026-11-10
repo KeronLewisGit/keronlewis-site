@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Support\Blog;
 use App\Support\Portfolio;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
@@ -10,10 +11,10 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 
 #[Signature('portfolio:share-images')]
-#[Description('Draw the image shown when a page is shared: one for the site, one per service and one per case study (needs Node and Google Chrome)')]
+#[Description('Draw the image shown when a page is shared: one for the site, one per service, case study and blog post (needs Node and Google Chrome)')]
 class MakeShareImages extends Command
 {
-    public function handle(Portfolio $portfolio): int
+    public function handle(Portfolio $portfolio, Blog $blog): int
     {
         $profile = $portfolio->profile();
         File::ensureDirectoryExists(public_path('img/share'));
@@ -40,6 +41,14 @@ class MakeShareImages extends Command
                 'eyebrow' => "{$profile['name']} · Case study",
                 'title' => $project['case_study']['title'],
                 'subtitle' => $project['name'],
+            ];
+        }
+
+        foreach ($blog->posts() as $post) {
+            $cards[public_path("img/share/blog-{$post['slug']}.png")] = [
+                'eyebrow' => "{$profile['name']} · Blog",
+                'title' => $post['title'],
+                'subtitle' => "{$post['category']} · {$post['minutes']} min read",
             ];
         }
 

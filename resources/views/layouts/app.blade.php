@@ -166,6 +166,7 @@
             <span>© {{ date('Y') }} {{ $profile['name'] }}. Designed and built by me, on Laravel.</span>
             <span class="footer-links">
                 <a href="{{ route('resume') }}">Résumé</a>
+                <a href="{{ route('blog.index') }}">Blog</a>
                 @if ($bookingOpen)
                     <a href="{{ route('booking.show') }}">Book a call</a>
                 @endif
