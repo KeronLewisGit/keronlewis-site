@@ -164,7 +164,7 @@ return [
                     [
                         'heading' => 'When the plugins run out',
                         'body' => [
-                            "Where configuration isn't enough I write PHP, JavaScript and CSS, or connect WordPress to other systems with REST APIs and webhooks. Two examples are the paid SEO audit tool on my studio's site and the drinks calculator I wrote for Mixers Anonymous.",
+                            "Where configuration isn't enough I write PHP, JavaScript and CSS, or connect WordPress to other systems with REST APIs and webhooks.",
                         ],
                     ],
                     [
@@ -174,7 +174,7 @@ return [
                         ],
                     ],
                 ],
-                'projects' => ['code-canvas', 'mixers-anonymous', 'mixers-training', 'cruz-garments', 'chef-brigette', 'screen-stars'],
+                'projects' => ['mixers-training', 'cruz-garments', 'chef-brigette', 'screen-stars'],
             ],
         ],
         [
@@ -361,36 +361,39 @@ return [
             'category' => 'Hospitality',
             'groups' => ['tools', 'hospitality'],
             'url' => 'https://mixersanontt.com/',
-            'summary' => 'A bar-service company I co-own. I built the site and wrote an alcohol calculator for it so clients can work out how much to buy for an event.',
-            'stack' => ['WordPress', 'Elementor', 'Custom JS'],
+            'summary' => 'A bar-service company I co-own, rebuilt in Laravel. Quote requests, invoices, a gift shop and a drinks calculator that emails a shopping plan, with card payments through WiPay.',
+            'stack' => ['Laravel', 'WiPay', 'Claude API', 'Online shop'],
             'case_study' => [
-                'title' => 'A drinks calculator for planning an event',
-                'summary' => 'Mixers Anonymous is a bar-service company I co-own. I built its site and a calculator that tells clients how much alcohol to buy for an event.',
+                'title' => 'A bar company that takes quotes, orders and payments online',
+                'summary' => 'A bar-service company I co-own. I moved its site from WordPress to Laravel so quotes, invoices, shop orders and the drinks calculator share one back office.',
                 'sections' => [
                     [
                         'heading' => 'What it is',
                         'body' => [
-                            'Mixers Anonymous TT is a bar-service company I co-own. I built the site, and wrote an alcohol calculator for its home page so clients can work out how much to buy for an event.',
+                            'Mixers Anonymous TT is a bar-service company I co-own. It does weddings, corporate events, bar staff and mixology training in Trinidad and Tobago.',
+                            'The old site was WordPress and Elementor, and enquiries came in by email with fields missing. In November 2026 I replaced it with a Laravel app that handles the business side as well as the marketing pages.',
                         ],
                     ],
                     [
-                        'heading' => 'What the client enters',
+                        'heading' => 'What clients can do',
                         'points' => [
-                            'How many guests are coming, and what share of them will drink.',
-                            'How many hours drinks will be served.',
-                            'How the drinkers split between beer, wine and mixed drinks. The three shares have to add up to 100%.',
+                            'Request a quote in three steps, with the venue picked from Google Maps. The request lands in the admin with everything we need to price it.',
+                            'Pay deposits and invoices by card through WiPay from a customer portal.',
+                            'Buy gift boxes and bar kits from the shop, with delivery fees set by area.',
+                            'Read a journal of local guides on drink prices, licences and planning an event.',
                         ],
                     ],
                     [
-                        'heading' => 'What they get back',
+                        'heading' => 'The drinks calculator',
                         'body' => [
-                            'The cases of beer, bottles of wine and bottles of liquor to buy, an average cost for each, and an estimated total in Trinidad and Tobago dollars.',
+                            'Clients enter guests, hours and what people drink. The site then emails a store-by-store shopping plan written by Claude, using current prices from three Trinidad liquor stores.',
+                            'The first plan is free once the email address is confirmed. After that a US$10 Event Pass covers three plans for 30 days.',
                         ],
                     ],
                     [
                         'heading' => 'My part',
                         'body' => [
-                            'I built the site on WordPress and Elementor and wrote the calculator in JavaScript.',
+                            'I built the whole app in Laravel: the public site, quote and invoice back office, shop, WiPay checkout, the calculator and its admin settings, and the deploy from GitHub to Hostinger.',
                         ],
                     ],
                 ],

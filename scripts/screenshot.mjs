@@ -41,7 +41,7 @@ try {
     await page.addStyleTag({
         content: `[id*="cookie" i],[class*="cookie" i],[id*="consent" i],[class*="consent" i],[class*="popup" i],
                   [class*="pum-" i],[class*="elementor-popup" i],.dialog-widget,[class*="chat" i],[id*="chat" i],
-                  [class*="whatsapp" i],[class*="joinchat" i],iframe[title*="chat" i]{display:none!important}`,
+                  [class*="whatsapp" i],[class*="joinchat" i],[id*="nudge" i],iframe[title*="chat" i]{display:none!important}`,
     });
     await page.waitForTimeout(400);
 
