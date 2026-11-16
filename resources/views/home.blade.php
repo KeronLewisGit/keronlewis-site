@@ -150,10 +150,26 @@ Seventeen live sites I designed and built, for clients and for my own businesses
                     <h2>What clients say</h2>
                 </header>
 
-                <div class="quotes-grid reveal">
-                    @foreach ($testimonials as $testimonial)
-                        <x-testimonial :testimonial="$testimonial" />
-                    @endforeach
+                {{-- slider.js shows these one at a time; without it they are simply listed. --}}
+                <div class="quote-slider reveal" data-slider aria-roledescription="carousel" aria-label="What clients say">
+                    <div class="quote-slides" data-slider-track aria-live="off">
+                        @foreach ($testimonials as $testimonial)
+                            <x-testimonial :testimonial="$testimonial" class="{{ $loop->first ? 'is-active' : '' }}" data-slide role="group" aria-roledescription="slide" aria-label="{{ $loop->iteration }} of {{ $loop->count }}" />
+                        @endforeach
+                    </div>
+
+                    @if ($testimonials->count() > 1)
+                        <div class="quote-controls" data-slider-controls hidden>
+                            <button class="tool-btn" type="button" data-slider-prev aria-label="Previous testimonial"><x-icon name="chevron-left" /></button>
+                            <div class="quote-dots">
+                                @foreach ($testimonials as $testimonial)
+                                    <button class="quote-dot @if ($loop->first) is-active @endif" type="button" data-slider-dot aria-label="Testimonial {{ $loop->iteration }}: {{ $testimonial['name'] }}" @if ($loop->first) aria-current="true" @endif></button>
+                                @endforeach
+                            </div>
+                            <button class="tool-btn" type="button" data-slider-next aria-label="Next testimonial"><x-icon name="chevron-right" /></button>
+                            <span class="quote-count" data-slider-count aria-hidden="true">01 / {{ sprintf('%02d', $testimonials->count()) }}</span>
+                        </div>
+                    @endif
                 </div>
             </div>
         </section>

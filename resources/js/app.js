@@ -11,6 +11,7 @@ import { initResume } from './modules/resume';
 import { initTracking } from './modules/track';
 import { initConsent } from './modules/consent';
 import { initQuotes } from './modules/quotes';
+import { initSlider } from './modules/slider';
 import { initCount } from './modules/count';
 import { initKinetic } from './modules/kinetic';
 
@@ -28,4 +29,5 @@ initResume();
 initTracking();
 initConsent();
 initQuotes();
+initSlider();
 initCount();
