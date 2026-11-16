@@ -42,8 +42,8 @@ return [
         | Keep titles under about 60 characters and descriptions under about 155.
         */
         'seo' => [
-            'home_title' => 'Web Development in Trinidad & Tobago | Keron Lewis',
-            'home_description' => 'Web development in Trinidad and Tobago by Keron Lewis, a web developer in Port of Spain: business websites, WordPress and WooCommerce stores, and web apps.',
+            'home_title' => 'Web Developer in Trinidad & Tobago | Keron Lewis',
+            'home_description' => 'Keron Lewis is a freelance web developer in Port of Spain, Trinidad and Tobago, building business websites, WordPress stores and web apps since 2016.',
             'resume_title' => 'Keron Lewis Résumé (CV) | Full-Stack PHP & WordPress Developer',
             'resume_description' => 'Résumé of Keron Lewis, full-stack web developer in Trinidad and Tobago: PHP, MySQL, React, WordPress and API integration work since 2016. PDF download.',
         ],

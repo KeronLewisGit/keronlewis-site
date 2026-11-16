@@ -192,7 +192,7 @@ class Portfolio
                         'addressCountry' => $profile['country_code'],
                     ],
                     'sameAs' => collect($profile['links'])->pluck('url')->all(),
-                    'knowsAbout' => collect($this->skills())->flatten()->all(),
+                    'knowsAbout' => collect(['Web development', 'Website design', 'Laravel'])->merge(collect($this->skills())->flatten())->unique()->values()->all(),
                     'knowsLanguage' => 'en',
                     'alumniOf' => collect(config('portfolio.education'))
                         ->map(fn ($item) => ['@type' => 'CollegeOrUniversity', 'name' => $item['school']])->all(),
@@ -203,7 +203,8 @@ class Portfolio
                         'skills' => collect($this->skills())->flatten()->implode(', '),
                     ],
                     'worksFor' => $this->experience()->whereNull('end')
-                        ->map(fn ($role) => ['@type' => 'Organization', 'name' => $role['org']])->values()->all(),
+                        ->map(fn ($role) => ['@type' => 'Organization', 'name' => $role['org']]
+                            + (str_starts_with($role['org'], 'Code Canvas') ? ['@id' => 'https://codecanvastt.com#business'] : []))->values()->all(),
                 ],
                 $this->businessSchema() + [
                     'hasOfferCatalog' => [
@@ -219,6 +220,14 @@ class Portfolio
                             ],
                         ])->all(),
                     ],
+                ],
+                // Same @id as the business on codecanvastt.com, so search engines and AI tools join the two sites into one entity.
+                [
+                    '@type' => 'Organization',
+                    '@id' => 'https://codecanvastt.com#business',
+                    'name' => 'Code Canvas Consultants Ltd',
+                    'url' => 'https://codecanvastt.com',
+                    'founder' => ['@id' => $person],
                 ],
                 [
                     '@type' => 'WebSite',

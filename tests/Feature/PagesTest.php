@@ -208,4 +208,28 @@ class PagesTest extends TestCase
             );
         }
     }
+
+    public function test_llms_txt_gives_ai_assistants_the_key_facts(): void
+    {
+        $profile = config('portfolio.profile');
+
+        $this->get('/llms.txt')
+            ->assertOk()
+            ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
+            ->assertSee('# Keron Lewis', false)
+            ->assertSee('freelance full-stack web developer in '.$profile['location'], false)
+            ->assertSee($profile['phone'], false)
+            ->assertSee(route('services.show', 'website-development'), false)
+            ->assertDontSee('&amp;', false);
+    }
+
+    public function test_home_schema_links_the_person_to_code_canvas(): void
+    {
+        preg_match('#<script type="application/ld\+json">\s*(.*?)\s*</script>#s', $this->get('/')->getContent(), $match);
+        $graph = collect(json_decode($match[1], true, flags: JSON_THROW_ON_ERROR)['@graph']);
+
+        $studio = $graph->firstWhere('@id', 'https://codecanvastt.com#business');
+        $this->assertSame(['@id' => url('/').'#person'], $studio['founder']);
+        $this->assertContains('Web development', $graph->firstWhere('@type', 'Person')['knowsAbout']);
+    }
 }

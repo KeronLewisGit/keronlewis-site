@@ -33,6 +33,22 @@ class SeoController extends Controller
             ->header('Content-Type', 'application/xml');
     }
 
+    /** Plain-text facts for AI assistants and answer engines (llmstxt.org). */
+    public function llms(Portfolio $portfolio, BookingCalendar $calendar, Blog $blog)
+    {
+        return response()
+            ->view('seo.llms', [
+                'profile' => $portfolio->profile(),
+                'services' => $portfolio->services(),
+                'projects' => $portfolio->projects(),
+                'experience' => $portfolio->experience(),
+                'skills' => $portfolio->skills(),
+                'bookingOpen' => $calendar->isEnabled(),
+                'posts' => $blog->posts(),
+            ])
+            ->header('Content-Type', 'text/plain; charset=UTF-8');
+    }
+
     public function robots()
     {
         return response("User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /testimonial\n\nSitemap: ".route('sitemap')."\n", 200, [
