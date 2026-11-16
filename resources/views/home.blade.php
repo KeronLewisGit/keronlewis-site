@@ -159,15 +159,21 @@ Seventeen live sites I designed and built, for clients and for my own businesses
                     </div>
 
                     @if ($testimonials->count() > 1)
-                        <div class="quote-controls" data-slider-controls hidden>
-                            <button class="tool-btn" type="button" data-slider-prev aria-label="Previous testimonial"><x-icon name="chevron-left" /></button>
-                            <div class="quote-dots">
+                        {{-- Who else is in here, and the way to them: one tab per client, then arrows. --}}
+                        <div class="quote-rail" data-slider-controls hidden>
+                            <div class="quote-tabs">
                                 @foreach ($testimonials as $testimonial)
-                                    <button class="quote-dot @if ($loop->first) is-active @endif" type="button" data-slider-dot aria-label="Testimonial {{ $loop->iteration }}: {{ $testimonial['name'] }}" @if ($loop->first) aria-current="true" @endif></button>
+                                    <button class="quote-tab @if ($loop->first) is-active @endif" type="button" data-slider-tab aria-label="{{ $testimonial['name'] }}" @if ($loop->first) aria-current="true" @endif>
+                                        <x-quote-avatar :name="$testimonial['name']" />
+                                        <span class="quote-tab-by"><strong>{{ $testimonial['name'] }}</strong>@if (($testimonial['detail'] ?? $testimonial['name']) !== $testimonial['name']) <span>{{ $testimonial['detail'] }}</span>@endif</span>
+                                    </button>
                                 @endforeach
                             </div>
-                            <button class="tool-btn" type="button" data-slider-next aria-label="Next testimonial"><x-icon name="chevron-right" /></button>
-                            <span class="quote-count" data-slider-count aria-hidden="true">01 / {{ sprintf('%02d', $testimonials->count()) }}</span>
+                            <div class="quote-nav">
+                                <button class="tool-btn" type="button" data-slider-prev aria-label="Previous testimonial"><x-icon name="chevron-left" /></button>
+                                <span class="quote-count" data-slider-count aria-hidden="true">01 / {{ sprintf('%02d', $testimonials->count()) }}</span>
+                                <button class="tool-btn" type="button" data-slider-next aria-label="Next testimonial"><x-icon name="chevron-right" /></button>
+                            </div>
                         </div>
                     @endif
                 </div>

@@ -1,9 +1,9 @@
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /**
- * Shows the home page testimonials one at a time. Arrows, dots, the arrow
+ * Shows the home page testimonials one at a time. Arrows, client tabs, the arrow
  * keys and a sideways swipe all move it. While it is on screen it also moves
- * on by itself: the active dot's fill animation is the timer, so pausing that
+ * on by itself: the active client tab's fill animation is the timer, so pausing that
  * animation (pointer over it, focus inside it, tab hidden) pauses the slider.
  * Once someone uses a control it stays put. No autoplay for reduced motion.
  */
@@ -11,7 +11,7 @@ export function initSlider() {
     document.querySelectorAll('[data-slider]').forEach((slider) => {
         const track = slider.querySelector('[data-slider-track]');
         const slides = [...track.querySelectorAll('[data-slide]')];
-        const dots = [...slider.querySelectorAll('[data-slider-dot]')];
+        const tabs = [...slider.querySelectorAll('[data-slider-tab]')];
         const count = slider.querySelector('[data-slider-count]');
         if (slides.length < 2) return;
 
@@ -37,10 +37,10 @@ export function initSlider() {
             to.classList.add('is-active');
             slides.forEach((slide, i) => (slide.inert = i !== next));
 
-            dots[current].classList.remove('is-active');
-            dots[current].removeAttribute('aria-current');
-            dots[next].classList.add('is-active');
-            dots[next].setAttribute('aria-current', 'true');
+            tabs[current].classList.remove('is-active');
+            tabs[current].removeAttribute('aria-current');
+            tabs[next].classList.add('is-active');
+            tabs[next].setAttribute('aria-current', 'true');
             if (count) count.textContent = `${pad(next + 1)} / ${pad(slides.length)}`;
 
             current = next;
@@ -70,8 +70,8 @@ export function initSlider() {
             stop();
             show(current + 1, 1);
         });
-        dots.forEach((dot, i) =>
-            dot.addEventListener('click', () => {
+        tabs.forEach((tab, i) =>
+            tab.addEventListener('click', () => {
                 stop();
                 show(i);
             }),
@@ -87,12 +87,12 @@ export function initSlider() {
             const dir = event.key === 'ArrowRight' ? 1 : -1;
             stop();
             show(current + dir, dir);
-            if (event.target.matches('[data-slider-dot]')) dots[current].focus();
+            if (event.target.matches('[data-slider-tab]')) tabs[current].focus();
         });
 
-        // The fill on the active dot has run out: time for the next one.
+        // The fill on the active tab has run out: time for the next one.
         slider.addEventListener('animationend', (event) => {
-            if (event.animationName === 'dot-fill' && slider.classList.contains('is-playing')) show(current + 1, 1);
+            if (event.animationName === 'quote-timer' && slider.classList.contains('is-playing')) show(current + 1, 1);
         });
 
         let startX = null;

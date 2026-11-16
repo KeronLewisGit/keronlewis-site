@@ -1339,13 +1339,22 @@ html:not(.js) .hero {
 }
 
 /* ---------- testimonial slider ----------
-   The home page shows one testimonial at a time (slider.js). The slides share
-   one grid cell, so the box is as tall as the longest and never jumps; the
-   active one slides in from the side it is coming from and its parts follow
-   in turn. The active dot fills up while it waits and doubles as the timer.
-   Without JavaScript the testimonials are simply listed. */
+   The home page shows one testimonial at a time (slider.js): the quote at a
+   comfortable reading width on the left, and a rail of every client on the
+   right, which is both the overview and the way to move between them. The
+   active client's bar fills up while it waits and doubles as the timer. The
+   slides share one grid cell, so the box is as tall as the longest and never
+   jumps; the active one slides in from the side it is coming from and its
+   parts follow in turn. Without JavaScript the testimonials are just listed. */
 .quote-slider {
     margin-top: -6px;
+}
+
+.quote-slider:has(> .quote-rail:not([hidden])) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 30px;
+    align-items: stretch;
 }
 
 .quote-slides {
@@ -1353,41 +1362,61 @@ html:not(.js) .hero {
 }
 
 .quote-slides > .quote {
-    padding: 38px 40px 28px;
+    padding: 42px 48px 30px;
 }
 
 .quote-slides > .quote .quote-pull {
-    font-size: clamp(1.55rem, 3.2vw, 2.25rem);
-    margin: 10px 0 16px;
+    font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+    margin: 4px 0 18px;
 }
+
 
 .quote-slides > .quote p:not(.quote-pull) {
-    font-size: clamp(1.04rem, 1.3vw, 1.2rem);
-    line-height: 1.65;
+    font-size: clamp(1.04rem, 1.25vw, 1.16rem);
+    line-height: 1.7;
 }
 
-.quote-slides > .quote .quote-pull {
-    max-width: 30ch;
+.quote-slides > .quote blockquote {
+    max-width: 70ch;
 }
 
-/* The slides all take the tallest one's height, so the name sits on the bottom edge of each. */
-.quote-slides > .quote figcaption {
-    margin-top: auto;
-    padding-top: 22px;
+/* With no headline above it, the quote itself is set larger so every slide has a lead. */
+.quote-slides > .quote:not(:has(.quote-pull)) p {
+    font-size: clamp(1.1rem, 1.4vw, 1.22rem);
+    line-height: 1.6;
+    letter-spacing: -.005em;
 }
 
+/* Room for the whole quote on a wide screen; phones keep the "Read more". */
 .js .quote-slides > .quote [data-quote]:not(.is-open) p {
-    -webkit-line-clamp: 6;
-    line-clamp: 6;
+    display: block;
+    overflow: visible;
 }
 
-.js .quote-slides > .quote:not(:has(.quote-pull)) [data-quote]:not(.is-open) p {
-    -webkit-line-clamp: 9;
-    line-clamp: 9;
+/* All slides take the tallest one's height: a shorter quote sits in the middle of
+   the space left over, and the name stays on the bottom edge of each. */
+.quote-slides > .quote > :first-child {
+    margin-top: auto;
 }
 
-/* Clipped sideways only: the waiting slides sit just off to the side, and the quotation mark pokes out the top. */
+.quote-slides > .quote figcaption {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+.quote-slides > .quote blockquote,
+.quote-slides > .quote .quote-more {
+    margin-bottom: 26px;
+}
+
+.quote-slides > .quote blockquote:has(+ .quote-more) {
+    margin-bottom: 0;
+}
+
 .js .quote-slides {
+    /* Clipped sideways only: the waiting slides sit just off to the side, and the quotation mark pokes out the top. */
     overflow-x: clip;
     touch-action: pan-y;
 }
@@ -1438,97 +1467,203 @@ html:not(.js) .hero {
     transition-delay: .08s;
 }
 
-.js .quote-slides > .quote.is-active > :nth-child(3) {
+.js .quote-slides > .quote.is-active > :nth-child(n + 3) {
     transition-delay: .16s;
 }
 
-.js .quote-slides > .quote.is-active > :nth-child(n + 4) {
-    transition-delay: .24s;
+/* The client rail: the card's top lines up with the slide card, arrows at the bottom. */
+.quote-rail {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 30px;
 }
 
-.quote-controls {
+.quote-tabs {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+}
+
+.quote-tab {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-top: 20px;
-}
-
-.quote-dots {
-    display: flex;
-    align-items: center;
-}
-
-/* A small dot with a generous hit area; the active one stretches into a bar. */
-.quote-dot {
-    position: relative;
-    width: 24px;
-    height: 32px;
-    padding: 0;
-    border: 0;
+    width: 100%;
+    padding: 12px 14px 14px;
+    border: 1px solid transparent;
+    border-radius: var(--r);
     background: none;
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
     cursor: pointer;
-    transition: width .45s var(--ease-out);
+    transition: background .25s, border-color .25s;
 }
 
-.quote-dot::before,
-.quote-dot::after {
+.quote-tab .quote-avatar {
+    transition: color .25s, background .25s, border-color .25s, box-shadow .25s;
+}
+
+.quote-tab-by {
+    min-width: 0;
+    font-size: .9rem;
+    line-height: 1.35;
+}
+
+.quote-tab-by strong,
+.quote-tab-by span {
+    display: block;
+    text-wrap: balance;
+}
+
+.quote-tab-by strong {
+    font-weight: 600;
+    color: var(--muted);
+    transition: color .25s;
+}
+
+.quote-tab-by span {
+    color: var(--muted);
+    font-size: .82rem;
+    opacity: .8;
+}
+
+.quote-tab:hover {
+    background: color-mix(in srgb, var(--paper) 60%, transparent);
+}
+
+.quote-tab:hover .quote-tab-by strong,
+.quote-tab.is-active .quote-tab-by strong {
+    color: var(--ink);
+}
+
+.quote-tab.is-active {
+    background: var(--paper);
+    border-color: var(--line);
+}
+
+.quote-tab.is-active .quote-avatar {
+    color: #fff;
+    background: var(--coral);
+    border-color: var(--coral);
+}
+
+/* The timer: a hairline along the bottom of the active tab that fills while it waits. */
+.quote-tab::after {
     content: '';
     position: absolute;
-    inset: 12px 7px;
-    border-radius: 99px;
-}
-
-.quote-dot::before {
-    background: var(--line-strong);
-    transition: background .2s;
-}
-
-.quote-dot:hover::before {
-    background: var(--muted);
-}
-
-.quote-dot.is-active {
-    width: 50px;
-}
-
-.quote-dot.is-active::before {
-    background: color-mix(in srgb, var(--coral) 22%, var(--line-strong));
-}
-
-.quote-dot.is-active::after {
+    left: 14px;
+    right: 14px;
+    bottom: 6px;
+    height: 2px;
+    border-radius: 2px;
     background: var(--coral);
     transform-origin: left;
+    scale: 0 1;
 }
 
-.quote-slider.is-playing .quote-dot.is-active::after {
-    animation: dot-fill 7s linear forwards;
+.quote-slider.is-playing .quote-tab.is-active::after {
+    animation: quote-timer 7s linear forwards;
 }
 
-.quote-slider.is-paused .quote-dot.is-active::after {
+.quote-slider.is-paused .quote-tab.is-active::after {
     animation-play-state: paused;
 }
 
-@keyframes dot-fill {
-    from {
-        transform: scaleX(0);
+@keyframes quote-timer {
+    to {
+        scale: 1 1;
     }
 }
 
+.quote-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+}
+
 .quote-count {
-    margin-left: auto;
+    flex: 1;
+    text-align: center;
     font-family: var(--font-mono);
     font-size: .8rem;
     color: var(--muted);
     font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 640px) {
-    .quote-slides > .quote {
-        padding: 32px 22px 22px;
+/* Narrower screens: the rail drops under the quote and the tabs shrink to a row of initials. */
+@media (max-width: 1000px) {
+    .quote-slider:has(> .quote-rail:not([hidden])) {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
     }
 
-    .quote-controls {
-        gap: 6px;
+    .quote-rail {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 18px;
+    }
+
+    .quote-tabs {
+        display: flex;
+        gap: 4px;
+    }
+
+    .quote-tab {
+        width: auto;
+        padding: 6px 6px 12px;
+    }
+
+    .quote-tab.is-active {
+        background: none;
+        border-color: transparent;
+    }
+
+    .quote-tab-by {
+        display: none;
+    }
+
+    .quote-tab::after {
+        left: 10px;
+        right: 10px;
+        bottom: 3px;
+    }
+
+    .quote-nav {
+        margin: 0;
+        padding: 0;
+    }
+
+    .quote-count {
+        display: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .quote-slides > .quote {
+        padding: 34px 22px 22px;
+    }
+
+    .quote-slides > .quote .quote-pull {
+        font-size: 1.45rem;
+        margin-bottom: 12px;
+    }
+
+    .js .quote-slides > .quote [data-quote]:not(.is-open) p {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-line-clamp: 5;
+        line-clamp: 5;
+    }
+
+    .js .quote-slides > .quote:not(:has(.quote-pull)) [data-quote]:not(.is-open) p {
+        -webkit-line-clamp: 7;
+        line-clamp: 7;
     }
 }
 
